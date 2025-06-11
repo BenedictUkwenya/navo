@@ -1,0 +1,53 @@
+/* Reusing some styles from GeneratePriceModal */
+@import '../GeneratePriceModal/GeneratePriceModal.css';
+
+.payment-details-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.payment-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    color: #3A445D;
+}
+
+.payment-amount {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.payment-status-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #E6F7F0;
+    color: #00875A;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.payment-status-chip img {
+    height: 16px;
+}
+
+.confirm-btn {
+    background-color: #00875A; /* Green for approve */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.confirm-btn:hover {
+    background-color: #00694a;
+}

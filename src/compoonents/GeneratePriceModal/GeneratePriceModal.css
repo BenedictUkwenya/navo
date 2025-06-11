@@ -1,0 +1,112 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #F0F1F3;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #8A92A6;
+    line-height: 1;
+}
+
+.modal-body .price-inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.price-input-group label {
+    display: block;
+    font-size: 14px;
+    color: #3A445D;
+    margin-bottom: 8px;
+}
+
+.price-input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #D9DCE1;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box; /* Important */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.price-input-group input:focus {
+    outline: none;
+    border-color: #FF8A00;
+    box-shadow: 0 0 0 3px rgba(255, 138, 0, 0.2);
+}
+
+.modal-footer {
+    margin-top: 24px;
+    text-align: right;
+}
+
+.update-price-btn {
+    background-color: #FF8A00;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.update-price-btn:hover {
+    background-color: #e67b00;
+}
+.update-price-btn:disabled {
+    background-color: #FADDBB;
+    cursor: not-allowed;
+}
+
+/* Modal Responsiveness */
+@media (max-width: 768px) {
+    .modal-body .price-inputs-grid {
+        grid-template-columns: 1fr;
+    }
+}

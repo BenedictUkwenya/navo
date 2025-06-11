@@ -1,0 +1,100 @@
+// src/data/mockCustomerDetails.ts
+
+// This data represents what we'd get from an API when we ask for a single customer's full details.
+export interface CustomerDetail {
+    id: string;
+    name: string;
+    avatarUrl: string; // Path to avatar
+    personal: {
+      phoneNGN: string;
+      phoneUK: string;
+      email: string;
+      gender: string;
+    };
+    addresses: {
+      nigeria: {
+        state: string;
+        city: string;
+        street: string;
+        apartment: string;
+        postalCode: string;
+        status: 'Active' | 'Inactive';
+      },
+      uk: {
+        state: string;
+        city: string;
+        street: string;
+        apartment: string;
+        postalCode: string;
+        status: 'Active' | 'Inactive';
+      }
+    };
+    wallet: {
+      ngn: number;
+      gbp: number;
+    };
+    shipments: {
+      from: string;
+      to: string;
+      goodsType: string;
+      address: string;
+      weight: string;
+      amount: string;
+      date: string;
+    }[]; // An array of shipment objects
+    referral: {
+      code: string;
+      referredUsers: string[];
+      dateCreated: string;
+      points: number;
+    };
+  }
+  
+  // We'll mock data for one customer for now. The ID '476328' matches our main list.
+  export const mockCustomerDetailsData: CustomerDetail = {
+    id: '476328',
+    name: 'Oladapo Koiki',
+    avatarUrl: '/path/to/your/oladapo-avatar.png', // <-- REPLACE WITH YOUR AVATAR PATH
+    personal: {
+      phoneNGN: '+234 802 938 6768',
+      phoneUK: '+44 079 7631 7010',
+      email: 'okoiki@gmail.com',
+      gender: 'Male',
+    },
+    addresses: {
+      nigeria: {
+        state: 'Lagos',
+        city: 'Ebuta-Meta',
+        street: 'Ojo-Giwa St.',
+        apartment: '(Optional)',
+        postalCode: '101211',
+        status: 'Active',
+      },
+      uk: {
+        state: 'London',
+        city: 'North Barrow',
+        street: 'Cambridge Road',
+        apartment: '(Optional)',
+        postalCode: 'BA22 7GU',
+        status: 'Active',
+      },
+    },
+    wallet: {
+      ngn: 2150000.00,
+      gbp: 1096.35,
+    },
+    shipments: [
+      // Array of 5 shipments for this user
+      { from: 'Nigeria', to: 'United Kingdom', goodsType: 'General', address: '3a, Sulaimon Shoderu...', weight: '350kg', amount: '₦2,050,000', date: '20/02/2025' },
+      { from: 'Nigeria', to: 'United Kingdom', goodsType: 'General', address: '3a, Sulaimon Shoderu...', weight: '350kg', amount: '₦2,050,000', date: '20/02/2025' },
+      { from: 'Nigeria', to: 'United Kingdom', goodsType: 'General', address: '3a, Sulaimon Shoderu...', weight: '350kg', amount: '₦2,050,000', date: '20/02/2025' },
+      { from: 'Nigeria', to: 'United Kingdom', goodsType: 'General', address: '3a, Sulaimon Shoderu...', weight: '350kg', amount: '₦2,050,000', date: '20/02/2025' },
+      { from: 'Nigeria', to: 'United Kingdom', goodsType: 'General', address: '3a, Sulaimon Shoderu...', weight: '350kg', amount: '₦2,050,000', date: '20/02/2025' },
+    ],
+    referral: {
+      code: 'OLAPBD22',
+      referredUsers: ['Aminah Agbaje-Koiki'],
+      dateCreated: '13-02-2025',
+      points: 20,
+    }
+  };

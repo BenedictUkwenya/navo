@@ -1,0 +1,144 @@
+/* This is the main container that holds the background image */
+.login-page-container {
+    /*
+      IMPORTANT: The path to your background image.
+      Since the image is in the 'public' folder, you can reference it directly.
+      Replace 'background.jpg' with the actual name of your file.
+    */
+    background-image: url('../../assets/images/background.png'); /* Update the path to match the actual location */
+    
+    /* Styling for the background image */
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    background-position: center;
+    
+    /* Flexbox to center the login card perfectly */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    /* Setting a base font for the page */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+  
+  /* This is the frosted glass card */
+  .login-form-card {
+    width: 440px;
+    padding: 40px 50px;
+    border-radius: 24px;
+    
+    /* The Frosted Glass Effect */
+    background: rgba(255, 255, 255, 0.15); /* Semi-transparent background */
+    backdrop-filter: blur(12px);           /* The blur effect */
+    -webkit-backdrop-filter: blur(12px);   /* For Safari compatibility */
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    
+    /* Arrange items inside vertically */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-header {
+    text-align: center;
+    margin-bottom: 35px;
+  }
+  
+  .login-header p {
+    margin: 0;
+    font-size: 16px;
+    color: #4A5568; /* A muted grey color for "Welcome back!" */
+  }
+  
+  .login-header h1 {
+    margin: 4px 0 0 0;
+    font-size: 40px;
+    font-weight: 700;
+    color: #2D3748; /* A dark, navy-like blue for "Login" */
+  }
+  
+  .form-group {
+    margin-bottom: 22px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2D3748;
+    margin-bottom: 8px;
+  }
+  
+  /* This targets both email and password inputs */
+  .form-group input {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 16px;
+    color: #2D3748;
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    box-sizing: border-box; /* Important for padding and width to work together */
+  }
+  
+  .form-group input::placeholder {
+    color: #A0AEC0;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #4299E1;
+    box-shadow: 0 0 0 1px #4299E1;
+  }
+  
+  /* Wrapper needed to position the icon inside the input field */
+  .password-input-wrapper {
+    position: relative;
+  }
+  
+  /* Position the icon absolute to its relative parent */
+  .password-toggle-icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%); /* Perfectly center the icon vertically */
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    opacity: 0.6;
+  }
+  
+  .forgot-password-container {
+    text-align: right;
+    /* Pull it up slightly to reduce space below password field */
+    margin-top: -12px; 
+    margin-bottom: 25px;
+  }
+  
+  .forgot-password-container a {
+    font-size: 14px;
+    color: #4A5568;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .forgot-password-container a:hover {
+    text-decoration: underline;
+  }
+  
+  .login-button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background-color: #F97316; /* The vibrant orange from your design */
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background-color: #EA580C; /* A slightly darker orange for hover */
+  }

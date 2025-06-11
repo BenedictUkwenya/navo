@@ -1,0 +1,57 @@
+/* src/components/Layout/Layout.css */
+.layout-container {
+    display: flex;
+    background-color: #F9FAFB;
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    /* Use margin-left to offset for the fixed sidebar */
+    margin-left: 260px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .page-content {
+    flex-grow: 1;
+    padding: 30px 40px;
+    overflow-y: auto; /* Allows only the content area to scroll */
+  }
+  
+  /* --- RESPONSIVENESS --- */
+  
+  /* For Tablets */
+  @media (max-width: 1024px) {
+    .sidebar {
+      /* Example: make sidebar smaller on tablets */
+      width: 220px;
+    }
+    .main-content {
+      margin-left: 220px;
+    }
+    .header, .page-content {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  }
+  
+  /* For smaller tablets and large phones */
+  @media (max-width: 768px) {
+    .sidebar {
+      /* Hide the sidebar. A button in the header would be needed to toggle it */
+      transform: translateX(-100%);
+      position: absolute;
+      z-index: 1000;
+    }
+    .main-content {
+      margin-left: 0;
+      width: 100%;
+    }
+    .header {
+      /* Add a menu button here later */
+    }
+    .header-controls .search-bar {
+      display: none; /* Hide search bar on smaller screens */
+    }
+  }

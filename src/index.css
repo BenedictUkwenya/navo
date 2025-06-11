@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* src/index.css */
+
+/* ... after the body styles ... */
+
+/* --- GLOBAL SCROLLBAR STYLES --- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #FF6600; /* THE CORRECT ORANGE COLOR */
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #e65c00; /* A slightly darker orange for hover */
+}

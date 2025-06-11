@@ -1,0 +1,172 @@
+/* src/pages/QuoteRequestPage/QuoteRequestPage.css */
+
+.quote-request-page {
+    width: 100%;
+  }
+  
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  
+  .page-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+  
+  .page-header .controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .filter-button {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .filter-button img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .table-search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #FFFFFF;
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: 1px solid #E5E7EB;
+    width: 300px;
+  }
+  
+  .table-search-bar img {
+    width: 18px;
+    height: 18px;
+    opacity: 0.5;
+  }
+  
+  .table-search-bar input {
+    border: none;
+    background: none;
+    outline: none;
+    margin-left: 10px;
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .table-container {
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    overflow-x: auto;
+  }
+  
+  /* --- NEW: CUSTOM SCROLLBAR STYLING --- */
+  .table-container::-webkit-scrollbar {
+    height: 8px; /* Height of the horizontal scrollbar */
+  }
+  
+  .table-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color of the tracking area */
+    border-radius: 10px;
+  }
+  
+  .table-container::-webkit-scrollbar-thumb {
+    background-color: #F97316; /* The orange color of the scroll thumb */
+    border-radius: 10px;
+    border: 2px solid #f1f1f1; /* Creates padding around thumb */
+  }
+  
+  .table-container::-webkit-scrollbar-thumb:hover {
+    background-color: #EA580C; /* Darker orange on hover */
+  }
+  
+  
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .data-table th, .data-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid #F3F4F6;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  
+  .data-table th {
+    color: #6B7280; /* Correct header text color */
+    font-weight: 500;
+    background-color: #F9FAFB;
+  }
+  .data-table td {
+    color: #374151; /* Correct body text color */
+  }
+  
+  .data-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  /* --- NEW: CONTAINER FOR MULTIPLE ICONS --- */
+  .action-icons-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between the icons */
+  }
+  
+  .action-icon {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    width: 18px;
+    height: 18px;
+  }
+  .action-icon:hover {
+    opacity: 1;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    color: #6B7280;
+    font-size: 14px;
+  }
+  
+  .pagination-buttons button {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 6px;
+    padding: 8px;
+    margin-left: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  .pagination-buttons button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Empty State Styling (Unchanged) */
+  .quote-request-page.empty {
+    /* ... */
+  }
+  .empty-state-container {
+    /* ... */
+  }
+  /* ... */

@@ -1,0 +1,96 @@
+/* src/components/UserViewModal/UserViewModal.css */
+
+.uv-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(34, 42, 63, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .uv-modal-content {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 24px 32px; /* More horizontal padding */
+    width: 100%;
+    max-width: 500px; /* Slightly wider as per design */
+    animation: slideUp 0.4s ease;
+    font-family: 'Inter', sans-serif; /* Assuming Inter as the fallback */
+  }
+  
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  
+  .uv-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #F3F4F6;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .uv-modal-header h2 {
+    margin: 0;
+    font-size: 24px; /* Larger font size for the name */
+    font-weight: 600; /* Bolder as in design */
+    color: #111827;
+  }
+  
+  .uv-modal-close-btn {
+    background: #EBF4FF; /* Light blue background */
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 32px;
+    text-align: center;
+    color: #0047AB; /* Dark blue 'X' */
+    cursor: pointer;
+  }
+  
+  .uv-modal-body {
+    padding: 0; /* No extra padding on the body itself */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 32px; /* Vertical and horizontal gap */
+  }
+  
+  .detail-item span {
+    display: block;
+    font-size: 14px; /* Smaller label text */
+    color: #6B7280; /* Lighter grey color */
+    margin-bottom: 8px;
+  }
+  
+  .detail-item p {
+    margin: 0;
+    font-size: 16px; /* Larger data text */
+    font-weight: 500;
+    color: #374151;
+  }
+  
+  .uv-modal-footer {
+    display: flex;
+    justify-content: flex-end; /* Align button to the right */
+    margin-top: 32px; /* More space above the button */
+  }
+  
+  .close-action-btn {
+    background-color: #F97316;
+    color: white;
+    border: none;
+    padding: 12px 32px; /* Taller and wider button */
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+  }

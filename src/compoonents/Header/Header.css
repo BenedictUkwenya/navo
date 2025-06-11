@@ -1,0 +1,96 @@
+/* src/components/Header/Header.css */
+.header {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  
+  .header-title h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+  }
+  
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #F9FAFB;
+    padding: 8px 15px;
+    border-radius: 8px;
+    width: 250px;
+  }
+  
+  .search-bar img {
+    width: 18px;
+    height: 18px;
+    opacity: 0.5;
+  }
+  
+  .search-bar input {
+    border: none;
+    background: none;
+    outline: none;
+    margin-left: 10px;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  .notification-icon {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .notification-icon img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .notification-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background-color: #EF4444;
+    color: white;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+  
+  .user-profile .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .user-profile .user-name {
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .user-profile .chevron-down {
+    width: 16px;
+    height: 16px;
+  }

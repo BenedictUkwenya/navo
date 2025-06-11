@@ -1,0 +1,156 @@
+/* src/pages/TrackingMgtPage/TrackingMgtPage.css */
+
+/* Empty State Styling */
+.tracking-empty-state {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    color: #888;
+  }
+  
+  .tracking-empty-state img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+  
+  /* Page Header Styling */
+  .tracking-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .tracking-page-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .tracking-page-header .controls {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .filter-btn {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+  
+  .search-box {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0 10px;
+  }
+  .search-box img { width: 16px; height: 16px; opacity: 0.6; }
+  .search-box input { border: none; outline: none; padding: 10px; width: 250px; }
+  
+  /* Table Styling */
+  .tracking-table-container {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow-x: auto; /* For smaller screens */
+  }
+  
+  .tracking-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .tracking-table th, .tracking-table td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  
+  .tracking-table th {
+    color: #555;
+    background-color: #fafafa;
+    font-weight: 600;
+  }
+  
+  .tracking-table td {
+    color: #333;
+  }
+  
+  /* Status Cell and Dropdown Styling */
+  .status-cell {
+    position: relative;
+  }
+  
+  .status-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+  }
+  .status-wrapper:hover { background-color: #f9f9f9; }
+  
+  .status-wrapper img {
+    width: 16px;
+    transition: transform 0.2s ease;
+  }
+  .status-wrapper img.open {
+    transform: rotate(180deg);
+  }
+  
+  .status-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    width: max-content;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+  
+  .dropdown-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Pagination Footer */
+  .pagination-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .pagination-controls button {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 6px;
+    margin-left: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pagination-controls button:hover { background-color: #f5f5f5; }
+  .pagination-controls img { width: 16px; }

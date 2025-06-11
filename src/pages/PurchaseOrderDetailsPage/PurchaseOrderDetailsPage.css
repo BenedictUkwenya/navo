@@ -1,0 +1,232 @@
+.po-details-page {
+    padding: 1rem;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.po-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    flex-wrap: wrap; /* For responsiveness */
+    gap: 1rem;
+}
+
+.customer-info h2 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #8A92A6;
+    margin: 0;
+}
+
+.customer-info h2 .back-link {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.customer-info h2 .back-link:hover {
+    color: #FF8A00;
+}
+
+.customer-info h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 4px 0 0 0;
+}
+
+.generate-invoice-btn {
+    background-color: #FF8A00;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.generate-invoice-btn:hover {
+    background-color: #e67b00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 138, 0, 0.3);
+}
+
+.generate-invoice-btn:disabled {
+    background-color: #FADDBB;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.cart-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.cart-item-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px 32px;
+}
+
+.info-block label {
+    display: block;
+    font-size: 14px;
+    color: #8A92A6;
+    margin-bottom: 8px;
+}
+
+.info-block p {
+    font-size: 16px;
+    color: #3A445D;
+    font-weight: 500;
+    margin: 0;
+}
+
+.info-block--link a {
+    color: #0062FF;
+    text-decoration: none;
+    word-break: break-all;
+}
+.info-block--link a:hover {
+    text-decoration: underline;
+}
+
+.info-block--full {
+    grid-column: 1 / -1;
+}
+
+.cost-block {
+    grid-column: 1 / -1;
+    border-top: 1px solid #F0F1F3;
+    padding-top: 24px;
+}
+
+.cost-value {
+    color: #FF8A00 !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+}
+
+.action-block {
+    grid-column: 1 / -1;
+    border-top: 1px solid #F0F1F3;
+    padding-top: 24px;
+}
+
+.generate-price-btn {
+    background-color: transparent;
+    color: #FF8A00;
+    border: 1px solid #FF8A00;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.generate-price-btn:hover {
+    background-color: #FFF2D8;
+}
+
+/* Add these to the BOTTOM of PurchaseOrderDetailsPage.css */
+
+/* Generic styles for the main action button */
+.main-action-btn {
+    background-color: #FF8A00;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.main-action-btn:hover:not(:disabled) {
+    background-color: #e67b00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 138, 0, 0.3);
+}
+.main-action-btn:disabled {
+    background-color: #FADDBB;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Specific style for the green 'Approve' button */
+.main-action-btn--approve {
+    background-color: #00875A;
+}
+.main-action-btn--approve:hover:not(:disabled) {
+    background-color: #00694a;
+    box-shadow: 0 4px 10px rgba(0, 135, 90, 0.3);
+}
+
+.status-display {
+    font-size: 16px;
+    font-weight: 600;
+    color: #3A445D;
+    background-color: #f0f1f3;
+    padding: 12px 24px;
+    border-radius: 8px;
+}
+
+/* Payment Summary Card */
+.payment-summary-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    margin-top: 24px;
+}
+.payment-summary-card h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 18px;
+}
+.payment-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    align-items: center;
+    gap: 16px;
+}
+
+.view-details-btn {
+    background-color: transparent;
+    color: #0062FF;
+    border: 1px solid #0062FF;
+    justify-self: start;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.view-details-btn:hover {
+    background-color: #e6f0ff;
+}
+
+/* Responsive Grid */
+@media (max-width: 992px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 768px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}

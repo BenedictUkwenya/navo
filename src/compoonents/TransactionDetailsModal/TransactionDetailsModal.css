@@ -1,0 +1,159 @@
+/* src/components/TransactionDetailsModal/TransactionDetailsModal.css */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(34, 42, 63, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .modal-content {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 32px;
+    width: 100%;
+    max-width: 550px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.4s ease;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  
+  .modal-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #EBF4FF; /* Light blue background */
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 36px;
+    text-align: center;
+    color: #0047AB; /* Dark blue 'X' */
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .modal-close-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+  }
+  .modal-title p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #0047AB; /* Dark blue label */
+    margin: 0 0 4px;
+    text-transform: uppercase;
+  }
+  .modal-title h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .modal-title span {
+    font-size: 14px;
+    color: #9CA3AF; /* Lighter grey for transaction ID */
+  }
+  .modal-status-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px; /* Rounded square, not a circle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-status-icon-wrapper img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Status specific icon background colors */
+  .modal-status-icon-wrapper.successful { background-color: #DEF7EC; }
+  .modal-status-icon-wrapper.pending { background-color: #FEF3C7; }
+  .modal-status-icon-wrapper.failed { background-color: #FEE2E2; }
+  
+  .modal-details {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* Increased gap for more breathing room */
+  }
+  
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    border-bottom: 1px solid #F3F4F6; /* Subtle separator line */
+    padding-bottom: 16px;
+  }
+  .detail-row:last-child {
+    border-bottom: none;
+  }
+  
+  .detail-label {
+    color: #6B7280; /* Softer grey for labels */
+  }
+  .detail-value {
+    color: #374151; /* Standard dark grey for values */
+    font-weight: 500;
+  }
+  
+  /* Specific text colors for statuses */
+  .status-text.successful { color: #16A34A; font-weight: 600; }
+  .status-text.pending { color: #D97706; font-weight: 600; }
+  .status-text.failed { color: #DC2626; font-weight: 600; }
+  .status-text-green { color: #16A34A; font-weight: 600; } /* For 'Debit' */
+  
+  .modal-footer {
+    margin-top: 32px;
+  }
+  .download-pdf-btn {
+    width: auto;
+    background: transparent;
+    color: #F97316; /* Strong orange color */
+    border: none;
+    border-radius: 8px;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .download-pdf-btn img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .modal-content {
+      padding: 24px;
+      max-width: 90%;
+    }
+    .modal-title h1 {
+      font-size: 28px;
+    }
+  }

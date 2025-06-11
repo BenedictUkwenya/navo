@@ -1,0 +1,126 @@
+/* src/pages/Dashboard/Dashboard.css */
+
+.dashboard-welcome h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 24px 0;
+}
+
+/* --- THE MAIN FIX FOR THE STATS GRID LAYOUT --- */
+.stats-grid {
+  display: grid;
+  /* Create a 5-column grid to manage the different widths */
+  /* The transaction card will span 2 columns */
+  grid-template-columns: 1fr 1fr 1fr 2fr;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+.stat-card.transaction-card {
+  /* This makes the transaction card take up the last 2fr space */
+  grid-column: 4 / 5;
+}
+
+/* --- CARD SIZING AND STYLING --- */
+.stat-card {
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px; /* Increased base height */
+}
+.card-blue { background-color: #F2F7FF; }
+.card-orange { background-color: #FFF7ED; }
+
+.card-icon-bg {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.card-icon-bg img { width: 24px; height: 24px; }
+.card-blue .card-icon-bg { background-color: #DBEAFE; }
+.card-orange .card-icon-bg { background-color: #FEE2E2; }
+
+.card-title { margin: 0 0 12px 0; color: #6B7280; font-weight: 500; }
+.card-value { margin: 0; font-size: 36px; color: #111827; font-weight: 700; line-height: 1.1; }
+.card-value-row { display: flex; align-items: baseline; gap: 10px; }
+.percentage-badge {
+  font-size: 14px; font-weight: 600; padding: 2px 8px;
+  border-radius: 12px; background-color: #D1FAE5; color: #065F46;
+}
+
+.transaction-card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.currency-toggle button {
+  border: 1px solid #FDBA74; background: none; padding: 4px 12px;
+  font-size: 12px; font-weight: 500; cursor: pointer; color: #F97316;
+}
+.currency-toggle button:first-child { border-radius: 6px 0 0 6px; }
+.currency-toggle button:last-child { border-radius: 0 6px 6px 0; }
+.currency-toggle button.active { background-color: #FFF; }
+
+/* --- MAIN CONTENT GRID (Transactions & Shop4me) --- */
+.main-content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.recent-transactions-card, .shop4me-card {
+  background-color: #FFFFFF;
+  border-radius: 16px;
+  padding: 25px;
+}
+
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.card-header h4 { margin: 0; font-size: 18px; font-weight: 600; }
+.see-all-link { color: #F97316; font-weight: 600; text-decoration: none; }
+
+.transactions-tabs { border-bottom: 2px solid #F3F4F6; margin-bottom: 15px; }
+.transactions-tabs button {
+  background: none; border: none; padding: 0 5px 10px 5px;
+  margin-right: 25px; font-size: 16px; color: #6B7280; cursor: pointer; position: relative;
+}
+.transactions-tabs button.active { color: #F97316; font-weight: 600; }
+.transactions-tabs button.active::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+  height: 2px; background-color: #F97316;
+}
+
+.transactions-list { list-style: none; padding: 0; margin: 0; }
+.transactions-list li { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #F3F4F6; }
+.transactions-list li:last-child { border-bottom: none; }
+
+.tx-status-icon {
+  width: 32px; height: 32px; border-radius: 50%; display: flex;
+  justify-content: center; align-items: center; margin-right: 15px; flex-shrink: 0;
+}
+.tx-status-icon img { width: 16px; height: 16px; filter: brightness(0) invert(1); }
+.tx-status-icon.pending { background-color: #EF4444; }
+.tx-status-icon.completed { background-color: #10B981; }
+.tx-status-icon.failed { background-color: #F59E0B; }
+
+.tx-details { flex-grow: 1; }
+.tx-description { font-weight: 600; color: #111827; margin: 0 0 2px 0; }
+.tx-id { font-size: 14px; color: #6B7280; margin: 0; }
+.tx-info { text-align: right; margin-right: 40px; }
+.tx-date { font-size: 14px; margin: 0 0 2px 0; }
+.tx-time { font-size: 12px; color: #6B7280; margin: 0; }
+.tx-amount { font-size: 16px; font-weight: 600; color: #111827; }
+
+.shop4me-card { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.shop4me-card .card-icon-bg { background-color: #DBEAFE; }
+
+/* --- RESPONSIVENESS --- */
+@media (max-width: 1200px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-card.transaction-card { grid-column: auto; } /* Let it flow naturally */
+  .main-content-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .stats-grid { grid-template-columns: 1fr; }
+}

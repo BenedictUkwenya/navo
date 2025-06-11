@@ -1,0 +1,58 @@
+@import '../GeneratePriceModal/GeneratePriceModal.css'; /* Reusing base modal styles */
+
+.modal-description {
+    font-size: 14px;
+    color: #6C748B;
+    margin-top: -10px;
+    margin-bottom: 24px;
+}
+
+.checkin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.checkin-input-group label {
+    display: block;
+    font-size: 14px;
+    color: #3A445D;
+    margin-bottom: 8px;
+}
+
+.checkin-input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #D9DCE1;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.checkin-input-group input:focus {
+    outline: none;
+    border-color: #00875A;
+    box-shadow: 0 0 0 3px rgba(0, 135, 90, 0.2);
+}
+
+.confirm-btn {
+    background-color: #00875A;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.confirm-btn:hover:not(:disabled) {
+    background-color: #00694a;
+}
+
+.confirm-btn:disabled {
+    background-color: #cce8e0;
+    cursor: not-allowed;
+}
