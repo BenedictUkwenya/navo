@@ -41,7 +41,7 @@ const Sidebar: React.FC = () => {
           {/* 3. Replace <a> with <Link> and use the helper to set the active class */}
           <li className={getNavItemClass('/')}>
             <Link to="/"><img src={dashboardIcon} alt="" /> Dashboard</Link>
-          </li>
+            </li>
           <li className={getNavItemClass('/customers')}>
             <Link to="/customers"><img src={customersIcon} alt="" /> Customers</Link>
           </li>
