@@ -1,87 +1,78 @@
 // src/pages/QuoteRequestPage/QuoteRequestPage.tsx
+
 import React, { useState, useMemo } from 'react';
 import './QuoteRequestPage.css';
 import { mockQuoteRequests, QuoteRequest } from '../../data/mockQuoteRequest';
 
-// --- IMPORT YOUR ICONS ---
+// --- CORRECTED & STANDARDIZED ICON IMPORTS ---
 import filterIcon from '../../assets/images/filterIcon.png';
-import searchIcon from '../../assets/images/search-icon.jpeg';
+import searchIcon from '../../assets/images/searchicon.png';
 import emptyQuoteIcon from '../../assets/images/quote-icon.png';
 import prevIcon from '../../assets/images/previcon.png';
 import nextIcon from '../../assets/images/nexticon.png';
-// --- NEW ICONS FOR TABLE ACTIONS ---
 import mailIcon from '../../assets/images/mailicon.png';
-import downloadIcon from '../../assets/images/messageicon.png';
+import downloadIcon from '../../assets/images/messageicon.png'; // Assuming this is your download icon
 
 const ITEMS_PER_PAGE = 8;
 
 const QuoteRequestPage: React.FC = () => {
-  const [requests, setRequests] = useState<QuoteRequest[]>(mockQuoteRequests);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Memoized filtering logic (no changes needed)
   const filteredRequests = useMemo(() => {
-    if (!searchQuery) return requests;
-    return requests.filter(req =>
-      req.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      req.id.toLowerCase().includes(searchQuery.toLowerCase())
+    if (!searchQuery) return mockQuoteRequests;
+    const lowercasedQuery = searchQuery.toLowerCase();
+    return mockQuoteRequests.filter(req =>
+      req.email.toLowerCase().includes(lowercasedQuery) ||
+      req.id.toLowerCase().includes(lowercasedQuery)
     );
-  }, [requests, searchQuery]);
+  }, [searchQuery]);
 
+  // Pagination logic (no changes needed)
   const totalPages = Math.ceil(filteredRequests.length / ITEMS_PER_PAGE);
   const currentRequests = filteredRequests.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-  const handlePrevPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
+  const handleNextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
+  const handlePrevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
+  const handleEmailQuote = (id: string) => alert(`Emailing quote for ID: ${id}`);
+  const handleDownloadQuote = (id: string) => alert(`Downloading quote for ID: ${id}`);
 
-  const handleEmailQuote = (requestId: string) => {
-    alert(`Emailing quote for Request ID: ${requestId}`);
-  };
-
-  const handleDownloadQuote = (requestId: string) => {
-    alert(`Downloading quote for Request ID: ${requestId}`);
-  };
-
-  if (requests.length === 0) {
-    // Empty state component is unchanged
+  if (mockQuoteRequests.length === 0) {
     return (
-      <div className="quote-request-page empty">
-        {/* ... empty state JSX ... */}
+      <div className="quote-request-page page--empty">
+        <img src={emptyQuoteIcon} alt="No quote requests" />
+        <h3>No quote requests have been made yet</h3>
       </div>
     );
   }
 
   return (
     <div className="quote-request-page">
-      <div className="page-header">
+      <header className="page-header">
         <h3>All Quote Requests</h3>
-        <div className="controls">
-          <button className="filter-button">
+        <div className="page-controls">
+          <button className="filter-btn">
             <img src={filterIcon} alt="Filter" />
           </button>
-          <div className="table-search-bar">
+          <div className="page-search-bar">
             <img src={searchIcon} alt="Search" />
             <input
               type="text"
               placeholder="Search by Request ID, email..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
             />
           </div>
         </div>
-      </div>
+      </header>
 
       <div className="table-container">
         <table className="data-table">
           <thead>
-            {/* UPDATED TABLE HEADERS */}
             <tr>
               <th>Request ID</th>
               <th>Email</th>
@@ -91,22 +82,21 @@ const QuoteRequestPage: React.FC = () => {
               <th>Goods Type</th>
               <th>Weight</th>
               <th>Date</th>
-              <th></th>{/* Empty header for actions */}
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {currentRequests.map((req) => (
               <tr key={req.id}>
-                <td>{req.id}</td>
-                <td>{req.email}</td>
-                <td>{req.service}</td>
-                <td>{req.locationFrom}</td>
-                <td>{req.locationTo}</td>
-                <td>{req.goodsType}</td>
-                <td>{req.weight}</td>
-                <td>{req.date}</td>
-                {/* UPDATED ACTION ICONS */}
-                <td>
+                <td data-label="Request ID">{req.id}</td>
+                <td data-label="Email">{req.email}</td>
+                <td data-label="Service">{req.service}</td>
+                <td data-label="Location From">{req.locationFrom}</td>
+                <td data-label="Location To">{req.locationTo}</td>
+                <td data-label="Goods Type">{req.goodsType}</td>
+                <td data-label="Weight">{req.weight}</td>
+                <td data-label="Date">{req.date}</td>
+                <td data-label="Action">
                   <div className="action-icons-container">
                     <img 
                       src={mailIcon} 
@@ -128,11 +118,11 @@ const QuoteRequestPage: React.FC = () => {
         </table>
       </div>
 
-      <div className="pagination-controls">
-        <span className="pagination-info">
-          Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}-{Math.min(currentPage * ITEMS_PER_PAGE, filteredRequests.length)} of {filteredRequests.length}
-        </span>
-        <div className="pagination-buttons">
+      <footer className="page-footer">
+        <div className="pagination-info">
+          Showing {filteredRequests.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0}-{Math.min(currentPage * ITEMS_PER_PAGE, filteredRequests.length)} of {filteredRequests.length}
+        </div>
+        <div className="pagination-controls">
           <button onClick={handlePrevPage} disabled={currentPage === 1}>
             <img src={prevIcon} alt="Previous" />
           </button>
@@ -140,7 +130,7 @@ const QuoteRequestPage: React.FC = () => {
             <img src={nextIcon} alt="Next" />
           </button>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };

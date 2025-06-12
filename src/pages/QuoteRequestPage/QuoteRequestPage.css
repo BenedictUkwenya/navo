@@ -1,172 +1,105 @@
 /* src/pages/QuoteRequestPage/QuoteRequestPage.css */
 
+/* --- Base Page & Empty State --- */
 .quote-request-page {
-    width: 100%;
-  }
-  
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-  }
-  
-  .page-header h3 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #111827;
-    margin: 0;
-  }
-  
-  .page-header .controls {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .filter-button {
-    background-color: #FFFFFF;
-    border: 1px solid #E5E7EB;
-    border-radius: 8px;
-    padding: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .filter-button img {
-    width: 20px;
-    height: 20px;
-  }
-  
-  .table-search-bar {
-    display: flex;
-    align-items: center;
-    background-color: #FFFFFF;
-    padding: 8px 15px;
-    border-radius: 8px;
-    border: 1px solid #E5E7EB;
-    width: 300px;
-  }
-  
-  .table-search-bar img {
-    width: 18px;
-    height: 18px;
-    opacity: 0.5;
-  }
-  
-  .table-search-bar input {
-    border: none;
-    background: none;
-    outline: none;
-    margin-left: 10px;
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  .table-container {
-    background-color: #FFFFFF;
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-    overflow-x: auto;
-  }
-  
-  /* --- NEW: CUSTOM SCROLLBAR STYLING --- */
-  .table-container::-webkit-scrollbar {
-    height: 8px; /* Height of the horizontal scrollbar */
-  }
-  
-  .table-container::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Color of the tracking area */
-    border-radius: 10px;
-  }
-  
-  .table-container::-webkit-scrollbar-thumb {
-    background-color: #F97316; /* The orange color of the scroll thumb */
-    border-radius: 10px;
-    border: 2px solid #f1f1f1; /* Creates padding around thumb */
-  }
-  
-  .table-container::-webkit-scrollbar-thumb:hover {
-    background-color: #EA580C; /* Darker orange on hover */
-  }
-  
-  
-  .data-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .data-table th, .data-table td {
-    padding: 16px 20px;
-    text-align: left;
-    border-bottom: 1px solid #F3F4F6;
-    font-size: 14px;
-    white-space: nowrap;
-  }
-  
-  .data-table th {
-    color: #6B7280; /* Correct header text color */
-    font-weight: 500;
-    background-color: #F9FAFB;
+  animation: fadeIn 0.5s ease-in-out;
+}
+.page--empty {
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  height: 70vh; text-align: center;
+}
+.page--empty img { width: 100px; height: 100px; margin-bottom: 24px; opacity: 0.8; }
+.page--empty h3 { font-size: 20px; font-weight: 500; color: #6B7280; }
+
+/* --- Header & Controls --- */
+.page-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px;
+}
+.page-header h3 { font-size: 20px; font-weight: 600; color: #111827; margin: 0; }
+.page-controls { display: flex; align-items: center; gap: 1rem; }
+.filter-btn {
+  display: flex; align-items: center; justify-content: center; background-color: #fff;
+  border: 1px solid #E5E7EB; border-radius: 6px; padding: 8px; cursor: pointer;
+}
+.filter-btn img { height: 20px; }
+
+.page-search-bar {
+  display: flex; align-items: center; background-color: #fff;
+  border: 1px solid #E5E7EB; border-radius: 6px; padding: 0 12px; width: 300px;
+}
+.page-search-bar img { height: 16px; opacity: 0.5; }
+.page-search-bar input {
+  border: none; outline: none; padding: 10px 8px;
+  font-size: 14px; flex-grow: 1; background: transparent;
+}
+
+/* --- Table Styling --- */
+.table-container {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow-x: auto; /* Enable horizontal scrolling on wide tables */
+}
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th, .data-table td {
+  padding: 16px 24px; text-align: left;
+  border-bottom: 1px solid #F3F4F6;
+  font-size: 14px; white-space: nowrap;
+}
+.data-table th {
+  background-color: #F2F7FF; /* The correct Alice Blue background */
+  color: #1E3A8A;
+  font-weight: 600; font-size: 14px;
+  text-transform: none;
+}
+.data-table td { color: #374151; }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.action-icons-container { display: flex; align-items: center; gap: 20px; }
+.action-icon { cursor: pointer; opacity: 0.7; transition: opacity 0.2s; width: 20px; height: 20px; }
+.action-icon:hover { opacity: 1; }
+
+/* --- Custom Scrollbar Styling (Retained from your original) --- */
+.table-container::-webkit-scrollbar { height: 8px; }
+.table-container::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #F97316;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+}
+.table-container::-webkit-scrollbar-thumb:hover { background-color: #EA580C; }
+
+/* --- Footer & Pagination --- */
+.page-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 16px; font-size: 14px; color: #6B7280;
+}
+.pagination-controls { display: flex; gap: 0; }
+.pagination-controls button {
+  display: flex; align-items: center; justify-content: center; background-color: #fff;
+  border: 1px solid #E0E0E0; padding: 8px 12px; cursor: pointer;
+}
+.pagination-controls button:first-child { border-radius: 8px 0 0 8px; }
+.pagination-controls button:last-child { border-radius: 0 8px 8px 0; border-left: none; }
+.pagination-controls button:disabled { cursor: not-allowed; opacity: 0.5; }
+.pagination-controls button img { height: 16px; }
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 992px) {
+  .page-header { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .page-controls { justify-content: space-between; }
+}
+
+@media (max-width: 768px) {
+  .data-table thead { display: none; }
+  .data-table tr {
+    display: block; border: 1px solid #e5e7eb; border-radius: 8px;
+    margin-bottom: 1rem; padding: 1rem;
   }
   .data-table td {
-    color: #374151; /* Correct body text color */
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid #f3f4f6; white-space: normal;
   }
-  
-  .data-table tbody tr:last-child td {
-    border-bottom: none;
-  }
-  
-  /* --- NEW: CONTAINER FOR MULTIPLE ICONS --- */
-  .action-icons-container {
-    display: flex;
-    align-items: center;
-    gap: 20px; /* Space between the icons */
-  }
-  
-  .action-icon {
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-    width: 18px;
-    height: 18px;
-  }
-  .action-icon:hover {
-    opacity: 1;
-  }
-  
-  .pagination-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 25px;
-    color: #6B7280;
-    font-size: 14px;
-  }
-  
-  .pagination-buttons button {
-    background: #FFFFFF;
-    border: 1px solid #E5E7EB;
-    border-radius: 6px;
-    padding: 8px;
-    margin-left: 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-  .pagination-buttons button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  /* Empty State Styling (Unchanged) */
-  .quote-request-page.empty {
-    /* ... */
-  }
-  .empty-state-container {
-    /* ... */
-  }
-  /* ... */
+  .data-table td:last-child { border-bottom: none; }
+  .data-table td::before { content: attr(data-label); font-weight: 600; color: #4b5563; }
+  .page-footer { flex-direction: column; align-items: center; gap: 1rem; }
+}
