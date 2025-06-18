@@ -39,6 +39,9 @@
   font-weight: 600;
   color: #111827;
   margin: 0;
+  text-align: left;
+  flex-grow: 1; /* Ensures it takes up all available space */
+  align-self: flex-start; /* Aligns it to the start of the container */
 }
 
 .page-controls {

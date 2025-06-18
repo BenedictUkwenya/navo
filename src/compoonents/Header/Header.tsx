@@ -4,11 +4,11 @@ import React from 'react';
 import './Header.css';
 import { mockUserData } from '../../data/mockDashboardData';
 
-// --- IMPORT ALL ICONS CORRECTLY ---
-import searchIcon from '../../assets/images/searchicon.png'; // Using your consistent search icon
+ 
+import searchIcon from '../../assets/images/searchicon.png'; 
 import notificationIcon from '../../assets/images/notificationicon.png';
 import chevronDownIcon from '../../assets/images/chevron-down.png';
-import userAvatar from '../../assets/images/profilepic.png'; // Import the user avatar
+import userAvatar from '../../assets/images/profilepic.png'; 
 
 interface HeaderProps {
   title: string;
