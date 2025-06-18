@@ -1,9 +1,11 @@
+@import './assets/fonts/fonts.css';
 body {
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #174078;
+  font-family: 'aeonikfont', sans-serif;
 }
 /* src/index.css */
 
