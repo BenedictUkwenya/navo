@@ -1,17 +1,16 @@
-// src/pages/QuoteRequestPage/QuoteRequestPage.tsx
-
+ 
 import React, { useState, useMemo } from 'react';
 import './QuoteRequestPage.css';
 import { mockQuoteRequests, QuoteRequest } from '../../data/mockQuoteRequest';
 
-// --- CORRECTED & STANDARDIZED ICON IMPORTS ---
+ 
 import filterIcon from '../../assets/images/filterIcon.png';
 import searchIcon from '../../assets/images/searchicon.png';
 import emptyQuoteIcon from '../../assets/images/quote-icon.png';
 import prevIcon from '../../assets/images/previcon.png';
 import nextIcon from '../../assets/images/nexticon.png';
 import mailIcon from '../../assets/images/mailicon.png';
-import downloadIcon from '../../assets/images/messageicon.png'; // Assuming this is your download icon
+import downloadIcon from '../../assets/images/messageicon.png';  
 
 const ITEMS_PER_PAGE = 8;
 
@@ -19,7 +18,7 @@ const QuoteRequestPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Memoized filtering logic (no changes needed)
+ 
   const filteredRequests = useMemo(() => {
     if (!searchQuery) return mockQuoteRequests;
     const lowercasedQuery = searchQuery.toLowerCase();
@@ -29,7 +28,6 @@ const QuoteRequestPage: React.FC = () => {
     );
   }, [searchQuery]);
 
-  // Pagination logic (no changes needed)
   const totalPages = Math.ceil(filteredRequests.length / ITEMS_PER_PAGE);
   const currentRequests = filteredRequests.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,

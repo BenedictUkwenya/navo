@@ -1,10 +1,11 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-
+import './App.css';
 // Page and Layout Imports
 import Layout from './compoonents/Layout/Layout';
-import ProtectedRoute from './compoonents/ProtectedRoute'; // <-- Import the gatekeeper
-import LoginPage from './pages/LoginPage/LoginPage'; // <-- Import the login page
+import ProtectedRoute from './compoonents/ProtectedRoute';
+import PublicRoute from './compoonents/PublicRoute'; // <-- Import PublicRoute
+import LoginPage from './pages/LoginPage/LoginPage';
 
 // Your other page components
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -23,12 +24,15 @@ import SettingsPage from './pages/SettingsPage/SettingsPage';
 function App() {
   return (
     <Routes>
-      {/* Public Route: The login page doesn't use the main Layout */}
-      <Route path="/login" element={<LoginPage />} />
+      {/* Public Routes: Wrapped in PublicRoute */}
+      {/* This prevents logged-in users from seeing the login page */}
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<LoginPage />} />
+      </Route>
 
       {/* Protected Routes: All routes inside here require authentication */}
+      {/* This part of your code was already perfect and needs no changes. */}
       <Route element={<ProtectedRoute />}>
-        {/* The Layout now wraps all protected pages */}
         <Route path="/" element={<Layout pageTitle="Dashboard"><Dashboard /></Layout>} />
         <Route path="/dashboard" element={<Layout pageTitle="Dashboard"><Dashboard /></Layout>} />
         
@@ -36,6 +40,7 @@ function App() {
           path="/customers"
           element={<Layout pageTitle="Customers"><CustomersPage /></Layout>}
         />
+        {/* ... all your other protected routes ... */}
         <Route
           path="/customers/:customerId"
           element={<Layout pageTitle="Customer Details"><CustomerDetailsPage /></Layout>}

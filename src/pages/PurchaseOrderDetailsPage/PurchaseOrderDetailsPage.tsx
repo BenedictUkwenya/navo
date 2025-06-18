@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import './PurchaseOrderDetailsPage.css';
-
-// Import all data, types, and modals
+ 
 import { mockPurchaseOrders } from '../../data/mockPurchaseOrders';
-// This is the new, correct line
+ 
 import { PurchaseOrder, OrderStatus, CartItem, CartSubItem } from '../../data/mockPurchaseOrders';
 import GeneratePriceModal from '../../compoonents/GeneratePriceModal/GeneratePriceModal';
 import PaymentDetailsModal from '../../compoonents/PaymentDetailsModal/PaymentDetailsModal';
@@ -28,7 +27,7 @@ const PurchaseOrderDetailsPage: React.FC = () => {
 
     useEffect(() => {
         const foundOrder = mockPurchaseOrders.find(o => o.id === orderId);
-        setOrder(foundOrder ? { ...foundOrder } : null); // Use a copy to allow local state changes
+        setOrder(foundOrder ? { ...foundOrder } : null); 
     }, [orderId]);
 
     const handleSavePrices = (cartItemId: string, updatedSubItems: CartSubItem[]) => {
@@ -57,7 +56,6 @@ const PurchaseOrderDetailsPage: React.FC = () => {
 
     const handleApprovePayment = () => {
         if (!order) return;
-        // In a real app, you might be confirming this. Here we simulate it.
         const updatedOrder = {
           ...order,
           status: 'Paid' as OrderStatus,
@@ -89,7 +87,7 @@ const PurchaseOrderDetailsPage: React.FC = () => {
         setModal(null);
     };
 
-    // --- RENDER LOGIC ---
+     
 
     if (!order) {
         return <div className="po-details-not-found"><h2>Order Not Found</h2></div>;

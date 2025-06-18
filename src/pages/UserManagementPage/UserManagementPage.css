@@ -1,6 +1,4 @@
-/* src/pages/UserManagementPage/UserManagementPage.css */
-
-/* --- Base Page & Main Header --- */
+ 
 .user-mgt-page {
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -21,7 +19,7 @@
 }
 .tab-btn.active { color: #F97316; border-bottom-color: #F97316; }
 
-/* --- Header Actions (Search, Add New) --- */
+ 
 .header-actions {
   display: flex;
   align-items: center;
@@ -40,7 +38,7 @@
   border-radius: 8px; cursor: pointer;
 }
 
-/* --- Profile / Edit Form --- */
+ 
 .profile-form-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px 32px; max-width: 900px; }
 .form-group { display: flex; flex-direction: column; }
 .form-group label { margin-bottom: 8px; font-size: 14px; color: #374151; font-weight: 500; }
@@ -52,7 +50,7 @@
 .form-actions { grid-column: 1 / -1; margin-top: 16px; }
 .save-btn { background-color: #F97316; color: white; border: none; padding: 12px 32px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; }
 
-/* --- Users Tab Table --- */
+ 
 .users-tab-container { margin-top: -16px; }
 .table-container { background-color: #fff; border-radius: 12px; overflow: hidden; }
 .data-table { width: 100%; border-collapse: collapse; }
@@ -70,7 +68,7 @@
   padding: 8px 16px; border-radius: 6px; font-weight: 500; cursor: pointer;
 }
 
-/* --- Actions Dropdown --- */
+ 
 .actions-cell { overflow: visible; }
 .actions-container { position: relative; display: inline-block; }
 .actions-dropdown {
@@ -85,8 +83,7 @@
 }
 .actions-dropdown a:hover, .actions-dropdown button:hover { background-color: #F9FAFB; }
 .actions-dropdown a.deactivate, .actions-dropdown button.deactivate { color: #EF4444; }
-
-/* --- Permissions View --- */
+ 
 .permissions-view-header .tab-btn { color: #F97316; border-bottom-color: #F97316; }
 .permissions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 .permission-group { background-color: #FFFFFF; border: 1px solid #F3F4F6; border-radius: 12px; padding: 20px; }
@@ -100,7 +97,7 @@
 .permission-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #F97316; }
 .permissions-footer { margin-top: 32px; padding-top: 24px; text-align: right; }
 
-/* --- Shared Page Footer & Pagination --- */
+ 
 .page-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; }
 .pagination-controls { display: flex; }
 .pagination-controls button { background-color: #fff; border: 1px solid #E0E0E0; padding: 8px 12px; cursor: pointer; }
@@ -108,7 +105,7 @@
 .pagination-controls button:last-child { border-radius: 0 8px 8px 0; border-left: none; }
 .pagination-controls button:disabled { cursor: not-allowed; opacity: 0.5; }
 
-/* --- RESPONSIVE STYLES --- */
+ 
 @media (max-width: 1200px) {
   .permissions-grid { grid-template-columns: repeat(3, 1fr); }
 }

@@ -1,5 +1,4 @@
-// src/compoonents/Header/Header.tsx
-
+ 
 import React from 'react';
 import './Header.css';
 import { mockUserData } from '../../data/mockDashboardData';
@@ -30,7 +29,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
           <span className="notification-badge">2</span>
         </div>
         <div className="user-profile">
-          {/* Use the imported avatar image variable here */}
+          {/* Uhmmmm */}
           <img src={userAvatar} alt="User Avatar" className="avatar" />
           <span className="user-name">{mockUserData.name}</span>
           <img src={chevronDownIcon} alt="Dropdown" className="chevron-down" />

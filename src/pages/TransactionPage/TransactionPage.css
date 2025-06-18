@@ -1,6 +1,4 @@
-/* src/pages/TransactionPage/TransactionPage.css */
-
-/* --- BASE & DESKTOP STYLES --- */
+ 
 .transaction-page {
     font-family: 'Inter', sans-serif;
     animation: fadeIn 0.5s ease-in-out;
@@ -83,9 +81,6 @@
   .pagination-controls button:disabled { cursor: not-allowed; opacity: 0.5; }
   .pagination-controls button img { height: 16px; }
   
-  /* --- RESPONSIVE STYLES --- */
-  
-  /* For Tablets and smaller laptops */
   @media (max-width: 992px) {
     .transaction-header {
       flex-direction: column; align-items: flex-start; gap: 1.5rem;
@@ -94,7 +89,7 @@
     .transaction-search-bar { flex-grow: 1; min-width: 250px; }
   }
   
-  /* For Mobile Phones */
+  
   @media (max-width: 768px) {
     .filter-tabs {
       overflow-x: auto;
@@ -102,7 +97,7 @@
     }
     .filter-tabs::-webkit-scrollbar { display: none; }
   
-    /* Card View Transformation */
+  
     .data-table thead { display: none; }
     .data-table tr {
       display: block; border: 1px solid #e5e7eb; border-radius: 8px;

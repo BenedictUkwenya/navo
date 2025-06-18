@@ -1,6 +1,4 @@
-/* src/pages/SupportTicketPage/SupportTicketPage.css */
-
-/* --- BASE & DESKTOP STYLES --- */
+ 
 .support-ticket-page {
     font-family: 'Inter', sans-serif;
     animation: fadeIn 0.5s ease-in-out;
@@ -60,15 +58,15 @@
   .data-table tbody tr:last-child td { border-bottom: none; }
   .action-icon { height: 18px; opacity: 0.7; cursor: pointer; }
   
-  /* --- Badge Styles --- */
+  
   .status-badge, .priority-badge { padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 500; text-align: center; }
   
-  /* Status Badges */
+ 
   .status-answered { background-color: #DEF7EC; color: #046C4E; }
   .status-pending { background-color: #FEF3C7; color: #92400E; }
   .status-closed { background-color: #F3F4F6; color: #4B5563; }
   
-  /* Priority Badges */
+ 
   .priority-low { background-color: #E0E7FF; color: #3730A3; }
   .priority-medium { background-color: #FEF3C7; color: #92400E; }
   .priority-high { background-color: #FEE2E2; color: #991B1B; }
@@ -82,7 +80,7 @@
   .pagination-controls button:disabled { cursor: not-allowed; opacity: 0.5; }
   .pagination-controls button img { height: 16px; }
   
-  /* --- RESPONSIVE STYLES --- */
+ 
   @media (max-width: 992px) {
     .page-controls-header { flex-direction: column; align-items: stretch; gap: 1rem; }
     .filter-tabs { border-bottom: none; }
@@ -94,7 +92,7 @@
     .filter-tabs::-webkit-scrollbar { display: none; }
     .table-container { margin-top: 16px; }
   
-    /* Card View Transformation */
+     
     .data-table thead { display: none; }
     .data-table tr {
       display: block; border: 1px solid #e5e7eb; border-radius: 8px;

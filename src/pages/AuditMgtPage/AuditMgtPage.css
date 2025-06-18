@@ -25,15 +25,15 @@
   .data-table { width: 100%; border-collapse: collapse; }
   .data-table th, .data-table td {
     padding: 16px 24px; text-align: left;
-    border-bottom: 1px solid #F3F4F6; /* Lighter border for rows */
+    border-bottom: 1px solid #F3F4F6;  
     font-size: 14px; white-space: nowrap;
   }
   
   .data-table th {
-    background-color: #F2F7FF; /* THE CORRECT BLUE HEADER */
-    color: #1E3A8A; /* A darker blue for text, for better contrast */
+    background-color: #F2F7FF;  
+    color: #1E3A8A;  
     font-weight: 600; font-size: 14px;
-    text-transform: none; /* As per design, not uppercase */
+    text-transform: none;  
   }
   .data-table td { color: #374151; }
   .data-table tbody tr:last-child td { border-bottom: none; }

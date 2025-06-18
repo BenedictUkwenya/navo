@@ -1,4 +1,4 @@
-/* src/components/Sidebar/Sidebar.css */
+ 
 .sidebar {
   width: 260px;
   background-color: #FFFFFF;
@@ -16,7 +16,7 @@
 .sidebar-logo {
   padding: 0 25px;
   margin-bottom: 40px;
-  /* This ensures the logo doesn't shrink */
+ 
   flex-shrink: 0;
 }
 
@@ -24,31 +24,28 @@
   height: 35px;
 }
 
-/* --- THE MAIN FIX IS HERE --- */
+ 
 .sidebar-nav {
   flex-grow: 1;
-  /* This is the key property. 'auto' means a scrollbar will
-     only appear if the content inside is taller than the
-     available space. */
+ 
   overflow-y: auto;
 }
 
-/* === OPTIONAL: Custom, modern scrollbar styling === */
-/* This makes the scrollbar thinner and more elegant */
+ 
 .sidebar-nav::-webkit-scrollbar {
   width: 6px;
 }
 .sidebar-nav::-webkit-scrollbar-track {
-  background: transparent; /* Makes the track invisible */
+  background: transparent;  
 }
 .sidebar-nav::-webkit-scrollbar-thumb {
-  background-color: #d1d5db; /* A light gray color for the handle */
+  background-color: #d1d5db;  
   border-radius: 10px;
 }
 .sidebar-nav::-webkit-scrollbar-thumb:hover {
-  background-color: #9ca3af; /* A darker gray on hover */
+  background-color: #9ca3af; 
 }
-/* ============================================== */
+ 
 
 
 .sidebar-nav ul {
@@ -62,7 +59,7 @@
   align-items: center;
   padding: 12px 25px;
   text-decoration: none;
-  color: #6B7280;
+  color: #174078;
   font-weight: 500;
   font-size: 16px;
   margin: 0 15px 4px 15px;
@@ -95,7 +92,7 @@
 
 .sidebar-logout {
   padding: 0 15px;
-  /* This ensures the logout button doesn't shrink */
+   
   flex-shrink: 0;
 }
 

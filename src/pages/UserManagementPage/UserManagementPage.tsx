@@ -16,23 +16,18 @@ import chevronDownIcon from '../../assets/images/chevron-down.png';
 import searchIcon from '../../assets/images/searchicon.png';
 import prevIcon from '../../assets/images/previcon.png';
 import nextIcon from '../../assets/images/nexticon.png';
-// Icons for permissions view (replace with your actual icon paths)
+ 
 import shipmentsIcon from '../../assets/images/shipment-icon.png';
 import transactionsIcon from '../../assets/images/transactionicon.png';
 import adminIcon from '../../assets/images/settings.png';
 import supportIcon from '../../assets/images/support.png';
-
-// --- TYPE DEFINITIONS ---
+ 
 type ActiveTab = 'Profile' | 'Users' | 'Roles' | 'Permissions';
 type ViewState = { view: 'tabs'; tab: ActiveTab } | { view: 'edit'; userId: string } | { view: 'permissions'; userId: string };
 
 const ITEMS_PER_PAGE = 7;
 
-// ===================================================================================
-// --- SUB-COMPONENTS (Defined within this file for simplicity) ---
-// ===================================================================================
-
-// --- 1. Reusable User Form Component (for Profile & Edit) ---
+ 
 const UserForm: React.FC<{
   user?: Partial<AdminUser>;
   mode: 'edit' | 'profile';
@@ -70,7 +65,7 @@ const UserForm: React.FC<{
 };
 
 
-// --- 2. Permissions View Component ---
+ 
 const PermissionsView: React.FC<{
   user: AdminUser;
   onBack: () => void;
@@ -80,7 +75,7 @@ const PermissionsView: React.FC<{
     if (title.includes('Transaction')) return transactionsIcon;
     if (title.includes('Admin')) return adminIcon;
     if (title.includes('Support')) return supportIcon;
-    return adminIcon; // Default
+    return adminIcon;  
   };
 
   return (
@@ -103,7 +98,7 @@ const PermissionsView: React.FC<{
 };
 
 
-// --- 3. Users Tab Component (Table View) ---
+ 
 const UsersTab: React.FC<{
   onEdit: (user: AdminUser) => void;
   onAddPermission: (user: AdminUser) => void;
@@ -166,9 +161,7 @@ const UsersTab: React.FC<{
 };
 
 
-// ===================================================================================
-// --- MAIN USER MANAGEMENT PAGE COMPONENT ---
-// ===================================================================================
+ 
 const UserManagementPage: React.FC = () => {
   const [viewState, setViewState] = useState<ViewState>({ view: 'tabs', tab: 'Users' });
   const tabs: ActiveTab[] = ['Profile', 'Users', 'Roles', 'Permissions'];

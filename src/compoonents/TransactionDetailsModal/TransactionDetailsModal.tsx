@@ -1,10 +1,10 @@
-// src/components/TransactionDetailsModal/TransactionDetailsModal.tsx
+ 
 
 import React from 'react';
 import './TransactionDetailsModal.css';
 import { Transaction, TransactionStatus } from '../../data/mockTransactions';
 
-// --- IMPORTANT: UPDATE WITH YOUR ACTUAL ICON FILENAMES ---
+
 import pendingIcon from '../../assets/images/pendingicon.png';
 import successIcon from '../../assets/images/completedicon.png';
 import failedIcon from '../../assets/images/failedicon.png';

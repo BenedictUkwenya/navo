@@ -1,23 +1,22 @@
-// src/compoonents/Layout/Layout.tsx
-
+ 
 import React from 'react';
-import Sidebar from '../Sidebar/Sidebar'; // Corrected path if you rename 'compoonents'
-import Header from '../Header/Header';   // Corrected path if you rename 'compoonents'
+import Sidebar from '../Sidebar/Sidebar';  
+import Header from '../Header/Header';    
 import './Layout.css';
 
-// We need to accept the title here and also the children
+ 
 interface LayoutProps {
   children: React.ReactNode;
-  pageTitle: string; // Add pageTitle prop
+  pageTitle: string; 
 }
 
-// Accept pageTitle as a prop
+ 
 const Layout: React.FC<LayoutProps> = ({ children, pageTitle }) => {
   return (
     <div className="layout-container">
       <Sidebar />
       <div className="main-content">
-        {/* Pass the pageTitle down to the Header */}
+        {/*okayyy */}
         <Header title={pageTitle} />
         <main className="page-content">
           {children}

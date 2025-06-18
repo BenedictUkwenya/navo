@@ -1,11 +1,11 @@
-// src/pages/PurchaseOrderPage/PurchaseOrderPage.tsx
+ 
 
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './PurchaseOrdersPage.css'; // Ensure CSS filename is consistent
+import './PurchaseOrdersPage.css';  
 import { mockPurchaseOrders } from '../../data/mockPurchaseOrders';
 
-// Standardized Icon Imports
+ 
 import emptyIcon from '../../assets/images/purchaseicon.png';
 import viewDetailsIcon from '../../assets/images/eyeicon.png';
 import filterIcon from '../../assets/images/filterIcon.png';

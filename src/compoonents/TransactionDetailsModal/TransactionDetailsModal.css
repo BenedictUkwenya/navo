@@ -33,7 +33,7 @@
     position: absolute;
     top: 20px;
     right: 20px;
-    background: #EBF4FF; /* Light blue background */
+    background: #EBF4FF;  
     border: none;
     border-radius: 50%;
     width: 36px;
@@ -42,7 +42,7 @@
     font-weight: bold;
     line-height: 36px;
     text-align: center;
-    color: #0047AB; /* Dark blue 'X' */
+    color: #0047AB;  
     cursor: pointer;
     transition: transform 0.2s;
   }
@@ -60,7 +60,7 @@
   .modal-title p {
     font-size: 14px;
     font-weight: 500;
-    color: #0047AB; /* Dark blue label */
+    color: #0047AB; 
     margin: 0 0 4px;
     text-transform: uppercase;
   }
@@ -73,12 +73,12 @@
   }
   .modal-title span {
     font-size: 14px;
-    color: #9CA3AF; /* Lighter grey for transaction ID */
+    color: #9CA3AF;  
   }
   .modal-status-icon-wrapper {
     width: 48px;
     height: 48px;
-    border-radius: 12px; /* Rounded square, not a circle */
+    border-radius: 12px;  
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,7 +88,7 @@
     height: 24px;
   }
   
-  /* Status specific icon background colors */
+  
   .modal-status-icon-wrapper.successful { background-color: #DEF7EC; }
   .modal-status-icon-wrapper.pending { background-color: #FEF3C7; }
   .modal-status-icon-wrapper.failed { background-color: #FEE2E2; }
@@ -96,7 +96,7 @@
   .modal-details {
     display: flex;
     flex-direction: column;
-    gap: 24px; /* Increased gap for more breathing room */
+    gap: 24px;  
   }
   
   .detail-row {
@@ -104,7 +104,7 @@
     justify-content: space-between;
     align-items: center;
     font-size: 16px;
-    border-bottom: 1px solid #F3F4F6; /* Subtle separator line */
+    border-bottom: 1px solid #F3F4F6;  
     padding-bottom: 16px;
   }
   .detail-row:last-child {
@@ -112,18 +112,18 @@
   }
   
   .detail-label {
-    color: #6B7280; /* Softer grey for labels */
+    color: #6B7280; 
   }
   .detail-value {
-    color: #374151; /* Standard dark grey for values */
+    color: #374151; 
     font-weight: 500;
   }
   
-  /* Specific text colors for statuses */
+   
   .status-text.successful { color: #16A34A; font-weight: 600; }
   .status-text.pending { color: #D97706; font-weight: 600; }
   .status-text.failed { color: #DC2626; font-weight: 600; }
-  .status-text-green { color: #16A34A; font-weight: 600; } /* For 'Debit' */
+  .status-text-green { color: #16A34A; font-weight: 600; }  
   
   .modal-footer {
     margin-top: 32px;
@@ -131,7 +131,7 @@
   .download-pdf-btn {
     width: auto;
     background: transparent;
-    color: #F97316; /* Strong orange color */
+    color: #F97316;  
     border: none;
     border-radius: 8px;
     padding: 0;
@@ -147,7 +147,7 @@
     height: 20px;
   }
   
-  /* Responsive adjustments */
+   
   @media (max-width: 600px) {
     .modal-content {
       padding: 24px;

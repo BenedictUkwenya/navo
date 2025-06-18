@@ -1,5 +1,4 @@
-/* src/pages/SettingsPage/SettingsPage.css */
-
+ 
 .settings-page {
     animation: fadeIn 0.5s ease-in-out;
   }
@@ -19,12 +18,12 @@
     min-height: 200px;
   }
   
-  /* Card color schemes */
+   
   .card-primary {
-    background-color: #F2F7FF; /* The light blue from your request */
+    background-color: #F2F7FF; 
   }
   .card-secondary {
-    background-color: #FEF3F2; /* The light orange from your other designs */
+    background-color: #FEF3F2;  
   }
   
   .card-header {
@@ -40,7 +39,7 @@
     color: #374151;
   }
   .card-secondary .card-title {
-    color: #F97316; /* Orange text for orange cards */
+    color: #F97316;  
   }
   
   .card-icon-wrapper {
@@ -51,7 +50,7 @@
     height: 48px;
   }
   
-  /* Kebab Menu Styling */
+ 
   .kebab-menu-container {
     position: relative;
   }
@@ -79,7 +78,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     padding: 8px;
-    width: max-content; /* Make it as wide as its content */
+    width: max-content;  
     z-index: 10;
     display: flex;
     flex-direction: column;
@@ -96,7 +95,7 @@
     background-color: #F9FAFB;
   }
   
-  /* Responsive Grid */
+ 
   @media (max-width: 992px) {
     .settings-grid {
       grid-template-columns: repeat(2, 1fr);

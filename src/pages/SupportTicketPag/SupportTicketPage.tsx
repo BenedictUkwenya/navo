@@ -1,15 +1,13 @@
-// src/pages/SupportTicketPage/SupportTicketPage.tsx
-
+ 
 import React, { useState, useMemo } from 'react';
 import './SupportTicketPage.css';
-
-// Data and Type Imports
+ 
 import { mockSupportTickets, SupportTicket, TicketStatus } from '../../data/mockSupportTickets';
 
-// Component Imports
+ 
 import SupportTicketModal from '../../compoonents/SupportTicketModal/SupportTicketModal';
 
-// Icon Imports
+ 
 import emptyIcon from '../../assets/images/support.png';
 import viewDetailsIcon from '../../assets/images/eyeicon.png';
 import searchIcon from '../../assets/images/searchicon.png';
@@ -20,16 +18,16 @@ import nextIcon from '../../assets/images/nexticon.png';
 const ITEMS_PER_PAGE = 9;
 
 const SupportTicketPage: React.FC = () => {
-  // State for page filters and pagination
+   
   const [activeStatus, setActiveStatus] = useState<TicketStatus | 'All'>('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  // State for the details modal
+ 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
 
-  // Memoized filtering logic for performance
+   
   const filteredTickets = useMemo(() => {
     return mockSupportTickets
       .filter(ticket => {
@@ -48,14 +46,13 @@ const SupportTicketPage: React.FC = () => {
       });
   }, [activeStatus, searchTerm]);
 
-  // Pagination logic
+ 
   const totalPages = Math.ceil(filteredTickets.length / ITEMS_PER_PAGE);
   const currentTickets = filteredTickets.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-
-  // --- HANDLERS ---
+ 
   const handleNextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
   const handlePrevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
   
@@ -66,18 +63,16 @@ const SupportTicketPage: React.FC = () => {
   
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    // Delay clearing the data to allow for closing animation
+     
     setTimeout(() => setSelectedTicket(null), 300);
   };
 
-  // --- HELPERS ---
+   
   const getStatusClass = (status: TicketStatus) => `status-${status.toLowerCase()}`;
   const getPriorityClass = (priority: string) => `priority-${priority.toLowerCase()}`;
   const filterTabs: (TicketStatus | 'All')[] = ['All', 'Pending', 'Closed'];
 
-  // --- RENDER LOGIC ---
-
-  // Empty state view
+ 
   if (mockSupportTickets.length === 0) {
     return (
       <div className="support-ticket-page page--empty">
@@ -178,7 +173,7 @@ const SupportTicketPage: React.FC = () => {
         </footer>
       </div>
 
-      {/* Conditionally render the modal outside the main page flow */}
+       
       {selectedTicket && (
         <SupportTicketModal
           isOpen={isModalOpen}

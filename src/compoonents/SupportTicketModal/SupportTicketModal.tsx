@@ -1,11 +1,10 @@
-// src/components/SupportTicketModal/SupportTicketModal.tsx
-
+ 
 import React from 'react';
 import './SupportTicketModal.css';
 import { SupportTicket } from '../../data/mockSupportTickets';
 
-// You will need a document icon for the attachment
-import docIcon from '../../assets/images/purchaseicon.png'; // Using placeholder
+ 
+import docIcon from '../../assets/images/purchaseicon.png';  
 
 interface ModalProps {
   isOpen: boolean;

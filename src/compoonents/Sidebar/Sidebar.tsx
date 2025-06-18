@@ -1,10 +1,10 @@
-// src/components/Sidebar/Sidebar.tsx
+ 
 import React from 'react';
-// 1. Import Link and useLocation from react-router-dom
+ 
 import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 
-// Your icon imports are perfect, they remain the same.
+ 
 import logo from '../../assets/images/navo-logo.png';
 import dashboardIcon from '../../assets/images/dashboardicon.png';
 import customersIcon from '../../assets/images/customers.png';
@@ -20,32 +20,30 @@ import settingsIcon from '../../assets/images/settings.png';
 import logoutIcon from '../../assets/images/logoutIcon.png';
 
 const Sidebar: React.FC = () => {
-  // 2. Get the current location object. location.pathname gives us the current URL path.
-  const location = useLocation();
+   const location = useLocation();
 
-  // Helper function to make the class logic cleaner
-  const getNavItemClass = (path: string) => {
+     const getNavItemClass = (path: string) => {
     return location.pathname === path ? 'active' : '';
   };
 
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
-        {/* The logo can also be a link to the dashboard */}
+         
         <Link to="/">
           <img src={logo} alt="Navo+ Logo" />
         </Link>
       </div>
       <nav className="sidebar-nav">
         <ul>
-          {/* 3. Replace <a> with <Link> and use the helper to set the active class */}
+          
           <li className={getNavItemClass('/')}>
             <Link to="/"><img src={dashboardIcon} alt="" /> Dashboard</Link>
             </li>
           <li className={getNavItemClass('/customers')}>
             <Link to="/customers"><img src={customersIcon} alt="" /> Customers</Link>
           </li>
-          {/* Add paths for all other pages, even if they aren't created yet */}
+           
           <li className={getNavItemClass('/shipments')}>
             <Link to="/shipments"><img src={shipmentIcon} alt="" /> Shipments</Link>
           </li>
@@ -79,8 +77,7 @@ const Sidebar: React.FC = () => {
         </ul>
       </nav>
       <div className="sidebar-logout">
-        {/* The logout button usually triggers a function, not just a link.
-            For now, an <a> tag is fine, but it could also be a <button>. */}
+ 
         <a href="/login"><img src={logoutIcon} alt="" /> Logout</a>
       </div>
     </aside>

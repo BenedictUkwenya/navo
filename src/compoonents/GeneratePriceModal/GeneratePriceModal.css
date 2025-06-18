@@ -70,7 +70,7 @@
     border: 1px solid #D9DCE1;
     border-radius: 8px;
     font-size: 14px;
-    box-sizing: border-box; /* Important */
+    box-sizing: border-box; 
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -104,7 +104,7 @@
     cursor: not-allowed;
 }
 
-/* Modal Responsiveness */
+ 
 @media (max-width: 768px) {
     .modal-body .price-inputs-grid {
         grid-template-columns: 1fr;

@@ -11,7 +11,7 @@ import {
   HOME_DELIVERY_STATUSES 
 } from '../../data/mockTrackingData';
 
-// --- CORRECTED ICON IMPORTS ---
+
 import emptyStateIcon from '../../assets/images/trackingicon.png';
 import filterIcon from '../../assets/images/filterIcon.png';
 import searchIcon from '../../assets/images/searchicon.png';
@@ -27,8 +27,7 @@ const TrackingMgtPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // Close dropdown when clicking outside
+ 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -50,7 +49,7 @@ const TrackingMgtPage: React.FC = () => {
     );
   }, [shipments, searchQuery]);
 
-  // --- FULL PAGINATION LOGIC ---
+  
   const totalPages = Math.ceil(filteredShipments.length / ITEMS_PER_PAGE);
   const currentShipments = filteredShipments.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,

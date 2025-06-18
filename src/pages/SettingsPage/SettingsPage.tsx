@@ -1,17 +1,17 @@
-// src/pages/SettingsPage/SettingsPage.tsx
+ 
 
 import React, { useState, useRef, useEffect } from 'react';
 import './SettingsPage.css';
 import { settingsData } from '../../data/mockSettings';
 
-// Import the kebab menu icon if you have one, or we can use text '...'
-import kebabIcon from '../../assets/images/kebaicon.png'; // Placeholder
+ 
+import kebabIcon from '../../assets/images/kebaicon.png'; 
 
 const SettingsPage: React.FC = () => {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Close the dropdown when clicking outside of it
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -36,7 +36,7 @@ const SettingsPage: React.FC = () => {
               {card.hasMenu && (
                 <div className="kebab-menu-container" ref={openMenuId === card.id ? menuRef : null}>
                   <button className="kebab-btn" onClick={() => handleMenuClick(card.id)}>
-                    {/* Using text fallback if icon is not available */}
+                     
                     {kebabIcon ? <img src={kebabIcon} alt="options" /> : '...'}
                   </button>
                   {openMenuId === card.id && (

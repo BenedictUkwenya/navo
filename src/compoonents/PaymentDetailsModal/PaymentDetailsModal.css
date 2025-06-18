@@ -1,4 +1,4 @@
-/* Reusing some styles from GeneratePriceModal */
+ 
 @import '../GeneratePriceModal/GeneratePriceModal.css';
 
 .payment-details-body {
@@ -37,7 +37,7 @@
 }
 
 .confirm-btn {
-    background-color: #00875A; /* Green for approve */
+    background-color: #00875A;  
     color: white;
     border: none;
     padding: 12px 24px;

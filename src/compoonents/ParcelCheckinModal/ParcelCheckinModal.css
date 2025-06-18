@@ -1,4 +1,4 @@
-@import '../GeneratePriceModal/GeneratePriceModal.css'; /* Reusing base modal styles */
+@import '../GeneratePriceModal/GeneratePriceModal.css';  
 
 .modal-description {
     font-size: 14px;

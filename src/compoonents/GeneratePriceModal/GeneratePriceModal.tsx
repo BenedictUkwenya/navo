@@ -12,7 +12,6 @@ const GeneratePriceModal: React.FC<GeneratePriceModalProps> = ({ item, onClose, 
   const [prices, setPrices] = useState<{ [key: string]: string }>({});
 
   const handlePriceChange = (itemName: string, value: string) => {
-    // Allow only numbers and a single decimal point
     if (/^\d*\.?\d*$/.test(value)) {
       setPrices(prev => ({ ...prev, [itemName]: value }));
     }
