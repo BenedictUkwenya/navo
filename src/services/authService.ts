@@ -22,8 +22,10 @@ export const login = async (credentials: LoginCredentials): Promise<string> => {
           // browser's preflight OPTIONS request.
           'Content-Type': 'text/plain',
         }
-      } // <-- END: End of the new configuration object
+      }
+       // <-- END: End of the new configuration object
     );
+    console.log('Login API response:', response.data);
     
     // The rest of the logic remains the same.
     // If the server returns data, we check for a token.
