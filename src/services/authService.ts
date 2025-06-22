@@ -7,7 +7,7 @@ interface LoginCredentials {
 }
 
 interface LoginResponse {
-  token: string;
+  accessToken: string;
 }
 
 export const login = async (credentials: LoginCredentials): Promise<string> => {
@@ -29,7 +29,7 @@ export const login = async (credentials: LoginCredentials): Promise<string> => {
     
     // The rest of the logic remains the same.
     // If the server returns data, we check for a token.
-    const token = response.data.token;
+    const token = response.data.accessToken;
     
     if (token) {
       return token;
