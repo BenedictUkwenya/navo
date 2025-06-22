@@ -2,8 +2,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: "https://01ec-105-112-206-68.ngrok-free.app/api/v1/",
- // baseURL: 'navo-api.onrender.com/api/v1/', // The base URL for all API calls
+  baseURL: 'navo-api.onrender.com/api/v1/', // The base URL for all API calls
   headers: {
     'Content-Type': 'application/json',
   },

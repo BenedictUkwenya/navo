@@ -25,7 +25,7 @@ export const login = async (credentials: LoginCredentials): Promise<string> => {
       }
        // <-- END: End of the new configuration object
     );
-    console.log('Login API response:', response.data);
+    console.log('Login API response:', response);
     
     // The rest of the logic remains the same.
     // If the server returns data, we check for a token.
@@ -36,7 +36,7 @@ export const login = async (credentials: LoginCredentials): Promise<string> => {
     } else {
       // If the login was invalid, the response might not have a token.
       // We should inspect the actual server response to be sure.
-      console.log('Server response did not contain a token:', response.data);
+      console.log('Server response did not contain a token:', response);
       throw new Error('No token found in response');
     }
   } catch (error) {
