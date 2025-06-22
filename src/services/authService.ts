@@ -14,7 +14,7 @@ export const login = async (credentials: LoginCredentials): Promise<string> => {
   try {
     // We are making a POST request to the /v1/auth/login endpoint
     const response = await apiClient.post<LoginResponse>(
-      '/v1/auth/login', 
+      '/admin/login', 
       credentials,
       { // <-- START: This is the new configuration object
         headers: {
