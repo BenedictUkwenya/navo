@@ -20,6 +20,7 @@ import SupportTicketPage from './pages/SupportTicketPag/SupportTicketPage';
 import AuditMgtPage from './pages/AuditMgtPage/AuditMgtPage';
 import UserManagementPage from './pages/UserManagementPage/UserManagementPage';
 import SettingsPage from './pages/SettingsPage/SettingsPage';
+import ShipmentPage from './pages/ShipmentPage/ShipmentPage';
 
 function App() {
   return (
@@ -77,11 +78,17 @@ function App() {
           path="/user-management"
           element={<Layout pageTitle="User Management"><UserManagementPage /></Layout>}
         />
-        <Route
-          path="/settings"
-          element={<Layout pageTitle="Settings"><SettingsPage /></Layout>}
+                <Route
+          path="/shipments"
+          element={<Layout pageTitle="Shipment"><ShipmentPage /></Layout>}
         />
+        {/* ... other protected routes ... */}
       </Route>
+      <Route
+        path="/settings"
+        element={<Layout pageTitle="Settings"><SettingsPage /></Layout>}
+      />
+      
     </Routes>
   );
 }

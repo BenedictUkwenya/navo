@@ -136,3 +136,16 @@
   .login-button:hover {
     background-color: #EA580C;  
   }
+
+  /* Add this to the end of your LoginPage.css */
+
+.login-error-message {
+  color: #c53030; /* A darker red that works on the semi-transparent bg */
+  background-color: #fed7d7; /* A light red background */
+  border: 1px solid #f56565;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 20px;
+}
