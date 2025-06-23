@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'navo-api.onrender.com/api/v1/', // The base URL for all API calls
+  baseURL: 'https://navo-api.onrender.com/api/v1/', // The base URL for all API calls
   headers: {
     'Content-Type': 'application/json',
   },
