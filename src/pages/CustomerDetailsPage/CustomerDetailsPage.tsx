@@ -61,12 +61,12 @@ const CustomerDetailsPage: React.FC = () => {
       <div className="details-header">
         <div className="breadcrumb">
           <Link to="/customers" className="back-link"><img src={backArrowIcon} alt="Back" /></Link>
-          <span className="breadcrumb-text">All customers <span className="separator">/</span> {`${customer.first_name} ${customer.last_name}`}</span>
+          <span className="breadcrumb-text">All customers <span className="separator">/</span> {`${customer.firstName} ${customer.lastName}`}</span>
         </div>
       </div>
       <div className="customer-profile-header">
-        <img src={customer.profilePicture || avatar} alt={`${customer.first_name} ${customer.last_name}`} className="profile-avatar" />
-        <h1>{`${customer.first_name} ${customer.last_name}`}</h1>
+        <img src={customer.profilePicture || avatar} alt={`${customer.firstName} ${customer.lastName}`} className="profile-avatar" />
+        <h1>{`${customer.firstName} ${customer.lastName}`}</h1>
       </div>
       <div className="details-tabs">
         <button className={activeTab === 'personal' ? 'active' : ''} onClick={() => setActiveTab('personal')}>Personal Details</button>
@@ -88,7 +88,7 @@ const PersonalDetailsTab: React.FC<{ customer: Customer }> = ({ customer }) => (
   // This will need to be updated once we know the shape of locationDetails
   <div className="personal-details-tab">
     <div className="info-section">
-      <div className="info-pair"><label>Phone Number</label><span>{customer.phone_number}</span></div>
+      <div className="info-pair"><label>Phone Number</label><span>{customer.phoneNumber}</span></div>
       <div className="info-pair"><label>Email</label><span>{customer.email}</span></div>
       <div className="info-pair"><label>Gender</label><span>{customer.gender}</span></div>
     </div>

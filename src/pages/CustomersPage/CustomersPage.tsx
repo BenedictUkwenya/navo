@@ -78,8 +78,8 @@ const CustomersPage: React.FC = () => {
             {customers.map((customer) => (
               <tr key={customer.id}>
                 <td data-label="User ID">{customer.id}</td>
-                <td data-label="Name">{`${customer.first_name} ${customer.last_name}`}</td>
-                <td data-label="Phone no.">{customer.phone_number}</td>
+                <td data-label="Name">{`${customer.firstName} ${customer.lastName}`}</td>
+                <td data-label="Phone no.">{customer.phoneNumber}</td>
                 <td data-label="Email">{customer.email}</td>
                 <td data-label="Date Created">{new Date(customer.createdAt).toLocaleDateString()}</td>
                 <td data-label="Status"><span className={`status-badge status-${customer.is_active ? 'active' : 'inactive'}`}>{customer.is_active ? 'Active' : 'Inactive'}</span></td>
