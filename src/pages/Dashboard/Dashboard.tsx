@@ -108,7 +108,7 @@ const Dashboard: React.FC = () => {
               <li key={tx.id}>
                 <div className={`tx-status-icon ${tx.status.toLowerCase()}`}><img src={getStatusIcon(tx.status)} alt={tx.status} /></div>
                 <div className="tx-details">
-                  <p className="tx-description">{`Payment from ${tx.user.first_name} ${tx.user.last_name}`}</p>
+                  <p className="tx-description">{`Payment from ${tx.user.firstName} ${tx.user.lastName}`}</p>
                   <p className="tx-id">{tx.id}</p>
                 </div>
                 <div className="tx-info">

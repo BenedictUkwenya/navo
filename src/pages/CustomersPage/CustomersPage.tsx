@@ -1,11 +1,10 @@
-// src/pages/CustomersPage/CustomersPage.tsx
-
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CustomersPage.css';
-import { mockCustomers, Customer } from '../../data/mockCustomers';
+import { getCustomers } from '../../services/customerService';
+import { Customer } from '../../types/customer';
 
-// --- CORRECTED ICON IMPORTS ---
+// --- ICON IMPORTS ---
 import filterIcon from '../../assets/images/filterIcon.png';
 import searchIcon from '../../assets/images/searchicon.png';
 import emptyStateIcon from '../../assets/images/emptycustomers.png';
@@ -13,36 +12,48 @@ import viewDetailsIcon from '../../assets/images/eyeicon.png';
 import prevIcon from '../../assets/images/previcon.png';
 import nextIcon from '../../assets/images/nexticon.png';
 
-const ITEMS_PER_PAGE = 9;
-
 const CustomersPage: React.FC = () => {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // Memoized filtering logic (remains the same)
-  const filteredCustomers = useMemo(() => {
-    if (!searchQuery) return mockCustomers;
-    const lowercasedQuery = searchQuery.toLowerCase();
-    return mockCustomers.filter(customer =>
-      customer.name.toLowerCase().includes(lowercasedQuery) ||
-      customer.phone.toLowerCase().includes(lowercasedQuery) ||
-      customer.status.toLowerCase().includes(lowercasedQuery)
-    );
-  }, [searchQuery]);
-
-  // Pagination logic (remains the same)
-  const totalPages = Math.ceil(filteredCustomers.length / ITEMS_PER_PAGE);
-  const currentCustomers = filteredCustomers.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   
-  const handleNextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
-  const handlePrevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
+  // Pagination state from the API
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCustomers, setTotalCustomers] = useState(0);
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getCustomers(currentPage);
+        setCustomers(data.customers);
+        setTotalPages(data.pagination.totalPages);
+        setTotalCustomers(data.pagination.total);
+      } catch (err) {
+        setError('Failed to fetch customers.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCustomers();
+  }, [currentPage]); // Re-fetch when currentPage changes
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(prev => prev + 1);
+  };
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(prev => prev - 1);
+  };
   const handleViewDetails = (customerId: string) => navigate(`/customers/${customerId}`);
 
-  if (mockCustomers.length === 0) {
+  if (loading) return <div className="page-loading">Loading customers...</div>;
+  if (error) return <div className="page-error">{error}</div>;
+
+  if (customers.length === 0 && !loading) {
     return (
       <div className="customers-page page--empty">
         <img src={emptyStateIcon} alt="No customers" />
@@ -56,72 +67,35 @@ const CustomersPage: React.FC = () => {
       <header className="page-header">
         <h3>All customers</h3>
         <div className="page-controls">
-          <button className="filter-btn">
-            <img src={filterIcon} alt="Filter" />
-          </button>
-          <div className="page-search-bar">
-            <img src={searchIcon} alt="Search" />
-            <input
-              type="text"
-              placeholder="Search by name, phone, status"
-              value={searchQuery}
-              onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-            />
-          </div>
+          <button className="filter-btn"><img src={filterIcon} alt="Filter" /></button>
+          <div className="page-search-bar"><img src={searchIcon} alt="Search" /><input type="text" placeholder="Search by name, phone, status" /></div>
         </div>
       </header>
-
       <div className="table-container">
         <table className="data-table">
-          <thead>
-            <tr>
-              <th>User ID</th>
-              <th>Name</th>
-              <th>Phone no.</th>
-              <th>Email</th>
-              <th>Date Created</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+          <thead><tr><th>User ID</th><th>Name</th><th>Phone no.</th><th>Email</th><th>Date Created</th><th>Status</th><th>Action</th></tr></thead>
           <tbody>
-            {currentCustomers.map((customer) => (
+            {customers.map((customer) => (
               <tr key={customer.id}>
                 <td data-label="User ID">{customer.id}</td>
-                <td data-label="Name">{customer.name}</td>
-                <td data-label="Phone no.">{customer.phone}</td>
+                <td data-label="Name">{`${customer.first_name} ${customer.last_name}`}</td>
+                <td data-label="Phone no.">{customer.phone_number}</td>
                 <td data-label="Email">{customer.email}</td>
-                <td data-label="Date Created">{customer.dateCreated}</td>
-                <td data-label="Status">
-                  <span className={`status-badge status-${customer.status.toLowerCase()}`}>
-                    {customer.status}
-                  </span>
-                </td>
-                <td data-label="Action">
-                  <img 
-                    src={viewDetailsIcon} 
-                    alt="View details" 
-                    className="action-icon" 
-                    onClick={() => handleViewDetails(customer.id)}
-                  />
-                </td>
+                <td data-label="Date Created">{new Date(customer.createdAt).toLocaleDateString()}</td>
+                <td data-label="Status"><span className={`status-badge status-${customer.is_active ? 'active' : 'inactive'}`}>{customer.is_active ? 'Active' : 'Inactive'}</span></td>
+                <td data-label="Action"><img src={viewDetailsIcon} alt="View details" className="action-icon" onClick={() => handleViewDetails(customer.id)} /></td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
       <footer className="page-footer">
         <div className="pagination-info">
-          Showing {filteredCustomers.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0}-{Math.min(currentPage * ITEMS_PER_PAGE, filteredCustomers.length)} of {filteredCustomers.length}
+          Showing page {currentPage} of {totalPages}
         </div>
         <div className="pagination-controls">
-          <button onClick={handlePrevPage} disabled={currentPage === 1}>
-            <img src={prevIcon} alt="Previous" />
-          </button>
-          <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-            <img src={nextIcon} alt="Next" />
-          </button>
+          <button onClick={handlePrevPage} disabled={currentPage === 1}><img src={prevIcon} alt="Previous" /></button>
+          <button onClick={handleNextPage} disabled={currentPage === totalPages}><img src={nextIcon} alt="Next" /></button>
         </div>
       </footer>
     </div>

@@ -1,9 +1,8 @@
-// src/pages/CustomerDetailsPage/CustomerDetailsPage.tsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './CustomerDetailsPage.css';
-import { mockCustomerDetailsData } from '../../data/mockCustomersDetailss';
+import { getCustomerById } from '../../services/customerService';
+import { Customer } from '../../types/customer';
 
 // Import Icons
 import backArrowIcon from '../../assets/images/previcon.png';
@@ -14,25 +13,42 @@ type Currency = 'ngn' | 'gbp';
 
 const CustomerDetailsPage: React.FC = () => {
   const { customerId } = useParams<{ customerId: string }>();
-  const customer = customerId === mockCustomerDetailsData.id ? mockCustomerDetailsData : null;
+  const [customer, setCustomer] = useState<Customer | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<DetailTab>('personal');
 
-  const [activeTab, setActiveTab] = useState<DetailTab>('wallet');
-  
- 
+  useEffect(() => {
+    if (!customerId) return;
+    
+    const fetchCustomerDetails = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await getCustomerById(customerId);
+        setCustomer(response.customer);
+      } catch (err) {
+        setError('Failed to fetch customer details.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchCustomerDetails();
+  }, [customerId]);
 
-  if (!customer) {
-    return <div className="customer-details-page"><h2>Customer not found.</h2></div>;
-  }
+  if (loading) return <div className="page-loading">Loading customer details...</div>;
+  if (error) return <div className="page-error">{error}</div>;
+  if (!customer) return <div className="page-error">Customer not found.</div>;
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'personal':
         return <PersonalDetailsTab customer={customer} />;
       case 'wallet':
-        // The WalletBalanceTab component is now self-contained
         return <WalletBalanceTab customer={customer} />;
       case 'shipments':
-        return <ShipmentsTab shipments={customer.shipments} />;
+        return <ShipmentsTab shipments={customer.shipments || []} />;
       case 'referral':
         return <ReferralTab referral={customer.referral} />;
       default:
@@ -45,12 +61,12 @@ const CustomerDetailsPage: React.FC = () => {
       <div className="details-header">
         <div className="breadcrumb">
           <Link to="/customers" className="back-link"><img src={backArrowIcon} alt="Back" /></Link>
-          <span className="breadcrumb-text">All customers <span className="separator">/</span> {customer.name}</span>
+          <span className="breadcrumb-text">All customers <span className="separator">/</span> {`${customer.first_name} ${customer.last_name}`}</span>
         </div>
       </div>
       <div className="customer-profile-header">
-        <img src={avatar} alt={customer.name} className="profile-avatar" />
-        <h1>{customer.name}</h1>
+        <img src={customer.profilePicture || avatar} alt={`${customer.first_name} ${customer.last_name}`} className="profile-avatar" />
+        <h1>{`${customer.first_name} ${customer.last_name}`}</h1>
       </div>
       <div className="details-tabs">
         <button className={activeTab === 'personal' ? 'active' : ''} onClick={() => setActiveTab('personal')}>Personal Details</button>
@@ -65,23 +81,32 @@ const CustomerDetailsPage: React.FC = () => {
   );
 };
 
- 
 
-const PersonalDetailsTab: React.FC<{ customer: any }> = ({ customer }) => (
-  <div className="personal-details-tab"><div className="info-section"><div className="info-pair"><label>Phone Number (NGN)</label><span>{customer.personal.phoneNGN}</span></div><div className="info-pair"><label>Phone Number (UK)</label><span>{customer.personal.phoneUK}</span></div><div className="info-pair"><label>Email</label><span>{customer.personal.email}</span></div><div className="info-pair"><label>Gender</label><span>{customer.personal.gender}</span></div></div><div className="address-section"><div className="address-column"><h4>Delivery Address</h4><h5>Nigeria</h5><ul><li><strong>State:</strong> {customer.addresses.nigeria.state}</li><li><strong>City:</strong> {customer.addresses.nigeria.city}</li><li><strong>Street Name:</strong> {customer.addresses.nigeria.street}</li><li><strong>Apartment/Building:</strong> {customer.addresses.nigeria.apartment}</li><li><strong>Postal Code:</strong> {customer.addresses.nigeria.postalCode}</li><li><strong>Status:</strong> <span className="status-active">{customer.addresses.nigeria.status}</span></li></ul></div><div className="address-column"><h5 className="address-country">United Kingdom</h5><ul><li><strong>State:</strong> {customer.addresses.uk.state}</li><li><strong>City:</strong> {customer.addresses.uk.city}</li><li><strong>Street Name:</strong> {customer.addresses.uk.street}</li><li><strong>Apartment/Building:</strong> {customer.addresses.uk.apartment}</li><li><strong>Postal Code:</strong> {customer.addresses.uk.postalCode}</li><li><strong>Status:</strong> <span className="status-active">{customer.addresses.uk.status}</span></li></ul></div></div></div>
+// --- SUB-COMPONENTS ---
+
+const PersonalDetailsTab: React.FC<{ customer: Customer }> = ({ customer }) => (
+  // This will need to be updated once we know the shape of locationDetails
+  <div className="personal-details-tab">
+    <div className="info-section">
+      <div className="info-pair"><label>Phone Number</label><span>{customer.phone_number}</span></div>
+      <div className="info-pair"><label>Email</label><span>{customer.email}</span></div>
+      <div className="info-pair"><label>Gender</label><span>{customer.gender}</span></div>
+    </div>
+  </div>
 );
 
-// WalletBalanceTab is now self-contained again
-const WalletBalanceTab: React.FC<{ customer: any }> = ({ customer }) => {
+const WalletBalanceTab: React.FC<{ customer: Customer }> = ({ customer }) => {
   const [currency, setCurrency] = useState<Currency>('ngn');
+  const ngnBalance = customer.wallet?.walletBalanceNGN || 0;
+  const gbpBalance = customer.wallet?.walletBalanceGBP || 0;
 
   return (
     <div className="wallet-tab">
       <div className="wallet-card">
         <div className="wallet-amount">
           {currency === 'ngn' 
-              ? `₦${customer.wallet.ngn.toLocaleString('en-US', { minimumFractionDigits: 2 })}` 
-              : `£${customer.wallet.gbp.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+              ? `₦${ngnBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}` 
+              : `£${gbpBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
           }
         </div>
         <div className="page-level-currency-toggle">
@@ -94,11 +119,15 @@ const WalletBalanceTab: React.FC<{ customer: any }> = ({ customer }) => {
 };
 
 const ShipmentsTab: React.FC<{ shipments: any[] }> = ({ shipments }) => (
-  <div className="shipments-tab"><div className="table-container"><table className="shipments-details-table"><thead><tr><th>From</th><th>To</th><th>Goods Type</th><th>Address</th><th>Weight</th><th>Amount</th><th>Date</th></tr></thead><tbody>{shipments.map((shipment, index) => (<tr key={index}><td>{shipment.from}</td><td>{shipment.to}</td><td>{shipment.goodsType}</td><td>{shipment.address}</td><td>{shipment.weight}</td><td>{shipment.amount}</td><td>{shipment.date}</td></tr>))}</tbody></table></div></div>
+  // This will need to be updated once we know the shape of a shipment object
+  shipments.length > 0 ? (
+    <div className="shipments-tab"><div className="table-container"><p>Shipment data available.</p></div></div>
+  ) : <p>No shipments for this customer.</p>
 );
 
 const ReferralTab: React.FC<{ referral: any }> = ({ referral }) => (
-  <div className="referral-tab"><div className="info-pair"><label>Referral Code</label><span>{referral.code}</span></div><div className="info-pair"><label>Referred User(s)</label><span>{referral.referredUsers.join(', ')}</span></div><div className="info-pair"><label>Date Created/Registered</label><span>{referral.dateCreated}</span></div><div className="info-pair"><label>Referral Points</label><span>{referral.points}</span></div></div>
+  // This will need to be updated once we know the shape of a referral object
+  referral ? <div className="referral-tab"><p>Referral data available.</p></div> : <p>No referral data.</p>
 );
 
 export default CustomerDetailsPage;
