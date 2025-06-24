@@ -1,14 +1,12 @@
- 
-
 import React from 'react';
 import './TransactionDetailsModal.css';
-import { Transaction, TransactionStatus } from '../../data/mockTransactions';
+import { Transaction } from '../../types/transaction'; // Use our correct type
 
-
+// --- ICON IMPORTS ---
 import pendingIcon from '../../assets/images/pendingicon.png';
 import successIcon from '../../assets/images/completedicon.png';
 import failedIcon from '../../assets/images/failedicon.png';
-import pdfDownloadIcon from '../../assets/images/purchaseicon.png'
+import pdfDownloadIcon from '../../assets/images/purchaseicon.png';
 
 interface ModalProps {
   isOpen: boolean;
@@ -16,21 +14,34 @@ interface ModalProps {
   transaction: Transaction;
 }
 
-const getStatusAssets = (status: TransactionStatus) => {
-  switch (status) {
-    case 'Successful':
+// This helper function now correctly checks paymentStatus
+const getStatusAssets = (status: Transaction['paymentStatus']) => {
+  if (!status) {
+    return { icon: pendingIcon, colorClass: 'pending' };
+  }
+  switch (status.toUpperCase()) {
+    case 'SUCCESSFUL':
       return { icon: successIcon, colorClass: 'successful' };
-    case 'Pending':
+    case 'PENDING':
       return { icon: pendingIcon, colorClass: 'pending' };
-    case 'Failed':
+    case 'FAILED':
       return { icon: failedIcon, colorClass: 'failed' };
     default:
       return { icon: pendingIcon, colorClass: 'pending' };
   }
 };
 
-const formatCurrency = (amount: number) => `₦${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+// This helper now safely handles the amount, which comes as a string
+const formatCurrency = (amountStr: string) => {
+  const amountNum = parseFloat(amountStr);
+  if (isNaN(amountNum)) {
+    return 'N/A';
+  }
+  return `₦${amountNum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+};
+
 const formatTimestamp = (isoString: string) => {
+  if (!isoString) return 'N/A';
   const date = new Date(isoString);
   return date.toLocaleString('en-GB', {
     day: 'numeric',
@@ -47,7 +58,11 @@ const TransactionDetailsModal: React.FC<ModalProps> = ({ isOpen, onClose, transa
     return null;
   }
 
-  const { icon, colorClass } = getStatusAssets(transaction.status);
+  // Use the correct status field
+  const { icon, colorClass } = getStatusAssets(transaction.paymentStatus);
+  
+  // Safely construct the customer name
+  const customerName = `${transaction.user?.firstName || ''} ${transaction.user?.lastName || 'N/A'}`.trim();
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -56,43 +71,49 @@ const TransactionDetailsModal: React.FC<ModalProps> = ({ isOpen, onClose, transa
         
         <header className="modal-header">
           <div className="modal-title">
-            <p>TRANSFER</p>
-            <h1>{formatCurrency(transaction.amount)}</h1>
-            <span>Transaction ID: {transaction.transactionId}</span>
+            {/* Use the correct field: paymentType */}
+            <p>{transaction.paymentType?.toUpperCase() || 'TRANSACTION'}</p>
+            {/* Use the correct field: amountPaid */}
+            <h1>{formatCurrency(transaction.amountPaid)}</h1>
+            <span>Transaction ID: {transaction.id}</span>
           </div>
           <div className={`modal-status-icon-wrapper ${colorClass}`}>
-            <img src={icon} alt={`${transaction.status} icon`} />
+            <img src={icon} alt={`${transaction.paymentStatus} icon`} />
           </div>
         </header>
 
         <div className="modal-details">
           <div className="detail-row">
             <span className="detail-label">Sender</span>
-            <span className="detail-value">{transaction.customerName}</span>
+            <span className="detail-value">{customerName}</span>
           </div>
           <div className="detail-row">
             <span className="detail-label">Type</span>
-            <span className={`detail-value status-text-green`}>{transaction.type}</span>
+            {/* Use the correct field: paymentType */}
+            <span className="detail-value status-text-green">{transaction.paymentType || 'N/A'}</span>
           </div>
           <div className="detail-row">
             <span className="detail-label">Channel</span>
-            <span className="detail-value">{transaction.channel}</span>
+            {/* Use optional chaining and a fallback for fields that might not exist */}
+            <span className="detail-value">{transaction.channel || 'N/A'}</span>
           </div>
           <div className="detail-row">
             <span className="detail-label">Status</span>
-            <span className={`detail-value status-text ${colorClass}`}>{transaction.status}</span>
+            {/* Use the correct field: paymentStatus */}
+            <span className={`detail-value status-text ${colorClass}`}>{transaction.paymentStatus || 'UNKNOWN'}</span>
           </div>
           <div className="detail-row">
             <span className="detail-label">Time stamp</span>
-            <span className="detail-value">{formatTimestamp(transaction.timestamp)}</span>
+            {/* Use the correct field: createdAt */}
+            <span className="detail-value">{formatTimestamp(transaction.createdAt)}</span>
           </div>
           <div className="detail-row">
             <span className="detail-label">Category</span>
-            <span className="detail-value">{transaction.category}</span>
+            <span className="detail-value">{transaction.category || 'N/A'}</span>
           </div>
           <div className="detail-row">
             <span className="detail-label">Remark</span>
-            <span className="detail-value">{transaction.remark}</span>
+            <span className="detail-value">{transaction.remark || 'No remark'}</span>
           </div>
         </div>
 

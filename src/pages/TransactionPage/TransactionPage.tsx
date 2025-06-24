@@ -1,118 +1,105 @@
-// src/pages/TransactionPage/TransactionPage.tsx
-
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './TransactionPage.css';
-import { mockTransactions, Transaction, TransactionStatus } from '../../data/mockTransactions';
+import { getTransactions } from '../../services/transactionService';
+import { Transaction } from '../../types/transaction';
 
-// Component Imports
+// Component & Icon Imports
 import TransactionDetailsModal from '../../compoonents/TransactionDetailsModal/TransactionDetailsModal';
-
-// Icon Imports
-import emptyIcon from '../../assets/images/transactionicon.png';
 import viewDetailsIcon from '../../assets/images/eyeicon.png';
 import searchIcon from '../../assets/images/searchicon.png';
 import prevIcon from '../../assets/images/previcon.png';
 import nextIcon from '../../assets/images/nexticon.png';
-import pdfIcon from '../../assets/images/purchaseicon.png'; 
+import pdfIcon from '../../assets/images/purchaseicon.png';
 import csvIcon from '../../assets/images/shipment-icon.png';
 
-const ITEMS_PER_PAGE = 9;
+// This type is for the component's internal state (lowercase)
+type StatusFilter = 'all' | 'pending' | 'successful' | 'failed';
 
 const TransactionPage: React.FC = () => {
-  // State for filtering and pagination
-  const [activeStatus, setActiveStatus] = useState<TransactionStatus | 'All'>('All');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [activeStatus, setActiveStatus] = useState<StatusFilter>('all');
   const [currentPage, setCurrentPage] = useState(1);
-
-  // State for managing the details modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
 
-  // Memoized filtering logic for performance
-  const filteredTransactions = useMemo(() => {
-    return mockTransactions
-      .filter(transaction => {
-        if (activeStatus === 'All') return true;
-        return transaction.status === activeStatus;
-      })
-      .filter(transaction => {
-        if (!searchTerm) return true;
-        const lowercasedSearchTerm = searchTerm.toLowerCase();
-        return (
-          transaction.customerName.toLowerCase().includes(lowercasedSearchTerm) ||
-          transaction.transactionId.toLowerCase().includes(lowercasedSearchTerm) ||
-          transaction.category.toLowerCase().includes(lowercasedSearchTerm)
-        );
-      });
-  }, [activeStatus, searchTerm]);
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        // --- THIS IS THE FIX FOR THE TYPESCRIPT ERROR ---
+        // Translate our component's lowercase state to the uppercase format the API needs
+        let apiStatus: 'all' | 'SUCCESSFUL' | 'PENDING' | 'FAILED' = 'all';
+        if (activeStatus === 'successful') apiStatus = 'SUCCESSFUL';
+        else if (activeStatus === 'pending') apiStatus = 'PENDING';
+        else if (activeStatus === 'failed') apiStatus = 'FAILED';
+        // ---------------------------------------------------
 
-  // Pagination logic
-  const totalPages = Math.ceil(filteredTransactions.length / ITEMS_PER_PAGE);
-  const currentTransactions = filteredTransactions.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
+        const response = await getTransactions(apiStatus, currentPage);
+        setTransactions(response.data.transactions || []);
+        setTotalPages(response.data.pagination.totalPages || 1);
+      } catch (err) {
+        setError('Failed to load transactions.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTransactions();
+  }, [activeStatus, currentPage]);
 
-  // --- HANDLER FUNCTIONS ---
-  const handleNextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
-  const handlePrevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
+  const displayedTransactions = useMemo(() => {
+    if (!Array.isArray(transactions)) return [];
+    if (!searchTerm) return transactions;
+    const lower = searchTerm.toLowerCase();
+    return transactions.filter(t =>
+      (t.user?.firstName + ' ' + t.user?.lastName).toLowerCase().includes(lower) ||
+      t.id?.toLowerCase().includes(lower)
+    );
+  }, [searchTerm, transactions]);
 
   const handleViewDetails = (transaction: Transaction) => {
     setSelectedTransaction(transaction);
-    setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    // A small delay can make the closing animation smoother before clearing the data
-    setTimeout(() => setSelectedTransaction(null), 300);
-  };
-  
+  // --- RESTORED EXPORT FUNCTIONS ---
   const handleExportCSV = () => {
-    const headers = ["Name", "Transaction ID", "Category", "Amount", "Date", "Type", "Status", "Remark"];
-    const rows = filteredTransactions.map(t => 
-      [t.customerName, t.transactionId, t.category, t.amount, t.date, t.type, t.status, `"${t.remark}"`].join(',')
+    const headers = ["Name", "Transaction ID", "Category", "Amount", "Date", "Type", "Status"];
+    const rows = displayedTransactions.map(t => 
+      [
+        `"${t.user?.firstName || ''} ${t.user?.lastName || ''}"`,
+        t.id,
+        t.category,
+        t.amountPaid,
+        t.createdAt,
+        t.paymentType,
+        t.paymentStatus
+      ].join(',')
     );
     const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows].join('\n');
-    const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
+    link.setAttribute("href", encodeURI(csvContent));
     link.setAttribute("download", "transactions.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
-
   const handleExportPDF = () => {
-    alert("PDF export functionality is a placeholder.");
+    alert("PDF export functionality placeholder. This would call the getTransactionPdf service.");
   };
+  // ------------------------------------
 
-  // --- UTILITY & HELPER VALUES ---
-  const formatCurrency = (amount: number) => `₦${amount.toLocaleString('en-US')}`;
-  const getStatusClass = (status: TransactionStatus) => `status-${status.toLowerCase()}`;
-  const filterTabs: (TransactionStatus | 'All')[] = ['All', 'Pending', 'Successful', 'Failed'];
+  if (loading) return <div className="page-loading">Loading transactions...</div>;
+  if (error) return <div className="page-error">{error}</div>;
 
-  // --- RENDER LOGIC ---
-
-  // Empty state view
-  if (mockTransactions.length === 0) {
-    return (
-      <div className="transaction-page transaction-page--empty">
-        <img src={emptyIcon} alt="No transactions" />
-        <h2>No transactions recorded yet</h2>
-      </div>
-    );
-  }
-
-  // Main page view
   return (
     <>
       <div className="transaction-page">
-        <header className="transaction-header">
-          <div className="date-filters">
-            <input type="date" />
-            <input type="date" />
-          </div>
+        <header className="page-header">
+          <h3>Transactions</h3>
           <div className="right-controls">
             <div className="export-buttons">
               <button className="export-btn" onClick={handleExportPDF}>PDF <img src={pdfIcon} alt="PDF"/></button>
@@ -120,25 +107,15 @@ const TransactionPage: React.FC = () => {
             </div>
             <div className="transaction-search-bar">
               <img src={searchIcon} alt="Search" />
-              <input
-                type="text"
-                placeholder="Search by name, ID, status"
-                value={searchTerm}
-                onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-              />
-              {searchTerm && <button className="clear-btn" onClick={() => setSearchTerm('')}>×</button>}
+              <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
             </div>
           </div>
         </header>
 
         <div className="filter-tabs">
-          {filterTabs.map(tab => (
-            <button
-              key={tab}
-              className={activeStatus === tab ? 'active' : ''}
-              onClick={() => { setActiveStatus(tab); setCurrentPage(1); }}
-            >
-              {tab}
+          {(['all', 'successful', 'pending', 'failed'] as StatusFilter[]).map(tab => (
+            <button key={tab} className={activeStatus === tab ? 'active' : ''} onClick={() => { setActiveStatus(tab); setCurrentPage(1); }}>
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
           ))}
         </div>
@@ -146,65 +123,38 @@ const TransactionPage: React.FC = () => {
         <div className="table-container">
           <table className="data-table">
             <thead>
-              <tr>
-                <th>Name</th>
-                <th>Transaction ID</th>
-                <th>Category</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
+              <tr><th>Name</th><th>Transaction ID</th><th>Category</th><th>Amount</th><th>Date</th><th>Type</th><th>Status</th><th>Action</th></tr>
             </thead>
             <tbody>
-              {currentTransactions.map(transaction => (
-                <tr key={transaction.id}>
-                  <td data-label="Name">{transaction.customerName}</td>
-                  <td data-label="Transaction ID">{transaction.transactionId}</td>
-                  <td data-label="Category">{transaction.category}</td>
-                  <td data-label="Amount">{formatCurrency(transaction.amount)}</td>
-                  <td data-label="Date">{new Date(transaction.date).toLocaleDateString('en-GB')}</td>
-                  <td data-label="Type">{transaction.type}</td>
-                  <td data-label="Status">
-                    <span className={`status-badge ${getStatusClass(transaction.status)}`}>
-                      {transaction.status}
-                    </span>
-                  </td>
-                  <td data-label="Action">
-                    <img 
-                      src={viewDetailsIcon} 
-                      alt="View Details" 
-                      className="action-icon"
-                      onClick={() => handleViewDetails(transaction)} 
-                    />
-                  </td>
+              {displayedTransactions.map(t => (
+                <tr key={t.id}>
+                  <td>{`${t.user?.firstName || ''} ${t.user?.lastName || 'N/A'}`}</td>
+                  <td>{t.id}</td>
+                  <td>{t.category || 'N/A'}</td>
+                  <td>{typeof t.amountPaid === 'string' ? `₦${parseFloat(t.amountPaid).toLocaleString()}` : 'N/A'}</td>
+                  <td>{t.createdAt ? new Date(t.createdAt).toLocaleDateString() : 'N/A'}</td>
+                  <td>{t.paymentType || 'N/A'}</td>
+                  <td>{t.paymentStatus ? <span className={`status-badge status-${t.paymentStatus.toLowerCase()}`}>{t.paymentStatus}</span> : 'N/A'}</td>
+                  <td><img src={viewDetailsIcon} alt="View" className="action-icon" onClick={() => handleViewDetails(t)} /></td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
+        
         <footer className="page-footer">
-          <div className="pagination-info">
-            Showing {filteredTransactions.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0}-{Math.min(currentPage * ITEMS_PER_PAGE, filteredTransactions.length)} of {filteredTransactions.length}
-          </div>
+          <div className="pagination-info">Page {currentPage} of {totalPages}</div>
           <div className="pagination-controls">
-            <button onClick={handlePrevPage} disabled={currentPage === 1}>
-              <img src={prevIcon} alt="Previous" />
-            </button>
-            <button onClick={handleNextPage} disabled={currentPage >= totalPages}>
-              <img src={nextIcon} alt="Next" />
-            </button>
+            <button onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 1}><img src={prevIcon} alt="Prev" /></button>
+            <button onClick={() => setCurrentPage(p => p + 1)} disabled={currentPage >= totalPages}><img src={nextIcon} alt="Next" /></button>
           </div>
         </footer>
       </div>
 
-      {/* Render the modal outside the main page div for proper stacking context */}
       {selectedTransaction && (
         <TransactionDetailsModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
+          isOpen={!!selectedTransaction}
+          onClose={() => setSelectedTransaction(null)}
           transaction={selectedTransaction}
         />
       )}

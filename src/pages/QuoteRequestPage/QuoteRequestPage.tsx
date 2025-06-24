@@ -11,25 +11,27 @@ import prevIcon from '../../assets/images/previcon.png';
 import nextIcon from '../../assets/images/nexticon.png';
 import mailIcon from '../../assets/images/mailicon.png';
 import downloadIcon from '../../assets/images/messageicon.png';
-import deleteIcon from '../../assets/images/kebaicon.png'; // Assuming this is your delete/kebab icon
+import deleteIcon from '../../assets/images/kebaicon.png';
 
 const QuoteRequestPage: React.FC = () => {
+  // State to hold the array of quotes
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
+  // State for pagination, will be controlled by the API response
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [totalQuotes, setTotalQuotes] = useState(0);
 
   const fetchQuotes = async () => {
     setLoading(true);
     setError(null);
     try {
       const response = await getQuotes(currentPage);
-      setQuotes(response.quotes);
-      setTotalPages(response.totalPages);
-      setTotalQuotes(response.total);
+      // === THIS IS THE FIX ===
+      // Access the quotes array from the correct property
+      setQuotes(response.quotes || []); // Use empty array as a fallback
+      setTotalPages(response.totalPages || 1);
     } catch (err) {
       setError('Failed to load quote requests.');
     } finally {
@@ -39,21 +41,19 @@ const QuoteRequestPage: React.FC = () => {
 
   useEffect(() => {
     fetchQuotes();
-  }, [currentPage]);
+  }, [currentPage]); // Re-fetch when currentPage changes
 
   const handleDeleteQuote = async (quoteId: string) => {
-    // Optimistic UI: Remove the quote from the list immediately
+    const originalQuotes = [...quotes];
     setQuotes(prevQuotes => prevQuotes.filter(q => q.id !== quoteId));
     try {
       await deleteQuote(quoteId);
-      // Optional: show a success notification
       alert(`Quote ${quoteId} deleted successfully.`);
-      // Refetch the data to ensure consistency, especially if pagination changes
-      fetchQuotes(); 
+      // If a quote is deleted, it's best to refetch the current page
+      fetchQuotes();
     } catch (err) {
-      // If the delete fails, revert the UI change
-      setError('Failed to delete quote. Please refresh and try again.');
-      fetchQuotes(); // Re-fetch to get the original state
+      setError('Failed to delete quote. Reverting changes.');
+      setQuotes(originalQuotes); // Revert UI on failure
     }
   };
 
@@ -63,6 +63,7 @@ const QuoteRequestPage: React.FC = () => {
   if (loading) return <div className="page-loading">Loading Quote Requests...</div>;
   if (error) return <div className="page-error">{error}</div>;
   
+  // The check for quotes.length is now safe
   if (quotes.length === 0 && !loading) {
     return (
       <div className="quote-request-page page--empty">
@@ -97,7 +98,8 @@ const QuoteRequestPage: React.FC = () => {
                 <td data-label="Location To">{req.locationTo}</td>
                 <td data-label="Goods Type">{req.goodsType}</td>
                 <td data-label="Weight">{req.weight}</td>
-                <td data-label="Date">{new Date(req.date).toLocaleDateString()}</td>
+                {/* Use the 'createdAt' field if 'date' doesn't exist */}
+                <td data-label="Date">{new Date(req.date || (req as any).createdAt).toLocaleDateString()}</td>
                 <td data-label="Action">
                   <div className="action-icons-container">
                     <img src={mailIcon} alt="Email" className="action-icon" onClick={() => alert(`Emailing ${req.id}`)} />
