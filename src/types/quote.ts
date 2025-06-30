@@ -1,22 +1,29 @@
 // src/types/quote.ts
 
-// Based on the columns in your table, we can assume this structure.
-// We will need to confirm this by looking at the real network response later.
+// This interface now matches the fields from your API response
 export interface Quote {
-    id: string;
-    email: string;
-    service: string;
-    locationFrom: string;
-    locationTo: string;
-    goodsType: string;
-    weight: string;
-    date: string; // Or createdAt
-  }
-  
-  export interface QuotesApiResponse {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
+  id: string;
+  email: string;
+  serviceType: string;
+  locationFrom: string;
+  locationTo: string;
+  goodsType: string;
+  weight: number;
+  totalCost: number;
+  createdAt: string;
+}
+
+// This interface now matches the FULL API response structure
+export interface QuotesApiResponse {
+  status: string;
+  data: {
     quotes: Quote[];
-  }
+    pagination: {
+      currentPage: number;
+      totalPages: number;
+      totalItems: number;
+      limit: number;
+      hasMore: boolean;
+    };
+  };
+}

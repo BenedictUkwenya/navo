@@ -1,78 +1,57 @@
-// src/pages/TrackingMgtPage/TrackingMgtPage.tsx
-
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TrackingMgtPage.css';
+import { getTrackings, deleteTrackingById } from '../../services/trackingService';
+import { TrackingItem } from '../../types/tracking';
 
-import { 
-  mockTrackingData, 
-  Shipment, 
-  ShipmentStatus, 
-  PICKUP_STATUSES, 
-  HOME_DELIVERY_STATUSES 
-} from '../../data/mockTrackingData';
-
-
+// --- ICON IMPORTS ---
 import emptyStateIcon from '../../assets/images/trackingicon.png';
 import filterIcon from '../../assets/images/filterIcon.png';
 import searchIcon from '../../assets/images/searchicon.png';
-import chevronDownIcon from '../../assets/images/dropdownarrow.png';
-import prevIcon from '../../assets/images/previcon.png';
-import nextIcon from '../../assets/images/nexticon.png';
-
-const ITEMS_PER_PAGE = 9;
+import deleteIcon from '../../assets/images/comments.png'; // Using your 'comments' icon as a placeholder for delete
 
 const TrackingMgtPage: React.FC = () => {
-  const [shipments, setShipments] = useState<Shipment[]>(mockTrackingData);
-  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const dropdownRef = useRef<HTMLDivElement>(null);
- 
+  const [trackings, setTrackings] = useState<TrackingItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setOpenDropdownId(null);
+    const fetchTrackings = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getTrackings();
+        setTrackings(data);
+      } catch (err) {
+        setError('Failed to load tracking data.');
+      } finally {
+        setLoading(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    fetchTrackings();
   }, []);
 
-  const filteredShipments = useMemo(() => {
-    if (!searchQuery) return shipments;
-    const lowercasedQuery = searchQuery.toLowerCase();
-    return shipments.filter(shipment =>
-      shipment.shipmentId.toLowerCase().includes(lowercasedQuery) ||
-      shipment.trackingId.toLowerCase().includes(lowercasedQuery) ||
-      shipment.status.toLowerCase().includes(lowercasedQuery) ||
-      shipment.deliveryType.toLowerCase().includes(lowercasedQuery)
-    );
-  }, [shipments, searchQuery]);
-
-  
-  const totalPages = Math.ceil(filteredShipments.length / ITEMS_PER_PAGE);
-  const currentShipments = filteredShipments.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
-  
-  const handleNextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
-  const handlePrevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
-  
-  const handleStatusChange = (shipmentId: string, newStatus: ShipmentStatus) => {
-    setShipments(current => current.map(shipment =>
-      shipment.id === shipmentId ? { ...shipment, status: newStatus } : shipment
-    ));
-    setOpenDropdownId(null);
+  const handleDelete = async (id: string) => {
+    // Confirm with the user before deleting
+    if (window.confirm('Are you sure you want to delete this tracking entry?')) {
+      try {
+        await deleteTrackingById(id);
+        // On success, update the UI by filtering out the deleted item
+        setTrackings(currentTrackings => currentTrackings.filter(t => t.id !== id));
+        alert('Tracking entry deleted successfully.');
+      } catch (err) {
+        alert('Failed to delete the tracking entry.');
+      }
+    }
   };
-  
-  const toggleDropdown = (shipmentId: string) => setOpenDropdownId(openDropdownId === shipmentId ? null : shipmentId);
 
-  if (shipments.length === 0) {
+  if (loading) return <div className="page-loading">Loading tracking data...</div>;
+  if (error) return <div className="page-error">{error}</div>;
+
+  if (trackings.length === 0) {
     return (
       <div className="tracking-mgt-page page--empty">
         <img src={emptyStateIcon} alt="No shipments" />
-        <h3>No shipments to track yet</h3>
+        <h3>No tracking entries found</h3>
       </div>
     );
   }
@@ -85,12 +64,7 @@ const TrackingMgtPage: React.FC = () => {
           <button className="filter-btn"><img src={filterIcon} alt="Filter" /></button>
           <div className="page-search-bar">
             <img src={searchIcon} alt="Search" />
-            <input 
-              type="text" 
-              placeholder="Search by ID, status..." 
-              value={searchQuery}
-              onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-            />
+            <input type="text" placeholder="Search..." />
           </div>
         </div>
       </header>
@@ -99,57 +73,31 @@ const TrackingMgtPage: React.FC = () => {
         <table className="data-table">
           <thead>
             <tr>
-              <th>Shipment ID</th>
               <th>Tracking ID</th>
-              <th>Order date</th>
-              <th>Delivery timeline</th>
-              <th>Delivery type</th>
-              <th>Status update</th>
+              <th>Customer Name</th>
+              <th>Shipment ID</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {currentShipments.map(shipment => {
-              const statusOptions = shipment.deliveryType === 'Pick up' ? PICKUP_STATUSES : HOME_DELIVERY_STATUSES;
-              return (
-                <tr key={shipment.id}>
-                  <td data-label="Shipment ID">{shipment.shipmentId}</td>
-                  <td data-label="Tracking ID">{shipment.trackingId}</td>
-                  <td data-label="Order date">{shipment.orderDate}</td>
-                  <td data-label="Delivery timeline">{shipment.deliveryTimeline}</td>
-                  <td data-label="Delivery type">{shipment.deliveryType}</td>
-                  <td data-label="Status update" className="status-cell">
-                    <div className="status-dropdown-container" ref={openDropdownId === shipment.id ? dropdownRef : null}>
-                      <div className="status-wrapper" onClick={() => toggleDropdown(shipment.id)}>
-                        <span>{shipment.status}</span>
-                        <img src={chevronDownIcon} alt="Open" className={openDropdownId === shipment.id ? 'open' : ''}/>
-                      </div>
-                      {openDropdownId === shipment.id && (
-                        <div className="status-dropdown">
-                          {statusOptions.map(status => (
-                            <div key={status} className="dropdown-item" onClick={() => handleStatusChange(shipment.id, status)}>
-                              {status}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
+            {trackings.map(tracking => (
+              <tr key={tracking.id}>
+                <td data-label="Tracking ID">{tracking.id}</td>
+                <td data-label="Customer Name">{`${tracking.user.first_name || ''} ${tracking.user.last_name || ''}`.trim() || 'N/A'}</td>
+                {/* The API returns an empty shipment object, so we show 'N/A' for now. */}
+                <td data-label="Shipment ID">{tracking.shipment?.id || 'N/A'}</td>
+                <td data-label="Action">
+                  <button className="action-button" onClick={() => handleDelete(tracking.id)}>
+                    <img src={deleteIcon} alt="Delete" />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
-      <footer className="page-footer">
-        <div className="pagination-info">
-          Showing {filteredShipments.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0}-{Math.min(currentPage * ITEMS_PER_PAGE, filteredShipments.length)} of {filteredShipments.length}
-        </div>
-        <div className="pagination-controls">
-          <button onClick={handlePrevPage} disabled={currentPage === 1}><img src={prevIcon} alt="Previous" /></button>
-          <button onClick={handleNextPage} disabled={currentPage === totalPages}><img src={nextIcon} alt="Next" /></button>
-        </div>
-      </footer>
+      {/* Pagination is removed as the API does not support it for this endpoint */}
     </div>
   );
 };

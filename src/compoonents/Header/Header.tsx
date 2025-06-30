@@ -1,10 +1,8 @@
- 
 import React from 'react';
 import './Header.css';
-import { mockUserData } from '../../data/mockDashboardData';
 
- 
-import searchIcon from '../../assets/images/searchicon.png'; 
+// --- ICON IMPORTS ---
+import searchIcon from '../../assets/images/searchicon.png';
 import notificationIcon from '../../assets/images/notificationicon.png';
 import chevronDownIcon from '../../assets/images/chevron-down.png';
 import userAvatar from '../../assets/images/profilepic.png'; 
@@ -13,6 +11,7 @@ interface HeaderProps {
   title: string;
 }
 
+// This is the simple, stable version that uses mock/static data
 const Header: React.FC<HeaderProps> = ({ title }) => {
   return (
     <header className="header">
@@ -29,9 +28,8 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
           <span className="notification-badge">2</span>
         </div>
         <div className="user-profile">
-          {/* Uhmmmm */}
           <img src={userAvatar} alt="User Avatar" className="avatar" />
-          <span className="user-name">{mockUserData.name}</span>
+          <span className="user-name">Oladapo</span> {/* Using a static name for now */}
           <img src={chevronDownIcon} alt="Dropdown" className="chevron-down" />
         </div>
       </div>

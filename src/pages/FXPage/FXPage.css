@@ -1,0 +1,123 @@
+/* === Main Content Wrapper === */
+.page-content-wrapper {
+  background: #FFFFFF;
+  border: 1px solid #F3F4F6;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+/* --- Top Controls Section --- */
+.page-controls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.date-filters {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Reusing your input styles for consistency */
+.input-with-icon {
+  position: relative;
+  width: auto; /* Allow it to be flexible */
+}
+.input-with-icon input {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #E5E7EB;
+  background-color: #F8FAFC;
+  padding: 10px 12px 10px 12px; /* Base padding */
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.input-with-icon svg {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #9CA3AF;
+  pointer-events: none;
+}
+.date-filters .input-with-icon input {
+  padding-right: 36px; /* Space for the calendar icon */
+}
+.date-filters .input-with-icon svg {
+  right: 12px;
+}
+
+.filter-and-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.filter-btn.small {
+  display: flex; align-items: center; justify-content: center;
+  background-color: #fff; border: 1px solid #E5E7EB;
+  border-radius: 6px; padding: 10px; cursor: pointer; font-size: 16px;
+}
+.filter-and-search .input-with-icon {
+  width: 300px;
+}
+.filter-and-search .input-with-icon svg {
+  left: 14px;
+}
+.filter-and-search .input-with-icon input {
+  padding-left: 40px; /* Space for search icon */
+}
+
+
+/* --- Tabs and Content Styling --- */
+.fx-tabs { border-bottom: 2px solid #F3F4F6; }
+.fx-tabs button {
+  background: none; border: none; padding: 0 5px 15px 5px; margin-right: 30px;
+  font-size: 16px; color: #6B7280; cursor: pointer; position: relative; font-weight: 500;
+}
+.fx-tabs button.active { color: #F97316; font-weight: 600; }
+.fx-tabs button.active::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+  height: 2px; background-color: #F97316;
+}
+.fx-content { padding-top: 24px; }
+
+/* --- Empty State --- */
+.fx-empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 60px 0; background-color: #F2F7FF;
+  border-radius: 8px;
+}
+.fx-empty-state .icon-wrapper {
+  width: 140px; height: 140px; border-radius: 50%; background: #FFF7ED;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
+  font-size: 70px; color: #F97316;
+}
+.fx-empty-state h3 { font-size: 20px; font-weight: 500; color: #4B5563; margin-bottom: 32px; }
+
+/* --- List Header and Action Button --- */
+.list-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;
+}
+.list-header h3 { font-size: 18px; color: #111827; margin: 0; }
+.action-button.primary {
+  background-color: #F97316; color: white; border: none;
+  border-radius: 8px; padding: 10px 20px; font-size: 14px;
+  font-weight: 600; cursor: pointer;
+}
+
+/* --- Table Styles (reusing the same classes) --- */
+.table-container { background-color: transparent; border-radius: 0; overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th, .data-table td { padding: 16px 24px; text-align: left; border-bottom: 1px solid #F3F4F6; font-size: 14px; white-space: nowrap; }
+.data-table th { background-color: #F2F7FF; color: #1E3A8A; font-weight: 600; font-size: 14px; text-transform: none; }
+.data-table td { color: #374151; }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.action-cell { display: flex; justify-content: flex-start; gap: 20px; }
+.action-icon { cursor: pointer; color: #6B7280; font-size: 20px; transition: color 0.2s; }
+.action-icon:hover { color: #111827; }
+
+/* Filter tabs for the transaction list */
+.fx-transaction-list .filter-tabs {
+  border-bottom: none; margin-bottom: 24px;
+}

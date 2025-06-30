@@ -18,36 +18,38 @@ const CustomersPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   
-  // Pagination state from the API
+  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [totalCustomers, setTotalCustomers] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   useEffect(() => {
     const fetchCustomers = async () => {
       setLoading(true);
       setError(null);
       try {
-        const data = await getCustomers(currentPage);
-        setCustomers(data.customers);
-        setTotalPages(data.pagination.totalPages);
-        setTotalCustomers(data.pagination.total);
+        // `response` is the full API response: { status, data: { ... } }
+        const response = await getCustomers(currentPage);
+        
+        // === THIS IS THE FIX ===
+        // Correctly access the nested properties from the response object
+        setCustomers(response.data.customers || []);
+        setTotalPages(response.data.pagination.totalPages || 1);
+        setTotalItems(response.data.pagination.totalItems || 0);
+        
       } catch (err) {
         setError('Failed to fetch customers.');
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchCustomers();
-  }, [currentPage]); // Re-fetch when currentPage changes
+  }, [currentPage]);
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(prev => prev + 1);
-  };
-  const handlePrevPage = () => {
-    if (currentPage > 1) setCurrentPage(prev => prev - 1);
-  };
+  const handleNextPage = () => { if (currentPage < totalPages) setCurrentPage(p => p + 1); };
+  const handlePrevPage = () => { if (currentPage > 1) setCurrentPage(p => p - 1); };
   const handleViewDetails = (customerId: string) => navigate(`/customers/${customerId}`);
 
   if (loading) return <div className="page-loading">Loading customers...</div>;
@@ -75,27 +77,31 @@ const CustomersPage: React.FC = () => {
         <table className="data-table">
           <thead><tr><th>User ID</th><th>Name</th><th>Phone no.</th><th>Email</th><th>Date Created</th><th>Status</th><th>Action</th></tr></thead>
           <tbody>
-            {customers.map((customer) => (
-              <tr key={customer.id}>
-                <td data-label="User ID">{customer.id}</td>
-                <td data-label="Name">{`${customer.firstName} ${customer.lastName}`}</td>
-                <td data-label="Phone no.">{customer.phoneNumber}</td>
-                <td data-label="Email">{customer.email}</td>
-                <td data-label="Date Created">{new Date(customer.createdAt).toLocaleDateString()}</td>
-                <td data-label="Status"><span className={`status-badge status-${customer.is_active ? 'active' : 'inactive'}`}>{customer.is_active ? 'Active' : 'Inactive'}</span></td>
-                <td data-label="Action"><img src={viewDetailsIcon} alt="View details" className="action-icon" onClick={() => handleViewDetails(customer.id)} /></td>
-              </tr>
-            ))}
+            {customers.map((customer) => {
+              const fullName = `${customer.firstName || ''} ${customer.lastName || ''}`.trim() || 'N/A';
+              
+              return (
+                <tr key={customer.id}>
+                  <td data-label="User ID">{customer.id}</td>
+                  <td data-label="Name">{fullName}</td>
+                  <td data-label="Phone no.">{customer.phoneNumber || 'N/A'}</td>
+                  <td data-label="Email">{customer.email}</td>
+                  <td data-label="Date Created">{new Date(customer.createdAt).toLocaleDateString()}</td>
+                  <td data-label="Status"><span className={`status-badge status-${customer.isActive ? 'active' : 'inactive'}`}>{customer.isActive ? 'Active' : 'Inactive'}</span></td>
+                  <td data-label="Action"><img src={viewDetailsIcon} alt="View details" className="action-icon" onClick={() => handleViewDetails(customer.id)} /></td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
       <footer className="page-footer">
         <div className="pagination-info">
-          Showing page {currentPage} of {totalPages}
+          Showing page {currentPage} of {totalPages} ({totalItems} total customers)
         </div>
         <div className="pagination-controls">
           <button onClick={handlePrevPage} disabled={currentPage === 1}><img src={prevIcon} alt="Previous" /></button>
-          <button onClick={handleNextPage} disabled={currentPage === totalPages}><img src={nextIcon} alt="Next" /></button>
+          <button onClick={handleNextPage} disabled={currentPage >= totalPages}><img src={nextIcon} alt="Next" /></button>
         </div>
       </footer>
     </div>

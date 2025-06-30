@@ -1,9 +1,10 @@
 // src/types/transaction.ts
 
+// Using camelCase for consistency and to match the API data
 interface TransactionUser {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstName: string | null; // Handle null names
+  lastName: string | null;
   email: string;
 }
 
@@ -15,13 +16,12 @@ export interface Transaction {
   paymentStatus: 'SUCCESSFUL' | 'PENDING' | 'FAILED';
   paymentType: string;
   category: string;
+  transactionReference: string; // <-- ADDED THIS FIELD
   channel?: string;
   remark?: string;
+  currency: 'NGN' | 'GBP'; // Added for currency formatting
 }
 
-// === THE MISSING INTERFACES (NOW ADDED AND EXPORTED) ===
-
-// For the list of all transactions (GET /transactions)
 export interface TransactionsApiResponse {
   status: string;
   data: {
@@ -29,12 +29,12 @@ export interface TransactionsApiResponse {
     pagination: {
       currentPage: number;
       totalPages: number;
+      totalItems: number; // The API sends totalItems
       limit: number;
     };
   };
 }
 
-// For a single transaction's details (GET /transactions/{id})
 export interface TransactionDetailApiResponse {
     status: string;
     data: {

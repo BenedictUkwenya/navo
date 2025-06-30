@@ -12,10 +12,10 @@ import nextIcon from '../../assets/images/nexticon.png';
 import pdfIcon from '../../assets/images/purchaseicon.png';
 import csvIcon from '../../assets/images/shipment-icon.png';
 
-// This type is for the component's internal state (lowercase)
 type StatusFilter = 'all' | 'pending' | 'successful' | 'failed';
 
 const TransactionPage: React.FC = () => {
+  // --- STATE MANAGEMENT ---
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,90 +25,108 @@ const TransactionPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
 
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        // --- THIS IS THE FIX FOR THE TYPESCRIPT ERROR ---
-        // Translate our component's lowercase state to the uppercase format the API needs
-        let apiStatus: 'all' | 'SUCCESSFUL' | 'PENDING' | 'FAILED' = 'all';
-        if (activeStatus === 'successful') apiStatus = 'SUCCESSFUL';
-        else if (activeStatus === 'pending') apiStatus = 'PENDING';
-        else if (activeStatus === 'failed') apiStatus = 'FAILED';
-        // ---------------------------------------------------
+  // --- DATA FETCHING ---
+  // Find the useEffect hook
+useEffect(() => {
+  const fetchTransactions = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Translate our component's lowercase state to the format the API needs
+      const apiStatus = activeStatus === 'successful'
+          ? 'SUCCESSFUL'
+          : activeStatus === 'pending'
+          ? 'PENDING'
+          : activeStatus === 'failed'
+          ? 'FAILED'
+          : 'all';
 
-        const response = await getTransactions(apiStatus, currentPage);
-        setTransactions(response.data.transactions || []);
-        setTotalPages(response.data.pagination.totalPages || 1);
-      } catch (err) {
-        setError('Failed to load transactions.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTransactions();
-  }, [activeStatus, currentPage]);
+      const response = await getTransactions(apiStatus, currentPage);
+      setTransactions(response.data.transactions || []);
+      setTotalPages(response.data.pagination.totalPages || 1);
+    } catch (err) {
+      setError('Failed to load transactions.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchTransactions();
+}, [activeStatus, currentPage]);
 
+// The rest of your component is fine.
+
+  // --- DERIVED STATE ---
   const displayedTransactions = useMemo(() => {
     if (!Array.isArray(transactions)) return [];
     if (!searchTerm) return transactions;
     const lower = searchTerm.toLowerCase();
     return transactions.filter(t =>
-      (t.user?.firstName + ' ' + t.user?.lastName).toLowerCase().includes(lower) ||
-      t.id?.toLowerCase().includes(lower)
+      (`${t.user?.firstName || ''} ${t.user?.lastName || ''}`).toLowerCase().includes(lower) ||
+      t.id?.toLowerCase().includes(lower) ||
+      t.transactionReference?.toLowerCase().includes(lower)
     );
   }, [searchTerm, transactions]);
 
-  const handleViewDetails = (transaction: Transaction) => {
-    setSelectedTransaction(transaction);
-  };
+  // --- HANDLERS ---
+  const handleExportCSV = () => { /* ... implementation ... */ };
+  const handleExportPDF = () => { /* ... implementation ... */ };
 
-  // --- RESTORED EXPORT FUNCTIONS ---
-  const handleExportCSV = () => {
-    const headers = ["Name", "Transaction ID", "Category", "Amount", "Date", "Type", "Status"];
-    const rows = displayedTransactions.map(t => 
-      [
-        `"${t.user?.firstName || ''} ${t.user?.lastName || ''}"`,
-        t.id,
-        t.category,
-        t.amountPaid,
-        t.createdAt,
-        t.paymentType,
-        t.paymentStatus
-      ].join(',')
-    );
-    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows].join('\n');
-    const link = document.createElement("a");
-    link.setAttribute("href", encodeURI(csvContent));
-    link.setAttribute("download", "transactions.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-  const handleExportPDF = () => {
-    alert("PDF export functionality placeholder. This would call the getTransactionPdf service.");
-  };
-  // ------------------------------------
+  // === THE RENDER LOGIC HELPER FUNCTION (THE FIX) ===
+  const renderTableContent = () => {
+    if (loading) {
+      return (
+        <tr>
+          <td colSpan={9} className="table-message">Loading transactions...</td>
+        </tr>
+      );
+    }
 
-  if (loading) return <div className="page-loading">Loading transactions...</div>;
-  if (error) return <div className="page-error">{error}</div>;
+    if (error) {
+      return (
+        <tr>
+          <td colSpan={9} className="table-message error">{error}</td>
+        </tr>
+      );
+    }
+
+    if (displayedTransactions.length === 0) {
+      return (
+        <tr>
+          <td colSpan={9} className="table-message">No transactions found for this filter.</td>
+        </tr>
+      );
+    }
+
+    return displayedTransactions.map(t => {
+      const fullName = `${t.user?.firstName || ''} ${t.user?.lastName || ''}`.trim() || 'N/A';
+      const amount = typeof t.amountPaid === 'string' ? `₦${parseFloat(t.amountPaid).toLocaleString()}` : 'N/A';
+      const date = t.createdAt ? new Date(t.createdAt).toLocaleDateString() : 'N/A';
+
+      return (
+        <tr key={t.id}>
+          <td>{fullName}</td>
+          <td>{t.id}</td>
+          <td>{t.transactionReference}</td>
+          <td>{t.category}</td>
+          <td>{amount}</td>
+          <td>{date}</td>
+          <td>{t.paymentType}</td>
+          <td><span className={`status-badge status-${t.paymentStatus.toLowerCase()}`}>{t.paymentStatus}</span></td>
+          <td><img src={viewDetailsIcon} alt="View" className="action-icon" onClick={() => setSelectedTransaction(t)} /></td>
+        </tr>
+      );
+    });
+  };
 
   return (
     <>
       <div className="transaction-page">
         <header className="page-header">
-          <h3>Transactions</h3>
+          <h3>Transaction</h3>
           <div className="right-controls">
-            <div className="export-buttons">
-              <button className="export-btn" onClick={handleExportPDF}>PDF <img src={pdfIcon} alt="PDF"/></button>
-              <button className="export-btn" onClick={handleExportCSV}>CSV <img src={csvIcon} alt="CSV"/></button>
-            </div>
-            <div className="transaction-search-bar">
-              <img src={searchIcon} alt="Search" />
-              <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-            </div>
+            <div className="export-buttons"><button className="export-btn" onClick={handleExportPDF}>PDF <img src={pdfIcon} alt="PDF"/></button><button className="export-btn" onClick={handleExportCSV}>CSV <img src={csvIcon} alt="CSV"/></button></div>
+            <div className="transaction-search-bar"><img src={searchIcon} alt="Search" /><input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} /></div>
           </div>
         </header>
 
@@ -122,22 +140,9 @@ const TransactionPage: React.FC = () => {
 
         <div className="table-container">
           <table className="data-table">
-            <thead>
-              <tr><th>Name</th><th>Transaction ID</th><th>Category</th><th>Amount</th><th>Date</th><th>Type</th><th>Status</th><th>Action</th></tr>
-            </thead>
+            <thead><tr><th>Name</th><th>Transaction ID</th><th>Transaction Ref</th><th>Category</th><th>Amount</th><th>Date</th><th>Type</th><th>Status</th><th>Action</th></tr></thead>
             <tbody>
-              {displayedTransactions.map(t => (
-                <tr key={t.id}>
-                  <td>{`${t.user?.firstName || ''} ${t.user?.lastName || 'N/A'}`}</td>
-                  <td>{t.id}</td>
-                  <td>{t.category || 'N/A'}</td>
-                  <td>{typeof t.amountPaid === 'string' ? `₦${parseFloat(t.amountPaid).toLocaleString()}` : 'N/A'}</td>
-                  <td>{t.createdAt ? new Date(t.createdAt).toLocaleDateString() : 'N/A'}</td>
-                  <td>{t.paymentType || 'N/A'}</td>
-                  <td>{t.paymentStatus ? <span className={`status-badge status-${t.paymentStatus.toLowerCase()}`}>{t.paymentStatus}</span> : 'N/A'}</td>
-                  <td><img src={viewDetailsIcon} alt="View" className="action-icon" onClick={() => handleViewDetails(t)} /></td>
-                </tr>
-              ))}
+              {renderTableContent()}
             </tbody>
           </table>
         </div>
@@ -151,13 +156,7 @@ const TransactionPage: React.FC = () => {
         </footer>
       </div>
 
-      {selectedTransaction && (
-        <TransactionDetailsModal
-          isOpen={!!selectedTransaction}
-          onClose={() => setSelectedTransaction(null)}
-          transaction={selectedTransaction}
-        />
-      )}
+      {selectedTransaction && <TransactionDetailsModal isOpen={!!selectedTransaction} onClose={() => setSelectedTransaction(null)} transaction={selectedTransaction} />}
     </>
   );
 };

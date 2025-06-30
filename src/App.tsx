@@ -21,9 +21,12 @@ import AuditMgtPage from './pages/AuditMgtPage/AuditMgtPage';
 import UserManagementPage from './pages/UserManagementPage/UserManagementPage';
 import SettingsPage from './pages/SettingsPage/SettingsPage';
 import ShipmentPage from './pages/ShipmentPage/ShipmentPage';
+import FXPage from './pages/FXPage/FXPage';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
+ 
     <Routes>
       {/* Public Routes: Wrapped in PublicRoute */}
       {/* This prevents logged-in users from seeing the login page */}
@@ -88,8 +91,13 @@ function App() {
         path="/settings"
         element={<Layout pageTitle="Settings"><SettingsPage /></Layout>}
       />
+              <Route
+          path="/fx"
+          element={<Layout pageTitle="FX"><FXPage /></Layout>}
+        />
       
     </Routes>
+  
   );
 }
 

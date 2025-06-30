@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import './CustomerDetailsPage.css';
 import { getCustomerById } from '../../services/customerService';
-import { Customer } from '../../types/customer';
+// Import both Customer and the new CustomerShipment type
+import { Customer, CustomerShipment } from '../../types/customer'; 
 
 // Import Icons
 import backArrowIcon from '../../assets/images/previcon.png';
@@ -13,13 +14,18 @@ type Currency = 'ngn' | 'gbp';
 
 const CustomerDetailsPage: React.FC = () => {
   const { customerId } = useParams<{ customerId: string }>();
+  const navigate = useNavigate();
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<DetailTab>('personal');
+  const [activeTab, setActiveTab] = useState<DetailTab>('shipments'); // Default to shipments to see the change
 
   useEffect(() => {
-    if (!customerId) return;
+    if (!customerId) {
+        setError("No Customer ID provided in URL.");
+        setLoading(false);
+        return;
+    };
     
     const fetchCustomerDetails = async () => {
       setLoading(true);
@@ -29,6 +35,7 @@ const CustomerDetailsPage: React.FC = () => {
         setCustomer(response.customer);
       } catch (err) {
         setError('Failed to fetch customer details.');
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -41,6 +48,8 @@ const CustomerDetailsPage: React.FC = () => {
   if (error) return <div className="page-error">{error}</div>;
   if (!customer) return <div className="page-error">Customer not found.</div>;
 
+  const fullName = `${customer.firstName || ''} ${customer.lastName || ''}`.trim() || 'N/A';
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'personal':
@@ -48,9 +57,10 @@ const CustomerDetailsPage: React.FC = () => {
       case 'wallet':
         return <WalletBalanceTab customer={customer} />;
       case 'shipments':
+        // Pass the shipments array to the ShipmentsTab component
         return <ShipmentsTab shipments={customer.shipments || []} />;
       case 'referral':
-        return <ReferralTab referral={customer.referral} />;
+        return <ReferralTab referral={null} />; // Assuming referral data is not ready
       default:
         return null;
     }
@@ -60,13 +70,15 @@ const CustomerDetailsPage: React.FC = () => {
     <div className="customer-details-page">
       <div className="details-header">
         <div className="breadcrumb">
-          <Link to="/customers" className="back-link"><img src={backArrowIcon} alt="Back" /></Link>
-          <span className="breadcrumb-text">All customers <span className="separator">/</span> {`${customer.firstName} ${customer.lastName}`}</span>
+          <button onClick={() => navigate(-1)} className="back-link-button">
+            <img src={backArrowIcon} alt="Back" />
+          </button>
+          <span className="breadcrumb-text">All customers <span className="separator">/</span> {fullName}</span>
         </div>
       </div>
       <div className="customer-profile-header">
-        <img src={customer.profilePicture || avatar} alt={`${customer.firstName} ${customer.lastName}`} className="profile-avatar" />
-        <h1>{`${customer.firstName} ${customer.lastName}`}</h1>
+        <img src={customer.profilePicture || avatar} alt={fullName} className="profile-avatar" />
+        <h1>{fullName}</h1>
       </div>
       <div className="details-tabs">
         <button className={activeTab === 'personal' ? 'active' : ''} onClick={() => setActiveTab('personal')}>Personal Details</button>
@@ -85,20 +97,19 @@ const CustomerDetailsPage: React.FC = () => {
 // --- SUB-COMPONENTS ---
 
 const PersonalDetailsTab: React.FC<{ customer: Customer }> = ({ customer }) => (
-  // This will need to be updated once we know the shape of locationDetails
   <div className="personal-details-tab">
     <div className="info-section">
-      <div className="info-pair"><label>Phone Number</label><span>{customer.phoneNumber}</span></div>
+      <div className="info-pair"><label>Phone Number</label><span>{customer.phoneNumber || 'N/A'}</span></div>
       <div className="info-pair"><label>Email</label><span>{customer.email}</span></div>
-      <div className="info-pair"><label>Gender</label><span>{customer.gender}</span></div>
+      <div className="info-pair"><label>Gender</label><span>{customer.gender || 'N/A'}</span></div>
     </div>
   </div>
 );
 
 const WalletBalanceTab: React.FC<{ customer: Customer }> = ({ customer }) => {
   const [currency, setCurrency] = useState<Currency>('ngn');
-  const ngnBalance = customer.wallet?.walletBalanceNGN || 0;
-  const gbpBalance = customer.wallet?.walletBalanceGBP || 0;
+  const ngnBalance = parseFloat(customer.wallet?.walletBalanceNGN as any) || 0;
+  const gbpBalance = parseFloat(customer.wallet?.walletBalanceGBP as any) || 0;
 
   return (
     <div className="wallet-tab">
@@ -118,16 +129,60 @@ const WalletBalanceTab: React.FC<{ customer: Customer }> = ({ customer }) => {
   );
 };
 
-const ShipmentsTab: React.FC<{ shipments: any[] }> = ({ shipments }) => (
-  // This will need to be updated once we know the shape of a shipment object
-  shipments.length > 0 ? (
-    <div className="shipments-tab"><div className="table-container"><p>Shipment data available.</p></div></div>
-  ) : <p>No shipments for this customer.</p>
-);
+// === THE REWRITTEN SHIPMENTS TAB COMPONENT ===
+const ShipmentsTab: React.FC<{ shipments: CustomerShipment[] }> = ({ shipments }) => {
+  if (shipments.length === 0) {
+    return <p>This customer has no shipments.</p>;
+  }
+
+  return (
+    <div className="shipments-tab">
+      <h3>Shipment History</h3>
+      <div className="table-container">
+        {/* We reuse the 'data-table' class from other pages for consistent styling */}
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th>Shipment ID</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Weight</th>
+              <th>Cost</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {shipments.map((shipment) => (
+              <tr key={shipment.id}>
+                <td data-label="Shipment ID">{shipment.id}</td>
+                <td data-label="From">{shipment.locationFrom}</td>
+                <td data-label="To">{shipment.locationTo}</td>
+                <td data-label="Weight">{`${shipment.weight}kg`}</td>
+                <td data-label="Cost">{`${shipment.currency} ${shipment.totalCost.toLocaleString()}`}</td>
+                <td data-label="Status">
+                  <span className={`status-badge status-${shipment.shipmentStatus.toLowerCase()}`}>
+                    {shipment.shipmentStatus}
+                  </span>
+                </td>
+                <td data-label="Date">{new Date(shipment.createdAt).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
 
 const ReferralTab: React.FC<{ referral: any }> = ({ referral }) => (
-  // This will need to be updated once we know the shape of a referral object
-  referral ? <div className="referral-tab"><p>Referral data available.</p></div> : <p>No referral data.</p>
+  referral ? (
+    <div className="referral-tab">
+      <h4>Referral Details</h4>
+      <p>Referral data available.</p>
+    </div>
+  ) : <p>No referral data for this customer.</p>
 );
 
 export default CustomerDetailsPage;

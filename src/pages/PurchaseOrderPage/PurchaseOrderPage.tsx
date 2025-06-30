@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PurchaseOrdersPage.css';
 import { getOrders } from '../../services/purchaseOrderService';
+import { Order } from '../../types/order';
 
 // --- ICON IMPORTS ---
 import emptyIcon from '../../assets/images/purchaseicon.png';
@@ -13,28 +14,26 @@ import nextIcon from '../../assets/images/nexticon.png';
 
 const PurchaseOrdersPage: React.FC = () => {
   const navigate = useNavigate();
-  
-  // --- STATE MANAGEMENT ---
-  const [orders, setOrders] = useState<any[]>([]); // Using 'any' for now
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
-  // Pagination and Search State
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // --- DATA FETCHING ---
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
       setError(null);
       try {
         const response = await getOrders(currentPage);
-        setOrders(response.data.allOrders);
-        setTotalPages(response.data.pagination.totalPages);
+        // Correctly access the nested data
+        setOrders(response.data.allOrders || []);
+        setTotalPages(response.data.pagination.totalPages || 1);
       } catch (err) {
         setError('Failed to load purchase orders.');
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -42,22 +41,20 @@ const PurchaseOrdersPage: React.FC = () => {
     fetchOrders();
   }, [currentPage]);
 
-  // Client-side filtering (can be moved to backend later)
   const filteredOrders = useMemo(() => {
     if (!searchTerm) return orders;
-    const lowercasedSearchTerm = searchTerm.toLowerCase();
+    const lower = searchTerm.toLowerCase();
     return orders.filter(order =>
-      (order.user?.first_name + ' ' + order.user?.last_name).toLowerCase().includes(lowercasedSearchTerm) ||
-      order.user?.email.toLowerCase().includes(lowercasedSearchTerm) ||
-      order.id.toLowerCase().includes(lowercasedSearchTerm)
+      (`${order.user?.firstName || ''} ${order.user?.lastName || ''}`).toLowerCase().includes(lower) ||
+      order.user?.email.toLowerCase().includes(lower) ||
+      order.id.toLowerCase().includes(lower)
     );
   }, [searchTerm, orders]);
 
   const handleViewDetails = (orderId: string) => navigate(`/purchase-orders/${orderId}`);
-  
+
   if (loading) return <div className="page-loading">Loading Purchase Orders...</div>;
   if (error) return <div className="page-error">{error}</div>;
-
   if (orders.length === 0 && !loading) {
     return (
       <div className="purchase-orders-page page--empty">
@@ -75,33 +72,26 @@ const PurchaseOrdersPage: React.FC = () => {
           <button className="filter-btn"><img src={filterIcon} alt="Filter" /></button>
           <div className="page-search-bar">
             <img src={searchIcon} alt="Search" />
-            <input type="text" placeholder="Search by name, email, ID..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
           </div>
         </div>
       </header>
       <div className="table-container">
         <table className="data-table">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              {/*<th>Name</th>*/}
-              <th>Email</th>
-              <th>Date Created</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Order ID</th><th>Name</th><th>Email</th><th>Date Created</th><th>Action</th></tr></thead>
           <tbody>
-            {filteredOrders.map(order => (
-              <tr key={order.id}>
-                <td data-label="Order ID">{order.id}</td>
-               {/* <td data-label="Name">{`${order.user.first_name} ${order.user.last_name}`}</td>*/}
-                <td data-label="Email">{order.user.email}</td>
-                <td data-label="Date Created">{new Date(order.createdAt).toLocaleDateString()}</td>
-                <td data-label="Action">
-                  <img src={viewDetailsIcon} alt="View Details" className="action-icon" onClick={() => handleViewDetails(order.id)} />
-                </td>
-              </tr>
-            ))}
+            {filteredOrders.map(order => {
+              const fullName = `${order.user?.firstName || ''} ${order.user?.lastName || ''}`.trim() || 'N/A';
+              return (
+                <tr key={order.id}>
+                  <td data-label="Order ID">{order.id}</td>
+                  <td data-label="Name">{fullName}</td>
+                  <td data-label="Email">{order.user.email}</td>
+                  <td data-label="Date Created">{new Date(order.createdAt).toLocaleDateString()}</td>
+                  <td data-label="Action"><img src={viewDetailsIcon} alt="View" className="action-icon" onClick={() => handleViewDetails(order.id)} /></td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
