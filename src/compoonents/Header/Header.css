@@ -4,11 +4,11 @@
   align-items: center; padding: 0 40px; background-color: #FFFFFF;
   border-bottom: 1px solid #F3F4F6;
 }
-.header-title h1 { font-size: 28px; font-weight: 600; color: #111827; }
+.header-title h1 { font-size: 28px; font-weight: 600; color: #174078; }
 .header-controls { display: flex; align-items: center; gap: 25px; }
 .search-bar {
-  display: flex; align-items: center; background-color: #F9FAFB;
-  padding: 8px 15px; border-radius: 8px; width: 250px;
+  display: flex; align-items: center; background-color: #F5F6FA;
+  padding: 12px 15px; border-radius: 100px; width: 250px;
 }
 .search-bar img { width: 18px; height: 18px; opacity: 0.5; }
 .search-bar input {

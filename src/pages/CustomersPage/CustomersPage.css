@@ -35,7 +35,7 @@
 .page-header h3 {
   font-size: 20px;
   font-weight: 600;
-  color: #111827;
+  color: #174078;
   margin: 0;
   text-align: left;
   flex-grow: 1;  
@@ -52,15 +52,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff;
-  border: 1px solid #E5E7EB;
-  border-radius: 6px;
   padding: 8px;
   cursor: pointer;
 }
 
 .filter-btn img {
-  height: 20px;
+  height: 120px;
 }
 
 .page-search-bar {

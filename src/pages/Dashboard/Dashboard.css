@@ -2,7 +2,7 @@
 .dashboard-welcome h2 {
   font-size: 24px;
   font-weight: 600;
-  color: #111827;
+  color: #174078;
   margin: 0 0 24px 0;
 }
 
@@ -76,7 +76,7 @@
   margin: 0;
   line-height: 1;
 }
-
+.card-value
 /* === THEMED COLOR STYLES === */
 /* Default title color */
 .card-title {
@@ -87,18 +87,22 @@
 .card-blue .card-value {
   color: #174078;
 }
+
 .card-blue .percentage-badge {
   background-color: #E3FFF7;
   color: #00BA88;
+  outline: 2px solid #00BA88;
 }
 /* Orange Card Theming */
 .card-orange .card-title,
 .card-orange .card-value {
   color: #FF6600;
+  
 }
 .card-orange .percentage-badge {
   background-color: #FFE7E7;
   color: #EB3D40;
+  outline: 2px solid #EB3D40;
 }
 /* General badge styling */
 .percentage-badge {
@@ -132,13 +136,19 @@
   width: 20px;
   height: 20px;
 }
+.currency-toggle{
+  border: 1px solid #FDBA74; background: #FFF; padding: 4px 10px;
+  border-radius: 100px;
+}
 .currency-toggle button {
   border: 1px solid #FDBA74; background: none; padding: 4px 12px;
+  border-radius: 100px;
+  border: none;
   font-size: 12px; font-weight: 500; cursor: pointer; color: #F97316;
 }
 .currency-toggle button:first-child { border-radius: 6px 0 0 6px; }
 .currency-toggle button:last-child { border-radius: 0 6px 6px 0; }
-.currency-toggle button.active { background-color: #FFF; }
+.currency-toggle button.active { background-color: #FFF3EA; border-radius: 100px; }
 .transaction-card .card-value {
   font-size: 36px;
 }

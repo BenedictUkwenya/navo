@@ -13,7 +13,7 @@ import CustomersPage from './pages/CustomersPage/CustomersPage';
 import CustomerDetailsPage from './pages/CustomerDetailsPage/CustomerDetailsPage';
 import QuoteRequestPage from './pages/QuoteRequestPage/QuoteRequestPage';
 import TrackingMgtPage from './pages/TrackingMgtPage/TrackingMgtPage';
-import PurchaseOrdersPage from './pages/PurchaseOrderPage/PurchaseOrderPage';
+import PurchaseOrdersPage from './pages/ProductsPage/ProductsPage';
 import PurchaseOrderDetailsPage from './pages/PurchaseOrderDetailsPage/PurchaseOrderDetailsPage';
 import TransactionPage from './pages/TransactionPage/TransactionPage';
 import SupportTicketPage from './pages/SupportTicketPag/SupportTicketPage';

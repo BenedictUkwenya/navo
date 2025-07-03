@@ -1,137 +1,217 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './FXPage.css';
+
+// Import all necessary components and services
 import SetFxPricingModal from '../../compoonents/SetFxPricingModal/SetFxPricingModal';
-import FxTransactionDetailsModal from '../../compoonents/FxTransactionDetailsModal/FxTransactionDetailsModal';
-import { mockFxPricings, FxPricing } from '../../data/mockFxData';
-import { mockFxTransactions, FxTransaction, FxTransactionStatus } from '../../data/mockFxTransactions';
+import AddFxRateModal from '../../compoonents/AddFxRateModal/AddFxRateModal';
+import { getRateHistory, getFxTransactions, downloadFxTransactionsPDF } from '../../services/fxService';
+import { FxRate, FxTransaction } from '../../types/fx';
 
 // Icon Imports
+import { FiEdit2, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { IoEyeOutline, IoSearchOutline } from 'react-icons/io5';
 import { PiCurrencyCircleDollarBold, PiPaperPlaneTiltBold } from 'react-icons/pi';
 import { TfiFilter } from 'react-icons/tfi';
-import { IoSearchOutline, IoEyeOutline } from 'react-icons/io5';
 import { LuCalendarDays } from 'react-icons/lu';
-import { FiEdit2 } from 'react-icons/fi'; // A better edit icon
+import { GoDownload } from "react-icons/go";
 
 type FxTab = 'pricing' | 'transaction';
 
+// Main Page Component
 const FXPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<FxTab>('pricing');
-  
-  // State for FX Pricing Tab
-  const [showPricingModal, setShowPricingModal] = useState(false);
-  const [fxPricings, setFxPricings] = useState(mockFxPricings);
-  const [editingPricing, setEditingPricing] = useState<FxPricing | null>(null);
-
-  // State for FX Transaction Tab
-  const [fxTransactions, setFxTransactions] = useState(mockFxTransactions);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] = useState<FxTransaction | null>(null);
-  const [activeTxStatus, setActiveTxStatus] = useState<FxTransactionStatus | 'All'>('All');
-
-  // --- Handlers for Pricing Tab ---
-  const handleOpenEditPricing = (p: FxPricing) => { setEditingPricing(p); setShowPricingModal(true); };
-  const handleOpenNewPricing = () => { setEditingPricing(null); setShowPricingModal(true); };
-  const handleClosePricingModal = () => { setShowPricingModal(false); setEditingPricing(null); };
-  const handleSavePricing = (data: any) => { /* ... save logic ... */ handleClosePricingModal(); };
-
-  // --- Handlers for Transaction Tab ---
-  const handleViewTransactionDetails = (t: FxTransaction) => { setSelectedTransaction(t); setShowDetailsModal(true); };
-  
-  const filteredFxTransactions = useMemo(() => {
-    return fxTransactions.filter(t => activeTxStatus === 'All' || t.status === activeTxStatus);
-  }, [activeTxStatus, fxTransactions]);
-
-  // --- RENDER LOGIC FOR TABS ---
-  const renderContent = (): React.ReactNode => {
-    if (activeTab === 'pricing') {
-      return (
-        <div className="fx-pricing-content">
-          <div className="list-header">
-            <h3>FX Pricing</h3>
-            <button className="action-button primary" onClick={handleOpenNewPricing}>+ Add New</button>
-          </div>
-          <div className="table-container">
-            <table className="data-table">
-              <thead><tr><th>Currency Pair</th><th>Base Rate</th><th>Final Rate</th><th>Time Stamp</th><th>Last Updated</th><th></th></tr></thead>
-              <tbody>
-                {fxPricings.map(p => (
-                  <tr key={p.id}>
-                    <td>{p.currencyPair}</td><td>{p.baseRate}</td><td>{p.finalRate}</td>
-                    <td>{new Date(p.timestamp).toLocaleString()}</td><td>{new Date(p.lastUpdated).toLocaleString()}</td>
-                    <td className="action-cell"><FiEdit2 className="action-icon" onClick={() => handleOpenEditPricing(p)} /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      );
-    }
-    if (activeTab === 'transaction') {
-      if (fxTransactions.length === 0) {
-        return (
-          <div className="fx-empty-state">
-            <div className="icon-wrapper"><PiPaperPlaneTiltBold /></div>
-            <h3>No FX Transactions done yet</h3>
-          </div>
-        );
-      }
-      return (
-        <div className="fx-transaction-list">
-          <div className="filter-tabs">
-            {(['All', 'Pending', 'Successful', 'Failed'] as const).map(tab => (
-              <button key={tab} className={activeTxStatus === tab ? 'active' : ''} onClick={() => setActiveTxStatus(tab)}>
-                {tab}
-              </button>
-            ))}
-          </div>
-          <div className="table-container">
-            <table className="data-table">
-              <thead><tr><th>Name</th><th>Customer ID</th><th>Transaction ID</th><th>FX Type</th><th>Rate</th><th>Time Stamp</th><th>Amount</th><th>Status</th><th></th></tr></thead>
-              <tbody>
-                {filteredFxTransactions.map(t => (
-                  <tr key={t.id}>
-                    <td>{t.customerName}</td><td>{t.customerId}</td><td>{t.transactionId}</td><td>{t.fxType}</td>
-                    <td>{t.rate}</td><td>{t.timestamp}</td><td>{t.amount}</td>
-                    <td><span className={`status-badge status-${t.status.toLowerCase()}`}>{t.status}</span></td>
-                    <td className="action-cell"><IoEyeOutline className="action-icon" onClick={() => handleViewTransactionDetails(t)} /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
 
   return (
     <div className="fx-page">
-      {/* This header is no longer needed as the title is handled by the main Layout */}
       <div className="page-content-wrapper">
-        <div className="page-controls-header">
-            <div className="date-filters">
-                <div className="input-with-icon"><input type="text" placeholder="Dates from" /><LuCalendarDays /></div>
-                <div className="input-with-icon"><input type="text" placeholder="Dates to" /><LuCalendarDays /></div>
-            </div>
-            <div className="filter-and-search">
-                <button className="filter-btn small"><TfiFilter /></button>
-                <div className="input-with-icon"><IoSearchOutline /><input type="text" placeholder="Search by Category, Transaction type, Name" /></div>
-            </div>
-        </div>
         <div className="fx-tabs">
-            <button className={activeTab === 'pricing' ? 'active' : ''} onClick={() => setActiveTab('pricing')}>FX Pricing</button>
-            <button className={activeTab === 'transaction' ? 'active' : ''} onClick={() => setActiveTab('transaction')}>FX Transaction</button>
+          <button className={activeTab === 'pricing' ? 'active' : ''} onClick={() => setActiveTab('pricing')}>FX Pricing</button>
+          <button className={activeTab === 'transaction' ? 'active' : ''} onClick={() => setActiveTab('transaction')}>FX Transaction</button>
         </div>
         <div className="fx-content">
-            {renderContent()}
+          {activeTab === 'pricing' && <FxPricingTab />}
+          {activeTab === 'transaction' && <FxTransactionTab />}
         </div>
       </div>
-      {showPricingModal && <SetFxPricingModal onClose={handleClosePricingModal} onSave={handleSavePricing} editingPricing={editingPricing} />}
-      {showDetailsModal && selectedTransaction && <FxTransactionDetailsModal onClose={() => setShowDetailsModal(false)} transaction={selectedTransaction} />}
     </div>
   );
+};
+
+// --- SUB-COMPONENT for FX Pricing Tab ---
+const FxPricingTab: React.FC = () => {
+  const [fxPricings, setFxPricings] = useState<FxRate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [fromCurrency, setFromCurrency] = useState('NGN');
+  const [toCurrency, setToCurrency] = useState('GBP');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingRate, setEditingRate] = useState<FxRate | null>(null);
+
+  const fetchRateHistory = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await getRateHistory(fromCurrency, toCurrency);
+      setFxPricings(response.results || []);
+    } catch (err) {
+      setError(`No rates found for ${fromCurrency}/${toCurrency}.`);
+      setFxPricings([]);
+    } finally { setLoading(false); }
+  };
+
+  useEffect(() => { fetchRateHistory(); }, [fromCurrency, toCurrency]);
+
+  const handleOpenEditModal = (rate: FxRate) => { setEditingRate(rate); setIsEditModalOpen(true); };
+  const handleCloseModals = () => { setIsAddModalOpen(false); setIsEditModalOpen(false); setEditingRate(null); };
+  const handleSaveSuccess = (newOrUpdatedRate?: FxRate) => {
+    handleCloseModals();
+    if (newOrUpdatedRate && !fxPricings.some(p => p.id === newOrUpdatedRate.id)) {
+      setFxPricings(current => [newOrUpdatedRate, ...current]);
+    } else {
+      fetchRateHistory();
+    }
+  };
+
+  if (loading) return <div className="page-loading">Loading...</div>;
+  if (error && fxPricings.length === 0) return <div className="page-error">{error}</div>;
+
+  return (
+    <div className="fx-pricing-list">
+      <div className="list-header">
+        <h3>FX Pricing History</h3>
+        <div className="fx-filters">
+          <div className="form-group"><label>From</label><select value={fromCurrency} onChange={(e) => setFromCurrency(e.target.value)}><option>NGN</option><option>GBP</option><option>USD</option></select></div>
+          <div className="form-group"><label>To</label><select value={toCurrency} onChange={(e) => setToCurrency(e.target.value)}><option>GBP</option><option>NGN</option><option>USD</option></select></div>
+          <button className="action-button primary" onClick={() => setIsAddModalOpen(true)}>+ Add New Rate</button>
+        </div>
+      </div>
+      <div className="table-container">
+        <table className="data-table">
+          <thead><tr><th>Currency Pair</th><th>Buy Rate</th><th>Sell Rate</th><th>Last Updated</th><th>Action</th></tr></thead>
+          <tbody>
+            {fxPricings.map(p => (
+              <tr key={p.id}>
+                <td>{`${p.fromCurrency} / ${p.toCurrency}`}</td><td>{p.buyRate}</td><td>{p.sellRate}</td>
+                <td>{new Date(p.updatedAt).toLocaleString()}</td>
+                <td className="action-cell"><FiEdit2 className="action-icon" onClick={() => handleOpenEditModal(p)} /></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {!loading && fxPricings.length === 0 && <div className="no-data-message">{error || 'No rates found for this pair.'}</div>}
+      </div>
+      {isEditModalOpen && editingRate && <SetFxPricingModal onClose={handleCloseModals} onSuccess={handleSaveSuccess} editingRate={editingRate} />}
+      {isAddModalOpen && <AddFxRateModal onClose={handleCloseModals} onSuccess={handleSaveSuccess} />}
+    </div>
+  );
+};
+
+// --- SUB-COMPONENT for FX Transactions Tab ---
+const FxTransactionTab: React.FC = () => {
+    const [transactions, setTransactions] = useState<FxTransaction[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchTransactions = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const response = await getFxTransactions();
+                setTransactions(response.results || []);
+            } catch (err) { setError("Failed to load FX transactions."); }
+            finally { setLoading(false); }
+        };
+        fetchTransactions();
+    }, []);
+
+    const handleExportCSV = () => {
+      const headers = ["Name", "Customer ID", "Transaction Ref", "FX Type", "Rate", "Amount", "Status", "Recipient Bank", "Account Name", "Account Number"];
+      const rows = transactions.map(t => [
+          `"${t.user.firstName || ''} ${t.user.lastName || ''}"`, t.userId, t.transaction.transactionReference,
+          `${t.fromCurrency} -> ${t.toCurrency}`, t.currentRate, `${t.transaction.currency} ${t.amount}`,
+          t.transaction.paymentStatus, t.recipientBankName || 'N/A',
+          t.recipientAccountName || 'N/A', t.recipientAccountNumber || 'N/A'
+      ].join(','));
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows].join('\n');
+      const link = document.createElement("a");
+      link.setAttribute("href", encodeURI(csvContent));
+      link.setAttribute("download", "fx-transactions.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  };
+
+  const handleExportPDF = async () => {
+      alert("Generating PDF... this may take a moment.");
+      try {
+          // Assuming the PDF endpoint doesn't need a specific user ID for a general report
+          const blob = await downloadFxTransactionsPDF(); 
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = "fx_transactions_report.pdf";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+      } catch (err) {
+          alert("Failed to download PDF report.");
+          console.error(err);
+      }
+  };
+
+    if (loading) return <div className="page-loading">Loading transactions...</div>;
+    if (error) return <div className="page-error">{error}</div>;
+
+    return (
+        <div className="fx-transaction-list">
+            <header className="transaction-header">
+                <div className="date-filters">
+                    <div className="input-with-icon"><input type="date" /><LuCalendarDays /></div>
+                    <div className="input-with-icon"><input type="date" /><LuCalendarDays /></div>
+                </div>
+                <div className="right-controls">
+                    <div className="export-buttons">
+                        <button className="export-btn pdf" onClick={handleExportPDF}>PDF <GoDownload /></button>
+                        <button className="export-btn csv" onClick={handleExportCSV}>CSV <GoDownload /></button>
+                    </div>
+                    <div className="transaction-search-bar"><IoSearchOutline /><input type="text" placeholder="Search..." /></div>
+                </div>
+            </header>
+
+            {transactions.length === 0 ? (
+                <div className="fx-empty-state"><div className="icon-wrapper"><PiPaperPlaneTiltBold /></div><h3>No FX Transactions have been made yet</h3></div>
+            ) : (
+                <>
+                    <div className="table-container">
+                        <table className="data-table">
+                            <thead><tr><th>Name</th><th>Customer ID</th><th>Transaction ID</th><th>FX Type</th><th>Rate</th><th>Time Stamp</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+                            <tbody>
+                                {transactions.map(t => {
+                                    const fullName = `${t.user?.firstName || ''} ${t.user?.lastName || ''}`.trim() || t.user.email;
+                                    const amount = `${t.transaction.currency} ${parseFloat(t.transaction.amountPaid).toLocaleString()}`;
+                                    return (
+                                        <tr key={t.id}>
+                                            <td>{fullName}</td><td>{t.userId}</td><td>{t.transaction.transactionReference}</td>
+                                            <td>{`${t.fromCurrency} → ${t.toCurrency}`}</td><td>{t.currentRate}</td>
+                                            <td>{new Date(t.createdAt).toLocaleString()}</td><td>{amount}</td>
+                                            <td><span className={`status-badge status-${t.transaction.paymentStatus.toLowerCase()}`}>{t.transaction.paymentStatus}</span></td>
+                                            <td className="action-cell"><IoEyeOutline className="action-icon" /></td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                    <footer className="page-footer">
+                        <div className="pagination-info">Showing 1-{transactions.length} of {transactions.length}</div>
+                        <div className="pagination-controls"><button disabled><FiChevronLeft /></button><button disabled><FiChevronRight /></button></div>
+                    </footer>
+                </>
+            )}
+        </div>
+    );
 };
 
 export default FXPage;

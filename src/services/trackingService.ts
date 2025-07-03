@@ -1,46 +1,24 @@
 // src/services/trackingService.ts
-
 import apiClient from './apiClient';
-import { TrackingItem } from '../types/tracking';
+import { TrackingsApiResponse } from '../types/tracking';
 
-/**
- * Interface to describe the shape of the full API response.
- * We now know the data is nested and the array is named 'filtered'.
- */
-interface TrackingsApiResponse {
-  status: string;
-  data: {
-    filtered: TrackingItem[];
-  };
-}
+const TRACKINGS_PATH = 'trackings';
 
-/**
- * Fetches all tracking entries from the API.
- * @returns A promise that resolves to an array of tracking items.
- */
-export const getTrackings = async (): Promise<TrackingItem[]> => {
+export const getTrackings = async (): Promise<TrackingsApiResponse> => {
   try {
-    const response = await apiClient.get<TrackingsApiResponse>('/trackings');
-    
-    // === THIS IS THE FINAL, CORRECT FIX ===
-    // We drill down into response.data.data and access the 'filtered' array.
-    return response.data.data.filtered || [];
-    
+    const response = await apiClient.get<TrackingsApiResponse>(TRACKINGS_PATH);
+    return response.data;
   } catch (error) {
     console.error('Failed to fetch trackings:', error);
     throw error;
   }
 };
 
-/**
- * Deletes a tracking entry by its ID.
- * @param id - The unique identifier of the tracking entry to delete.
- */
 export const deleteTrackingById = async (id: string): Promise<void> => {
-    try {
-        await apiClient.delete(`/trackings/${id}`);
-    } catch (error) {
-        console.error(`Failed to delete tracking with id ${id}:`, error);
-        throw error;
-    }
+  try {
+    await apiClient.delete(`${TRACKINGS_PATH}/${id}`);
+  } catch (error) {
+    console.error(`Failed to delete tracking with id ${id}:`, error);
+    throw error;
+  }
 };

@@ -1,0 +1,25 @@
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+.product-form-modal { background: white; border-radius: 16px; width: 100%; max-width: 550px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+.product-form-modal .modal-header { padding: 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E7EB; }
+.product-form-modal .modal-header h2 { font-size: 20px; font-weight: 600; margin: 0; }
+.product-form-modal .modal-close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #6B7280; }
+.product-form-modal .modal-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.product-form-modal .form-group { display: flex; flex-direction: column; gap: 6px; }
+.product-form-modal .form-group label { font-size: 14px; font-weight: 500; color: #374151; }
+.product-form-modal .form-group input, .product-form-modal .form-group textarea {
+  width: 100%; padding: 10px 14px; font-size: 14px; background-color: #F9FAFB;
+  border: 1px solid #E5E7EB; border-radius: 8px; box-sizing: border-box; font-family: inherit;
+}
+.product-form-modal .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.product-form-modal .modal-footer {
+  padding: 16px 24px; display: flex; justify-content: flex-end; gap: 12px;
+  border-top: 1px solid #E5E7EB; background-color: #F9FAFB;
+  border-bottom-left-radius: 16px; border-bottom-right-radius: 16px;
+}
+.product-form-modal .cancel-btn, .product-form-modal .save-btn {
+  padding: 10px 20px; border-radius: 8px; font-size: 14px;
+  font-weight: 600; cursor: pointer; border: 1px solid;
+}
+.product-form-modal .cancel-btn { background-color: white; color: #374151; border-color: #D1D5DB; }
+.product-form-modal .save-btn { background-color: #F97316; color: white; border-color: #F97316; }
+.product-form-modal .save-btn:disabled { background-color: #FDBA74; border-color: #FDBA74; cursor: not-allowed; }

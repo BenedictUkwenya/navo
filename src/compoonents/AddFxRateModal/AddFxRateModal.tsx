@@ -1,55 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import './SetFxPricingModal.css';
-import { FxRate } from '../../types/fx';
-import { updateRate } from '../../services/fxService';
+import React, { useState } from 'react';
+// === THIS IS THE FIX: Import the correct function ===
+import { createRate } from '../../services/fxService'; 
+import './AddFxRateModal.css';
 import { IoClose } from 'react-icons/io5';
 
 interface ModalProps {
   onClose: () => void;
   onSuccess: () => void;
-  editingRate: FxRate | null; // Can be null if we were creating
 }
 
-const SetFxPricingModal: React.FC<ModalProps> = ({ onClose, onSuccess, editingRate }) => {
+const AddFxRateModal: React.FC<ModalProps> = ({ onClose, onSuccess }) => {
+  const [fromCurrency, setFromCurrency] = useState('');
+  const [toCurrency, setToCurrency] = useState('');
   const [buyRate, setBuyRate] = useState<number | ''>('');
   const [sellRate, setSellRate] = useState<number | ''>('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (editingRate) {
-      setBuyRate(editingRate.buyRate);
-      setSellRate(editingRate.sellRate);
-    }
-  }, [editingRate]);
-
   const handleSave = async () => {
-    // Guard clause to ensure we are in edit mode
-    if (!editingRate) {
-        setError("No rate selected to edit.");
-        return;
-    }
-    if (!buyRate || !sellRate) {
-      setError('Both Buy and Sell rates are required.');
+    if (!fromCurrency || !toCurrency || !buyRate || !sellRate) {
+      setError('All fields are required.');
       return;
     }
     setLoading(true);
     setError(null);
-    
     try {
-      // === THIS IS THE FIX ===
-      // Construct the full object that the updated `updateRate` function expects.
-      await updateRate({
-        id: editingRate.id,
-        fromCurrency: editingRate.fromCurrency,
-        toCurrency: editingRate.toCurrency,
-        buyRate: buyRate,
-        sellRate: sellRate,
-      });
+      // === THIS IS THE FIX: Call the correct service function ===
+      // This sends the data to the POST /rate endpoint to create a new rate.
+      await createRate({ fromCurrency, toCurrency, buyRate, sellRate });
       onSuccess();
     } catch (err) {
       const apiError = err as any;
-      setError(apiError.response?.data?.message || 'Failed to update the rate.');
+      setError(apiError.response?.data?.message || 'Failed to create new rate. This pair might already exist.');
     } finally {
       setLoading(false);
     }
@@ -59,13 +41,13 @@ const SetFxPricingModal: React.FC<ModalProps> = ({ onClose, onSuccess, editingRa
     <div className="modal-overlay" onClick={onClose}>
       <div className="fx-pricing-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Edit FX Rate</h2>
+          <h2>Add New FX Rate</h2>
           <button className="modal-close-btn" onClick={onClose}><IoClose /></button>
         </div>
         <div className="modal-body">
-          <div className="form-group">
-            <label>Currency Pair</label>
-            <div className="custom-select-wrapper"><input type="text" value={`${editingRate?.fromCurrency} / ${editingRate?.toCurrency}`} readOnly /></div>
+          <div className="form-row">
+            <div className="form-group"><label>From Currency (e.g., USD)</label><input type="text" value={fromCurrency} onChange={(e) => setFromCurrency(e.target.value.toUpperCase())} /></div>
+            <div className="form-group"><label>To Currency (e.g., NGN)</label><input type="text" value={toCurrency} onChange={(e) => setToCurrency(e.target.value.toUpperCase())} /></div>
           </div>
           <div className="form-row">
             <div className="form-group"><label>Buy Rate</label><input type="number" placeholder="Enter buy rate" value={buyRate} onChange={(e) => setBuyRate(parseFloat(e.target.value) || '')} /></div>
@@ -76,7 +58,7 @@ const SetFxPricingModal: React.FC<ModalProps> = ({ onClose, onSuccess, editingRa
         <div className="modal-footer">
           <button className="cancel-btn" onClick={onClose} disabled={loading}>Cancel</button>
           <button className="set-price-btn" onClick={handleSave} disabled={loading}>
-            {loading ? 'Updating...' : 'Update Rate'}
+            {loading ? 'Creating...' : 'Create Rate'}
           </button>
         </div>
       </div>
@@ -84,4 +66,4 @@ const SetFxPricingModal: React.FC<ModalProps> = ({ onClose, onSuccess, editingRa
   );
 };
 
-export default SetFxPricingModal;
+export default AddFxRateModal;

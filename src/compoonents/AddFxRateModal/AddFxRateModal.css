@@ -1,0 +1,46 @@
+/* src/compoonents/AddFxRateModal/AddFxRateModal.css */
+
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(3, 1, 36, 0.6); display: flex;
+    justify-content: center; align-items: center; z-index: 1000;
+    backdrop-filter: blur(5px);
+  }
+  .fx-pricing-modal {
+    background: white; border-radius: 24px; width: 100%; max-width: 700px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+  .modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 32px; border-bottom: 1px solid #E2E8F0;
+  }
+  .modal-header h2 { font-size: 20px; font-weight: 600; color: #1E293B; margin: 0; }
+  .modal-close-btn {
+    background: #F1F5F9; border: none; font-size: 24px;
+    cursor: pointer; color: #64748B; width: 40px; height: 40px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  }
+  .modal-body {
+    padding: 32px; display: flex; flex-direction: column; gap: 24px;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-group label { font-size: 14px; font-weight: 500; color: #334155; }
+  .form-group input {
+    width: 100%; padding: 12px 16px; font-size: 14px; color: #475569;
+    background-color: #F8FAFC; border: 1px solid #E2E8F0;
+    border-radius: 8px; box-sizing: border-box;
+  }
+  .form-group input:focus { outline: none; border-color: #F97316; }
+  .modal-error { color: #c53030; font-size: 14px; text-align: center; }
+  .modal-footer {
+    display: flex; justify-content: flex-end; gap: 16px;
+    padding: 24px 32px; border-top: 1px solid #E2E8F0;
+  }
+  .cancel-btn, .set-price-btn {
+    padding: 12px 28px; border-radius: 8px; font-size: 16px;
+    font-weight: 600; cursor: pointer; border: 1px solid;
+  }
+  .cancel-btn { background-color: white; color: #475569; border-color: #CBD5E1; }
+  .set-price-btn { background-color: #F97316; color: white; border-color: #F97316; }
+  .set-price-btn:disabled { background-color: #FDBA74; border-color: #FDBA74; cursor: not-allowed; }

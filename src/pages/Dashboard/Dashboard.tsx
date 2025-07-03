@@ -9,7 +9,7 @@ import { DashboardMetrics, DashboardGrowth, RecentTransaction } from '../../type
 import totalShipmentsIcon from '../../assets/images/total-shipment.png';
 import totalCustomersIcon from '../../assets/images/customers.png';
 import completedShipmentsIcon from '../../assets/images/completedShipment.png';
-import transactionCardIcon from '../../assets/images/transactionicon.png';
+import transactionCardIcon from '../../assets/images/total-transactions.png';
 import shop4meCardIcon from '../../assets/images/shop4me.png';
 import statusCompletedIcon from '../../assets/images/completedicon.png';
 import statusPendingIcon from '../../assets/images/pendingicon.png';
@@ -67,27 +67,27 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="dashboard-page">
-      <div className="dashboard-welcome"><h2>Welcome, Oladapo</h2></div>
+      <div className="dashboard-welcome"><h2><span style={{ fontWeight: 10 }}>Welcome</span>, Oladapo</h2></div>
       <div className="stats-grid">
         <div className="stat-card card-blue">
           <div className="card-top-row"><p className="card-title">Total Shipments</p><div className="card-icon-bg"><img src={totalShipmentsIcon} alt="" /></div></div>
-          <div className="card-bottom-row"><h3 className="card-value">{data.metrics.totalShipments}</h3><span className="percentage-badge">+{data.growth.shipmentsGrowth}%</span></div>
+          <div className="card-bottom-row"><h3 className="card-value" style={{  transform: 'translate(0px, 220px)'}}>{data.metrics.totalShipments}</h3><span className="percentage-badge" style={{display:'inline-block',  transform: 'translate(0px, 110px)'}}>+{data.growth.shipmentsGrowth}%</span></div>
         </div>
         <div className="stat-card card-orange">
           <div className="card-top-row"><p className="card-title">Total Customers</p><div className="card-icon-bg"><img src={totalCustomersIcon} alt="" /></div></div>
-          <div className="card-bottom-row"><h3 className="card-value">{data.metrics.totalCustomers}</h3><span className="percentage-badge">+{data.growth.customersGrowth}%</span></div>
+          <div className="card-bottom-row"><h3 className="card-value" style={{  transform: 'translate(0px, 220px)'}} >{data.metrics.totalCustomers}</h3><span className="percentage-badge" style={{ display:"inline-block", transform: 'translate(0px, 110px)'}}>+{data.growth.customersGrowth}%</span></div>
         </div>
         <div className="stat-card card-blue">
           <div className="card-top-row"><p className="card-title">Completed Shipments</p><div className="card-icon-bg"><img src={completedShipmentsIcon} alt="" /></div></div>
-          <div className="card-bottom-row"><h3 className="card-value">{data.metrics.completedShipments}</h3><span className="percentage-badge">+{data.growth.completedShipmentsGrowth}%</span></div>
+          <div className="card-bottom-row"><h3 className="card-value" style={{  transform: 'translate(0px, 220px)'}}>{data.metrics.completedShipments}</h3><span className="percentage-badge" style={{ display:'inline-block', transform: 'translate(0px, 110px)'}}>+{data.growth.completedShipmentsGrowth}%</span></div>
         </div>
         <div className="stat-card card-orange transaction-card">
            <div className="transaction-card-header">
-             <div className="card-icon-bg"><img src={transactionCardIcon} alt="transaction" /></div>
-             <div className="currency-toggle">
+           <div className="currency-toggle">
                <button className={activeCurrency === 'ngn' ? 'active' : ''} onClick={() => setActiveCurrency('ngn')}>NGN</button>
                <button className={activeCurrency === 'gbp' ? 'active' : ''} onClick={() => setActiveCurrency('gbp')}>GBP</button>
              </div>
+             <div className="card-icon-bg"><img src={transactionCardIcon} alt="transaction" /></div>
            </div>
            <p className="card-title">Total Transaction</p>
            <h3 className="card-value">{activeCurrency === 'ngn' ? formatCurrency(data.metrics.totalTransactionsNGN, 'NGN') : formatCurrency(data.metrics.totalTransactionsGBP, 'GBP')}</h3>
@@ -123,7 +123,7 @@ const Dashboard: React.FC = () => {
         
         <div className="shop4me-card">
           <div className="card-icon-bg"><img src={shop4meCardIcon} alt="shop for me" /></div>
-          <p className="card-title">Total Shop4me Request</p>
+          <p className="card-title">Total <br></br>Shop4me Request</p>
           <h3 className="card-value">{data.metrics.totalShopForMeRequests}</h3>
         </div>
       </div>

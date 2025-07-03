@@ -4,7 +4,7 @@ import './Header.css';
 // --- ICON IMPORTS ---
 import searchIcon from '../../assets/images/searchicon.png';
 import notificationIcon from '../../assets/images/notificationicon.png';
-import chevronDownIcon from '../../assets/images/chevron-down.png';
+import chevronDownIcon from '../../assets/images/chevron-down.webp';
 import userAvatar from '../../assets/images/profilepic.png'; 
 
 interface HeaderProps {

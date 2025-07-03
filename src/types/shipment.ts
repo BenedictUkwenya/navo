@@ -1,41 +1,54 @@
 // src/types/shipment.ts
+
 interface ShipmentUser {
-    id: string;
-    firstName: string;
-    lastName: string;
-  }
-  interface ShipmentTracking {
-    trackingId?: string;
-  }
-  export interface Shipment {
-    id: string;
-    user: ShipmentUser;
-    tracking: ShipmentTracking;
-    shipmentStatus: string;
-    createdAt: string;
-    // --- Fields from your existing mock data ---
-    userId: string;
-    name: string; // The full name, likely from user object
-    shipmentId: string;
-    trackId: string;
-    timeline: string;
-    amount: string;
-    serviceType: 'Send' | 'Receive';
-    deliveryType: 'Home Delivery' | 'Pick up from Hub';
-    status: 'Packed' | 'Verified' | 'Pending';
-    goodsType: string;
-    location: string;
-    weight: string;
-  }
-  export interface ShipmentsApiResponse {
-    data: {
-      shipments: Shipment[];
-      pagination: {
-        currentPage: number;
-        totalPages: number;
-      };
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string;
+}
+
+interface ShipmentTracking {
+  id: string;
+  trackingId: string;
+}
+
+// This interface now includes ALL the fields from the API and your component
+export interface Shipment {
+  id: string;
+  userId: string;
+  shipmentStatus: string;
+  createdAt: string;
+  trackingId: string | null;
+  user: ShipmentUser;
+  tracking: ShipmentTracking | null;
+  
+  // === THE MISSING FIELDS, NOW ADDED ===
+  locationFrom?: string;
+  locationTo?: string;
+  weight?: string;
+  totalCost?: number;
+  serviceType?: string;
+  goodsType?: string;
+  estimatedDelivery?: number | null;
+  currency?: string;
+  // ======================================
+}
+
+// For the list of all shipments
+export interface ShipmentsApiResponse {
+  data: {
+    shipments: Shipment[];
+    pagination: {
+      currentPage: number;
+      totalPages: number;
+      totalItems: number;
     };
-  }
-  export interface ShipmentDetailApiResponse {
-      data: { shipment: Shipment; };
-  }
+  };
+}
+
+// For a single shipment's details
+export interface ShipmentDetailApiResponse {
+  data: {
+    shipment: Shipment;
+  };
+}

@@ -1,4 +1,130 @@
-/* === Main Content Wrapper === */
+/* === Main Page Layout === */
+
+.fx-page {
+  animation: fadeIn 0.5s ease-in-out;
+}
+.fx-content-wrapper {
+  background-color: #FFFFFF;
+  border: 1px solid #F3F4F6;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.transaction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 24px;
+}
+
+.date-filters, .right-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.date-filters input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.export-buttons { display: flex; gap: 0.75rem; }
+.export-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+.export-btn.pdf { background-color: #FFF4EC; color: #FF8A00; }
+.export-btn.csv { background-color: #F0F6FF; color: #1E3A8A; }
+
+.transaction-search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #F9FAFB;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  padding: 0 12px;
+  width: 280px;
+}
+.transaction-search-bar svg {
+  font-size: 18px;
+  color: #9CA3AF;
+}
+.transaction-search-bar input {
+  border: none;
+  outline: none;
+  padding: 10px 8px;
+  font-size: 14px;
+  flex-grow: 1;
+  background: transparent;
+}
+
+.fx-tabs {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid #E5E7EB;
+  margin-bottom: 24px;
+}
+.fx-tabs button {
+  background: none;
+  border: none;
+  padding: 12px 4px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #6B7280;
+  cursor: pointer;
+  position: relative;
+  border-bottom: 3px solid transparent;
+}
+.fx-tabs button.active {
+  color: #F97316;
+  border-bottom-color: #F97316;
+}
+
+/* Reusing your table styles */
+.table-container { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th, .data-table td { padding: 16px 24px; text-align: left; border-bottom: 1px solid #F0F1F3; font-size: 14px; }
+.data-table th { background-color: #F8FAFC; color: #475569; font-weight: 600; text-transform: none; }
+.data-table td { color: #374151; }
+.data-table tbody tr:last-child td { border-bottom: none; }
+
+.action-icon { font-size: 20px; color: #9CA3AF; cursor: pointer; }
+.status-badge { padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 500; }
+.status-successful { background-color: #DCFCE7; color: #166534; }
+.status-pending { background-color: #FEF9C3; color: #854D0E; }
+.status-failed { background-color: #FEE2E2; color: #991B1B; }
+
+.page-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; font-size: 14px; color: #6B7280; }
+.pagination-controls { display: flex; gap: 8px; }
+.pagination-controls button {
+  display: flex; align-items: center; justify-content: center; background-color: #fff;
+  border: 1px solid #E0E0E0; border-radius: 8px; padding: 8px; cursor: pointer; font-size: 18px;
+}
+.pagination-controls button:disabled { cursor: not-allowed; opacity: 0.5; }
+
+.fx-page .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.fx-page .page-header h3 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #111827;
+}
+
 .page-content-wrapper {
   background: #FFFFFF;
   border: 1px solid #F3F4F6;
@@ -6,7 +132,8 @@
   padding: 24px;
 }
 
-/* --- Top Controls Section --- */
+
+/* === Top Controls Header (Inside the white card) === */
 .page-controls-header {
   display: flex;
   justify-content: space-between;
@@ -18,18 +145,15 @@
   align-items: center;
   gap: 1rem;
 }
-
-/* Reusing your input styles for consistency */
 .input-with-icon {
   position: relative;
-  width: auto; /* Allow it to be flexible */
+  width: auto;
 }
 .input-with-icon input {
-  width: 100%;
-  border-radius: 6px;
-  border: 1px solid #E5E7EB;
   background-color: #F8FAFC;
-  padding: 10px 12px 10px 12px; /* Base padding */
+  border: 1px solid #F1F5F9;
+  border-radius: 6px;
+  padding: 10px 12px 10px 40px; /* Default padding for left icon */
   font-size: 14px;
   box-sizing: border-box;
 }
@@ -37,87 +161,102 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 18px;
   color: #9CA3AF;
+  font-size: 18px;
   pointer-events: none;
 }
+.input-with-icon .input-icon-left { left: 14px; }
+.input-with-icon .input-icon-right { right: 14px; }
 .date-filters .input-with-icon input {
-  padding-right: 36px; /* Space for the calendar icon */
-}
-.date-filters .input-with-icon svg {
-  right: 12px;
-}
-
-.filter-and-search {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.filter-btn.small {
-  display: flex; align-items: center; justify-content: center;
-  background-color: #fff; border: 1px solid #E5E7EB;
-  border-radius: 6px; padding: 10px; cursor: pointer; font-size: 16px;
-}
-.filter-and-search .input-with-icon {
-  width: 300px;
-}
-.filter-and-search .input-with-icon svg {
-  left: 14px;
-}
-.filter-and-search .input-with-icon input {
-  padding-left: 40px; /* Space for search icon */
+  padding-left: 12px;
+  padding-right: 40px; /* Space for right icon */
 }
 
 
-/* --- Tabs and Content Styling --- */
-.fx-tabs { border-bottom: 2px solid #F3F4F6; }
+/* === Tabs and Main Content === */
+.fx-tabs {
+  border-bottom: 2px solid #F3F4F6;
+}
 .fx-tabs button {
-  background: none; border: none; padding: 0 5px 15px 5px; margin-right: 30px;
-  font-size: 16px; color: #6B7280; cursor: pointer; position: relative; font-weight: 500;
+  background: none; border: none; padding: 0 5px 15px 5px;
+  margin-right: 30px; font-size: 16px;
+  color: #6B7280; cursor: pointer; position: relative; font-weight: 500;
 }
 .fx-tabs button.active { color: #F97316; font-weight: 600; }
 .fx-tabs button.active::after {
   content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
   height: 2px; background-color: #F97316;
 }
-.fx-content { padding-top: 24px; }
+.fx-content {
+  padding-top: 24px;
+}
 
-/* --- Empty State --- */
-.fx-empty-state {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; padding: 60px 0; background-color: #F2F7FF;
-  border-radius: 8px;
-}
-.fx-empty-state .icon-wrapper {
-  width: 140px; height: 140px; border-radius: 50%; background: #FFF7ED;
-  display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
-  font-size: 70px; color: #F97316;
-}
-.fx-empty-state h3 { font-size: 20px; font-weight: 500; color: #4B5563; margin-bottom: 32px; }
 
-/* --- List Header and Action Button --- */
-.list-header {
-  display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;
+/* === FX Pricing Tab Specifics === */
+.fx-pricing-list .list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
-.list-header h3 { font-size: 18px; color: #111827; margin: 0; }
+.fx-pricing-list .list-header h3 { font-size: 18px; color: #111827; margin: 0; }
+.fx-filters { display: flex; align-items: center; gap: 16px; }
+.fx-filters .form-group { display: flex; align-items: center; gap: 8px; }
+.fx-filters .form-group label { font-size: 14px; color: #6B7280; font-weight: 500; }
+.fx-filters .form-group select {
+  padding: 8px 12px; border-radius: 6px;
+  border: 1px solid #D1D5DB; background-color: #fff; font-size: 14px;
+}
 .action-button.primary {
   background-color: #F97316; color: white; border: none;
   border-radius: 8px; padding: 10px 20px; font-size: 14px;
   font-weight: 600; cursor: pointer;
 }
 
-/* --- Table Styles (reusing the same classes) --- */
-.table-container { background-color: transparent; border-radius: 0; overflow-x: auto; }
-.data-table { width: 100%; border-collapse: collapse; }
-.data-table th, .data-table td { padding: 16px 24px; text-align: left; border-bottom: 1px solid #F3F4F6; font-size: 14px; white-space: nowrap; }
-.data-table th { background-color: #F2F7FF; color: #1E3A8A; font-weight: 600; font-size: 14px; text-transform: none; }
-.data-table td { color: #374151; }
-.data-table tbody tr:last-child td { border-bottom: none; }
-.action-cell { display: flex; justify-content: flex-start; gap: 20px; }
-.action-icon { cursor: pointer; color: #6B7280; font-size: 20px; transition: color 0.2s; }
-.action-icon:hover { color: #111827; }
+/* === FX Transaction Tab Specifics === */
+/* The transaction tab doesn't have a header above the table, so no specific styles needed */
 
-/* Filter tabs for the transaction list */
-.fx-transaction-list .filter-tabs {
-  border-bottom: none; margin-bottom: 24px;
+
+/* === Shared Table Styles === */
+.table-container { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th, .data-table td {
+  padding: 16px 24px; text-align: left;
+  border-bottom: 1px solid #F3F4F6; font-size: 14px;
+  white-space: nowrap; vertical-align: middle;
+}
+.data-table th { background-color: #F8FAFC; color: #475569; font-weight: 600; }
+.data-table td { color: #475569; }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.action-cell { text-align: right !important; }
+.action-icon { cursor: pointer; color: #6B7280; font-size: 20px; }
+.status-badge {
+  padding: 4px 12px; border-radius: 16px;
+  font-size: 12px; font-weight: 500; text-transform: capitalize;
+}
+.status-successful { background-color: #DCFCE7; color: #166534; }
+.status-pending { background-color: #FEF9C3; color: #854D0E; }
+.status-failed { background-color: #FEE2E2; color: #991B1B; }
+
+
+/* === Shared Empty State, Loading, and Error Styles === */
+.page-loading, .page-error, .no-data-message, .fx-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 16px;
+  color: #6B7280;
+  background-color: #F9FAFB;
+  border-radius: 8px;
+}
+.page-error { color: #EF4444; }
+.fx-empty-state { display: flex; flex-direction: column; align-items: center; }
+.fx-empty-state .icon-wrapper {
+  width: 140px; height: 140px; border-radius: 50%;
+  background: #FFF7ED; display: flex; align-items: center;
+  justify-content: center; margin-bottom: 24px;
+  font-size: 70px; color: #F97316;
+}
+.fx-empty-state h3 {
+  font-size: 20px; font-weight: 500;
+  color: #4B5563; margin-bottom: 32px;
 }

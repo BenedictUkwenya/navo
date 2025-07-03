@@ -67,9 +67,9 @@ const CustomersPage: React.FC = () => {
   return (
     <div className="customers-page">
       <header className="page-header">
-        <h3>All customers</h3>
+        <h3 style={{ color: '#174078' }}>All customers</h3>
         <div className="page-controls">
-          <button className="filter-btn"><img src={filterIcon} alt="Filter" /></button>
+          <button className="filter-btn" style={{ width: "34px",  height: "34px"}}><img src={filterIcon} alt="Filter"  /></button>
           <div className="page-search-bar"><img src={searchIcon} alt="Search" /><input type="text" placeholder="Search by name, phone, status" /></div>
         </div>
       </header>
