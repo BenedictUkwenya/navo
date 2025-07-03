@@ -136,7 +136,9 @@ const AllProductsTab: React.FC<{ onAddProduct: () => void, refetchKey: number }>
                 <td><img src={product.image[0]} alt={product.name} className="product-image" /></td>
                 <td>{product.name}</td><td>{`₦${product.price.toLocaleString()}`}</td><td>{product.quantity}</td>
                 <td><StatusDropdown currentStatus={product.productStatus} onStatusChange={(newStatus) => handleStatusUpdate(product.id, newStatus)} /></td>
-                <td className="action-cell"><img src={viewDetailsIcon} alt="View" className="action-icon" /><img src={deleteIcon} alt="Delete" className="action-icon" onClick={() => handleDelete(product.id)} /></td>
+                <td className="action-cell center-text">
+                  <img src={deleteIcon} alt="Delete" className="action-icon" onClick={() => handleDelete(product.id)} />
+                </td>
               </tr>
             ))}
           </tbody>

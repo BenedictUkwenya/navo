@@ -13,7 +13,7 @@
 
 /* --- Header & Controls --- */
 .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.page-header h3 { font-size: 20px; font-weight: 600; color: #111827; margin: 0; }
+.page-header h3 { font-size: 20px; font-weight: 600; color: #174078; margin: 0; }
 .page-controls { display: flex; align-items: center; gap: 1rem; }
 .filter-btn {
   display: flex; align-items: center; justify-content: center; background-color: #fff;

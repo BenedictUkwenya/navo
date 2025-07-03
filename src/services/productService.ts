@@ -36,6 +36,6 @@ export const updateProductStatus = async (productId: string, newStatus: string):
 // Deletes a product by its ID
 export const deleteProduct = async (productId: string): Promise<void> => {
   try {
-    await apiClient.post(`${PRODUCTS_PATH}/delete/${productId}`);
+    await apiClient.post(`${PRODUCTS_PATH}/${productId}`);
   } catch (error) { console.error('Failed to delete product:', error); throw error; }
 };

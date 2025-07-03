@@ -18,7 +18,8 @@
 .page-controls { display: flex; align-items: center; gap: 1rem; }
 .filter-btn {
   display: flex; align-items: center; justify-content: center; background-color: #fff;
-  border: 1px solid #E5E7EB; border-radius: 6px; padding: 8px; cursor: pointer;
+ border-radius: 6px; padding: 8px; cursor: pointer;
+ 
 }
 .filter-btn img { height: 20px; }
 

@@ -97,9 +97,15 @@
 .data-table th, .data-table td { padding: 16px 24px; text-align: left; border-bottom: 1px solid #F0F1F3; font-size: 14px; }
 .data-table th { background-color: #F8FAFC; color: #475569; font-weight: 600; text-transform: none; }
 .data-table td { color: #374151; }
-.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:last-child td { 
+  border-bottom: none; 
+ 
+  position: relative; /* Allows manual positioning */
+  top: 10px; /* Adjust vertical position */
+  right: 5px; /* Adjust horizontal position */
+}
 
-.action-icon { font-size: 20px; color: #9CA3AF; cursor: pointer; }
+.action-icon { font-size: 70px; color: #9CA3AF; cursor: pointer; }
 .status-badge { padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 500; }
 .status-successful { background-color: #DCFCE7; color: #166534; }
 .status-pending { background-color: #FEF9C3; color: #854D0E; }
@@ -127,7 +133,7 @@
 
 .page-content-wrapper {
   background: #FFFFFF;
-  border: 1px solid #F3F4F6;
+  border: 1px solid #F2F7FF;
   border-radius: 12px;
   padding: 24px;
 }
@@ -225,11 +231,11 @@
   border-bottom: 1px solid #F3F4F6; font-size: 14px;
   white-space: nowrap; vertical-align: middle;
 }
-.data-table th { background-color: #F8FAFC; color: #475569; font-weight: 600; }
+.data-table th { background-color: #F2F7FF; color: #174078; font-weight: 600; }
 .data-table td { color: #475569; }
 .data-table tbody tr:last-child td { border-bottom: none; }
 .action-cell { text-align: right !important; }
-.action-icon { cursor: pointer; color: #6B7280; font-size: 20px; }
+.action-icon { cursor: pointer; color: #6B7280; font-size: 100px; }
 .status-badge {
   padding: 4px 12px; border-radius: 16px;
   font-size: 12px; font-weight: 500; text-transform: capitalize;
