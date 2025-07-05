@@ -94,6 +94,71 @@
   .kebab-dropdown a:hover {
     background-color: #F9FAFB;
   }
+
+
+  /* Add these new styles at the end of your CSS file */
+
+.page-main-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #174078;
+  margin-bottom: 24px;
+}
+
+/* Styles for our new live data card */
+.settings-card.card-live-data {
+  background-color: #F0F9FF; /* A light blue to distinguish it */
+  position: relative;
+}
+
+.settings-card .card-content {
+  margin-top: auto; /* Pushes content to the bottom */
+}
+
+.loading-text, .error-text {
+  font-size: 16px;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.error-text {
+  color: #EF4444;
+}
+
+.live-data-value {
+  font-size: 48px;
+  font-weight: 700;
+  color: #1E3A8A; /* Navo Navy */
+  margin: 0;
+  line-height: 1;
+}
+
+.update-link {
+  background: none;
+  border: none;
+  color: #F97316; /* Navo Orange */
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 0;
+  margin-top: 8px;
+}
+
+.update-link:hover {
+  text-decoration: underline;
+}
+
+.card-live-data .card-icon-wrapper {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  opacity: 0.1;
+}
+
+.card-live-data .card-icon {
+  width: 64px;
+  height: 64px;
+}
   
  
   @media (max-width: 992px) {

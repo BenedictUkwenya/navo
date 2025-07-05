@@ -1,3 +1,5 @@
+// src/compoonents/Header/Header.tsx
+
 import React from 'react';
 import './Header.css';
 
@@ -11,8 +13,9 @@ interface HeaderProps {
   title: string;
 }
 
-// This is the simple, stable version that uses mock/static data
 const Header: React.FC<HeaderProps> = ({ title }) => {
+  // This is the simple version that does not depend on AuthContext
+  // We can add the dropdown functionality back later without the context if needed.
   return (
     <header className="header">
       <div className="header-title">

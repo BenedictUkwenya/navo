@@ -1,21 +1,21 @@
+// src/compoonents/ProtectedRoute.tsx
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-// This function checks if the user is authenticated.
-// For now, we'll check for an item in localStorage.
-// Your Login.tsx should set this item upon successful login.
-const checkAuth = (): boolean => {
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-  return isAuthenticated;
-};
+const ProtectedRoute = () => {
+  // Check directly for the token in localStorage.
+  const token = localStorage.getItem('authToken');
 
-const ProtectedRoute: React.FC = () => {
-  const isAuth = checkAuth();
+  console.log('[ProtectedRoute] Checking for token. Found:', !!token);
 
-  // If authenticated, render the nested child component (e.g., Dashboard).
-  // The <Outlet /> component from react-router-dom does this.
-  // If not authenticated, redirect to the /login page.
-  return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
+  // If a token exists, render the child component (e.g., the Dashboard).
+  // The <Outlet /> represents the child route.
+  if (token) {
+    return <Outlet />;
+  }
+
+  // If no token, redirect to the login page.
+  return <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

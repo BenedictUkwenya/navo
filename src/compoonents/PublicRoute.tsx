@@ -1,20 +1,17 @@
+// src/compoonents/PublicRoute.tsx
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-// This function checks if the user is authenticated.
-// It should be the same logic as in your ProtectedRoute.
-const checkAuth = (): boolean => {
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-  return isAuthenticated;
-};
+const PublicRoute = () => {
+  const token = localStorage.getItem('authToken');
 
-const PublicRoute: React.FC = () => {
-  const isAuth = checkAuth();
+  // If a token exists (meaning user is logged in), redirect them away from public pages.
+  if (token) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
-  // If the user IS authenticated, redirect them away from the public
-  // page (e.g., login) to the main dashboard.
-  // If they are NOT authenticated, show the public page (e.g., login).
-  return isAuth ? <Navigate to="/dashboard" replace /> : <Outlet />;
+  // If no token, show the public page (e.g., the Login page).
+  return <Outlet />;
 };
 
 export default PublicRoute;

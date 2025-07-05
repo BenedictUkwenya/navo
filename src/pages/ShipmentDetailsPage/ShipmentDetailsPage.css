@@ -1,0 +1,100 @@
+/* src/pages/ShipmentDetailsPage/ShipmentDetailsPage.css */
+
+.shipment-details-page {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .back-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: #475569;
+    cursor: pointer;
+  }
+  
+  .back-button svg {
+    font-size: 20px;
+  }
+  
+  .add-shipment-btn {
+    background-color: #F97316;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .details-content-wrapper {
+    background-color: #FFFFFF;
+    border: 1px solid #F3F4F6;
+    border-radius: 12px;
+    padding: 32px;
+  }
+  
+  .customer-info-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  
+  .customer-info-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+  
+  .status-pill {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  /* You can reuse your status badge colors here */
+  .status-pill.status-packed, .status-pill.status-delivered {
+    background-color: #DCFCE7; color: #166534;
+  }
+  .status-pill.status-in-transit {
+    background-color: #FEF9C3; color: #854D0E;
+  }
+  .status-pill.status-cancelled {
+    background-color: #FEE2E2; color: #991B1B;
+  }
+  
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 32px 24px;
+  }
+  
+  .detail-item .detail-label {
+    display: block;
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 8px;
+  }
+  
+  .detail-item .detail-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: #111827;
+    margin: 0;
+  }

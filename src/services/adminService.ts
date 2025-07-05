@@ -1,35 +1,44 @@
 // src/services/adminService.ts
+
 import apiClient from './apiClient';
-import { Role, AdminUser } from '../types/admin';
+import { AdminCreationPayload, RoleCreationPayload, AdminApiResponse, RolesApiResponse } from '../types/admin';
 
-// We'll assume an endpoint to get all admins exists
-export const getAdmins = async (): Promise<any> => {
-    // Replace with the actual endpoint when available
-    return apiClient.get('/admin/all'); 
-}
+// CREATE ADMIN
+export const createAdmin = async (adminData: AdminCreationPayload) => {
+  
+  // === THE FIX IS HERE ===
+  // We receive an object like { name: "...", customRole: "MANAGER" } from the component.
+  // We need to transform it into the object the API expects: { ..., role: "MANAGER" }.
+  const apiPayload = {
+    name: adminData.name,
+    email: adminData.email,
+    password: adminData.password,
+    role: adminData.role // Map customRole to role
+  };
 
-// We'll assume an endpoint to get all roles exists
-export const getRoles = async (): Promise<{ roles: Role[] }> => {
-    // Replace with the actual endpoint when available
-    return apiClient.get('/admin/roles');
-}
-
-export const createAdmin = async (adminData: Omit<AdminUser, 'id' | 'customRole'> & { customRole: string, password?: string }): Promise<{ user: AdminUser }> => {
-  try {
-    const response = await apiClient.post('/admin/create-admin', adminData);
-    return response.data;
-  } catch (error) {
-    console.error('Failed to create admin:', error);
-    throw error;
-  }
+  // Now we send the correctly structured payload to the API.
+  const response = await apiClient.post('/admin/create-admin', apiPayload);
+  return response.data;
 };
 
-export const createRole = async (name: string): Promise<{ role: Role }> => {
-    try {
-        const response = await apiClient.post('/admin/create-role', { name });
-        return response.data;
-    } catch (error) {
-        console.error('Failed to create role:', error);
-        throw error;
-    }
-}
+
+// GET ALL ADMINS
+export const getAdmins = async (): Promise<AdminApiResponse> => {
+  const response = await apiClient.get<AdminApiResponse>('/admin/get-roles');
+  return response.data; // Return the data part of the response
+};
+
+// CREATE A ROLE
+export const createRole = async (roleData: RoleCreationPayload) => {
+  const response = await apiClient.post('/admin/create-role', roleData);
+  return response.data; // Return the data part of the response
+};
+
+// GET ALL ROLES (with the corrected endpoint)
+export const getRoles = async (): Promise<RolesApiResponse> => {
+  const response = await apiClient.get<RolesApiResponse>('/admin/get-roles');
+  
+  // === THE FIX IS HERE ===
+  // The API sends the array directly, so we just return response.data
+  return response.data;
+};

@@ -31,6 +31,10 @@ export interface Shipment {
   goodsType?: string;
   estimatedDelivery?: number | null;
   currency?: string;
+  deliveryDays?: number;
+  toCountry?: string; 
+  shipmentType?: string;
+  amount?: number; 
   // ======================================
 }
 

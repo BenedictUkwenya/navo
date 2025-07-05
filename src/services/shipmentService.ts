@@ -1,6 +1,6 @@
 // src/services/shipmentService.ts
 import apiClient from './apiClient';
-import { ShipmentsApiResponse, ShipmentDetailApiResponse } from '../types/shipment';
+import { ShipmentsApiResponse, ShipmentDetailApiResponse, Shipment } from '../types/shipment';
 
 const SHIPMENTS_PATH = 'shipments';
 
@@ -16,10 +16,14 @@ export const getShipments = async (page = 1, limit = 9): Promise<ShipmentsApiRes
   }
 };
 
-export const getShipmentById = async (id: string): Promise<ShipmentDetailApiResponse> => {
+export const getShipmentById = async (id: string): Promise<Shipment> => {
   try {
     const response = await apiClient.get<ShipmentDetailApiResponse>(`${SHIPMENTS_PATH}/${id}`);
-    return response.data;
+    
+    // Extract the nested shipment object and return it directly.
+    // This is what the component expects.
+    return response.data.data.shipment; 
+    
   } catch (error) {
     console.error(`Failed to fetch shipment with id ${id}:`, error);
     throw error;
