@@ -157,3 +157,9 @@
       font-size: 28px;
     }
   }
+
+  @media (max-width: 480px) {
+    .modal-content { padding: 12px; max-width: 98vw; }
+    .modal-title h1 { font-size: 18px; }
+    .detail-row { font-size: 12px; }
+  }

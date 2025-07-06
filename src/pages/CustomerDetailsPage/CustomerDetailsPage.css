@@ -89,3 +89,15 @@
 .shipments-details-table th { color: #6B7280; font-weight: 500; background-color: #F9FAFB; }
 .shipments-details-table td { color: #374151; }
 .referral-tab { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+
+@media (max-width: 900px) {
+  .personal-details-tab .info-section { grid-template-columns: repeat(2, 1fr); }
+  .address-section { flex-direction: column; gap: 24px; }
+}
+@media (max-width: 600px) {
+  .personal-details-tab .info-section { grid-template-columns: 1fr; gap: 16px; }
+  .address-section { gap: 12px; }
+  .address-column h4 { font-size: 16px; }
+  .address-column h5 { font-size: 14px; }
+  .shipments-details-table th, .shipments-details-table td { font-size: 12px; padding: 8px; }
+}

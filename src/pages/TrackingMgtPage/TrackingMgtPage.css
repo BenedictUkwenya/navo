@@ -41,10 +41,12 @@
 .status-wrapper {
   display: flex; justify-content: space-between; align-items: center;
   cursor: pointer; padding: 8px 12px; border-radius: 6px;
-  border: 1px solid #D1D5DB; transition: border-color 0.2s;
+  border: none !important; transition: border-color 0.2s;
+  
+  background-color: none !important;
 }
 .status-wrapper:hover { border-color: #9CA3AF; }
-.status-wrapper span { font-weight: 500; }
+.status-wrapper span { font-weight: 500; color:black !important;background-color: white !important;}
 .status-wrapper img { width: 16px; transition: transform 0.2s ease; }
 .status-wrapper img.open { transform: rotate(180deg); }
 

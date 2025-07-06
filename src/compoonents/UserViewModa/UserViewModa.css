@@ -1,6 +1,4 @@
- 
-
-.uv-modal-overlay {
+s.uv-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -93,4 +91,10 @@
     font-weight: 500;
     border-radius: 8px;
     cursor: pointer;
+  }
+
+  @media (max-width: 600px) {
+    .uv-modal-content { padding: 8px; max-width: 98vw; }
+    .uv-modal-body { grid-template-columns: 1fr; gap: 12px; }
+    .detail-item span, .detail-item p { font-size: 12px; }
   }

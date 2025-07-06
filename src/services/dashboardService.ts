@@ -1,10 +1,11 @@
 // src/services/dashboardService.ts
 import apiClient from './apiClient';
-import { DashboardMetrics, DashboardGrowth } from '../types/dashboard';
+import { DashboardMetrics, DashboardGrowth, UserProfile } from '../types/dashboard';
 
 // === THE CORRECTED PATHS (relative to the baseURL) ===
 const METRICS_PATH = 'dashboard/metrics'; // No leading slash
 const GROWTH_PATH = 'dashboard/growth';   // No leading slash
+const PROFILE_PATH = 'dashboard/profile'; // <-- NEW: Profile endpoint path
 // ======================================================
 
 // Function to get the main numbers
@@ -20,13 +21,27 @@ const getGrowth = async (): Promise<DashboardGrowth> => {
 };
 
 // A single function to fetch all dashboard data concurrently
-export const getDashboardData = async (): Promise<{ metrics: DashboardMetrics; growth: DashboardGrowth }> => {
+const getProfile = async (): Promise<UserProfile> => {
+  const response = await apiClient.get(PROFILE_PATH);
+  // The profile data is directly in response.data.data
+  return response.data.data;
+};
+
+// === UPDATED FUNCTION TO FETCH ALL DATA ===
+// It now returns an object containing all three data types
+export const getDashboardData = async (): Promise<{
+  metrics: DashboardMetrics;
+  growth: DashboardGrowth;
+  profile: UserProfile; // <-- Add profile to the return type
+}> => {
   try {
-    const [metrics, growth] = await Promise.all([
+    // Promise.all fetches all three data points at the same time
+    const [metrics, growth, profile] = await Promise.all([
       getMetrics(),
-      getGrowth()
+      getGrowth(),
+      getProfile() // <-- Fetch the profile data as well
     ]);
-    return { metrics, growth };
+    return { metrics, growth, profile };
   } catch (error) {
     console.error('Failed to fetch dashboard data:', error);
     throw error;

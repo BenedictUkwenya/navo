@@ -93,6 +93,9 @@
   color: #00BA88;
   outline: 2px solid #00BA88;
 }
+.percentage-badge{
+  transform: translate(-35px, -70px);
+}
 /* Orange Card Theming */
 .card-orange .card-title,
 .card-orange .card-value {
@@ -230,13 +233,76 @@
 
 /* --- RESPONSIVENESS --- */
 @media (max-width: 1200px) {
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   .stat-card, .shop4me-card {
     height: 220px;
     position: relative;
   }
-  .main-content-grid { grid-template-columns: 1fr; }
+  .main-content-grid { grid-template-columns: 1fr; gap: 20px; }
 }
+
 @media (max-width: 768px) {
-  .stats-grid { grid-template-columns: 1fr; }
+
+  /* 1. Stack all cards in a single column */
+  .stats-grid {
+    grid-template-columns: 1fr; /* Use a single column layout */
+    gap: 16px;
+  }
+
+  /* 2. Style the three main stat cards (Shipments, Customers, etc.) */
+  .stat-card:not(.transaction-card) {
+    display: flex; /* Arrange icon and text content side-by-side */
+    flex-direction: row; /* Ensure horizontal layout */
+    justify-content: flex-start; /* Override desktop's space-between */
+    align-items: center;
+    padding: 16px;
+    gap: 16px; /* Space between icon and text */
+    min-height: auto; /* Remove the minimum height from desktop */
+  }
+
+  /* 3. Style the icon container within the card */
+  .stat-card:not(.transaction-card) .card-icon-bg {
+    flex-shrink: 0; /* Prevent the icon from shrinking */
+    width: 48px;
+    height: 48px;
+    margin: 0;
+  }
+  
+  /* 4. Style the text content wrapper */
+  .stat-card:not(.transaction-card) .card-text-content {
+    display: flex;
+    flex-direction: column; /* Stack the title and the value/badge vertically */
+    gap: 4px;
+    flex-grow: 1; /* Allow it to take up the remaining space */
+  }
+  
+  .stat-card:not(.transaction-card) .card-title {
+    font-size: 14px;
+    color: #6B7280; /* A more subdued title color */
+    margin: 0;
+  }
+  .percentage-badge{
+    transform: translate(-25px,-40px);
+  }
+  
+  /* 5. Style the row containing the big number and percentage */
+  .stat-card:not(.transaction-card) .card-value-row {
+    display: flex;
+    align-items: baseline; /* Align the bottom of the number and text */
+    gap: 8px;
+  }
+
+  .stat-card:not(.transaction-card) .card-value {
+    font-size: 24px;
+    line-height: 1;
+    margin: 0;
+  }
+
+  /* 6. Adjust the "Total Transaction" card specifically */
+  .transaction-card {
+    padding: 16px;
+  }
+  .transaction-card .card-title {
+    margin-top: 16px; /* Add some space above the title */
+  }
 }

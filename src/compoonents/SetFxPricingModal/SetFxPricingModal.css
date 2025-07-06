@@ -20,3 +20,9 @@
 .cancel-btn, .set-price-btn { padding: 12px 28px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; border: 1px solid; }
 .cancel-btn { background-color: white; color: #475569; border-color: #CBD5E1; }
 .set-price-btn { background-color: #F97316; color: white; border-color: #F97316; }
+
+@media (max-width: 600px) {
+  .fx-pricing-modal { padding: 8px; max-width: 98vw; }
+  .modal-header, .modal-footer { padding: 8px; }
+  .form-row { grid-template-columns: 1fr; gap: 12px; }
+}

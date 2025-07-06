@@ -47,3 +47,8 @@
   .pricing-modal-content .cancel-btn { background-color: white; color: #374151; border-color: #D1D5DB; }
   .pricing-modal-content .save-btn { background-color: #F97316; color: white; border-color: #F97316; }
   .pricing-modal-content .save-btn:disabled { background-color: #FDBA74; border-color: #FDBA74; cursor: not-allowed; }
+
+@media (max-width: 600px) {
+  .pricing-modal-content { padding: 8px; max-width: 98vw; }
+  .modal-header, .modal-footer { padding: 8px; }
+}

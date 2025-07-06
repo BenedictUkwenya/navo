@@ -3,6 +3,8 @@
   height: 80px; display: flex; justify-content: space-between;
   align-items: center; padding: 0 40px; background-color: #FFFFFF;
   border-bottom: 1px solid #F3F4F6;
+  gap: 16px; /* Adds space between elements */
+  justify-content: space-between; 
 }
 .header-title h1 { font-size: 28px; font-weight: 600; color: #174078; }
 .header-controls { display: flex; align-items: center; gap: 25px; }
@@ -72,4 +74,54 @@
 .profile-dropdown li:hover {
   background-color: #FEF3F2; /* Your brand's orange highlight color */
   color: #F97316;
+}
+
+/* === RESPONSIVE & MOBILE MENU STYLES === */
+
+.mobile-menu-btn {
+  display: none; /* Hidden on desktop by default */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 28px; /* Make it a bit bigger and easier to tap */
+  color: #174078;
+  padding: 0;
+  margin-right: 16px; /* Add some space between it and the title */
+}
+
+@media (max-width: 1024px) {
+  .header {
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* On mobile, show the hamburger menu */
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  /* Hide the desktop search bar */
+  .header-controls .search-bar {
+    display: none;
+  }
+
+  /* Make the title take up the available space to center it */
+  .header-title {
+    flex-grow: 1;
+    text-align: center;
+    /* Optional: reduce font size on small screens */
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* On very small screens, you might want to hide the user name */
+  .user-profile .user-name,
+  .user-profile .chevron-down {
+    display: none;
+  }
+  .header-controls {
+    gap: 16px; /* Reduce gap on small screens */
+  }
 }

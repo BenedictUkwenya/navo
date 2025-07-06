@@ -53,7 +53,6 @@ const ShipmentDetailsPage: React.FC = () => {
           <FiChevronLeft />
           Customer Shipments / {shipment.user?.firstName || 'N/A'} {shipment.user?.lastName || ''}
         </button>
-        <button className="add-shipment-btn">+ Add Shipment</button>
       </header>
 
       <div className="details-content-wrapper">

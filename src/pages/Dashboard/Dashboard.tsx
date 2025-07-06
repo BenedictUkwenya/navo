@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
-import { getDashboardData } from '../../services/dashboardService'
-import { DashboardMetrics, DashboardGrowth, RecentTransaction } from '../../types/dashboard';
+import { getDashboardData } from '../../services/dashboardService';
+import { DashboardMetrics, DashboardGrowth, RecentTransaction, UserProfile } from '../../types/dashboard';
 
 // --- ICON IMPORTS ---
 import totalShipmentsIcon from '../../assets/images/total-shipment.png';
@@ -17,32 +17,40 @@ import statusFailedIcon from '../../assets/images/failedicon.png';
 
 type Currency = 'ngn' | 'gbp';
 
+interface DashboardData {
+  metrics: DashboardMetrics;
+  growth: DashboardGrowth;
+  profile: UserProfile;
+}
+
 const Dashboard: React.FC = () => {
-  // --- STATE MANAGEMENT ---
-  const [data, setData] = useState<{ metrics: DashboardMetrics; growth: DashboardGrowth } | null>(null);
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [activeCurrency, setActiveCurrency] = useState<Currency>('ngn');
   const [activeTxFilter, setActiveTxFilter] = useState('all');
 
-  // --- DATA FETCHING EFFECT ---
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        setLoading(true);
-        const dashboardData = await getDashboardData();
-        setData(dashboardData);
+        const data = await getDashboardData();
+        setDashboardData(data);
       } catch (err) {
+        console.error("Dashboard fetch failed:", err);
         setError('Failed to load dashboard data. Please try again later.');
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, []); // The empty array [] ensures this runs only once on component mount
+  }, []);
 
-  // --- HELPER FUNCTIONS ---
-  const formatCurrency = (amount: number, currency: 'NGN' | 'GBP') => new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount);
+  const formatCurrency = (amount: number, currency: 'NGN' | 'GBP') => {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount);
+  };
+
   const getStatusIcon = (status: string) => {
     switch (status?.toUpperCase()) {
       case 'SUCCESSFUL': return statusCompletedIcon;
@@ -52,48 +60,88 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  // --- RENDER LOGIC ---
   if (loading) {
     return <div className="dashboard-loading">Loading Dashboard...</div>;
   }
-  if (error || !data) {
+
+  if (error || !dashboardData) {
     return <div className="dashboard-error">{error || 'An unknown error occurred.'}</div>;
   }
 
-  const filteredTransactions = data.metrics.recentTransactions.filter(tx => {
+  const filteredTransactions = dashboardData.metrics?.recentTransactions?.filter(tx => {
     if (activeTxFilter === 'all') return true;
     return tx.status.toLowerCase() === activeTxFilter;
-  });
+  }) || []; // Use optional chaining here as well for safety
+  
+  // === THE FIX IS HERE ===
+  // We use optional chaining `?.` to safely access nested properties.
+  // We also provide a fallback name 'Admin' in case the profile data is missing.
+  const welcomeName = dashboardData?.profile?.first_name || 'Admin';
 
   return (
     <div className="dashboard-page">
-      <div className="dashboard-welcome"><h2><span style={{ fontWeight: 10 }}>Welcome</span>, Oladapo</h2></div>
-      <div className="stats-grid">
-        <div className="stat-card card-blue">
-          <div className="card-top-row"><p className="card-title">Total Shipments</p><div className="card-icon-bg"><img src={totalShipmentsIcon} alt="" /></div></div>
-          <div className="card-bottom-row"><h3 className="card-value" style={{  transform: 'translate(0px, 220px)'}}>{data.metrics.totalShipments}</h3><span className="percentage-badge" style={{display:'inline-block',  transform: 'translate(0px, 110px)'}}>+{data.growth.shipmentsGrowth}%</span></div>
-        </div>
-        <div className="stat-card card-orange">
-          <div className="card-top-row"><p className="card-title">Total Customers</p><div className="card-icon-bg"><img src={totalCustomersIcon} alt="" /></div></div>
-          <div className="card-bottom-row"><h3 className="card-value" style={{  transform: 'translate(0px, 220px)'}} >{data.metrics.totalCustomers}</h3><span className="percentage-badge" style={{ display:"inline-block", transform: 'translate(0px, 110px)'}}>+{data.growth.customersGrowth}%</span></div>
-        </div>
-        <div className="stat-card card-blue">
-          <div className="card-top-row"><p className="card-title">Completed Shipments</p><div className="card-icon-bg"><img src={completedShipmentsIcon} alt="" /></div></div>
-          <div className="card-bottom-row"><h3 className="card-value" style={{  transform: 'translate(0px, 220px)'}}>{data.metrics.completedShipments}</h3><span className="percentage-badge" style={{ display:'inline-block', transform: 'translate(0px, 110px)'}}>+{data.growth.completedShipmentsGrowth}%</span></div>
-        </div>
-        <div className="stat-card card-orange transaction-card">
-           <div className="transaction-card-header">
-           <div className="currency-toggle">
-               <button className={activeCurrency === 'ngn' ? 'active' : ''} onClick={() => setActiveCurrency('ngn')}>NGN</button>
-               <button className={activeCurrency === 'gbp' ? 'active' : ''} onClick={() => setActiveCurrency('gbp')}>GBP</button>
-             </div>
-             <div className="card-icon-bg"><img src={transactionCardIcon} alt="transaction" /></div>
-           </div>
-           <p className="card-title">Total Transaction</p>
-           <h3 className="card-value">{activeCurrency === 'ngn' ? formatCurrency(data.metrics.totalTransactionsNGN, 'NGN') : formatCurrency(data.metrics.totalTransactionsGBP, 'GBP')}</h3>
-        </div>
+      <div className="dashboard-welcome">
+        <h2>
+          <span style={{ fontWeight: 10 }}>Welcome</span>, {welcomeName}
+        </h2>
       </div>
 
+      <div className="stats-grid">
+  {/* Card 1: Total Shipments */}
+  <div className="stat-card card-blue">
+    <div className="card-icon-bg">
+      <img src={totalShipmentsIcon} alt="" />
+    </div>
+    <div className="card-text-content">
+      <p className="card-title">Total Shipments</p>
+      <div className="card-value-row">
+        <h3 className="card-value">{dashboardData.metrics.totalShipments}</h3>
+        <span className="percentage-badge">{dashboardData.growth.shipmentsGrowth}%</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Card 2: Total Customers */}
+  <div className="stat-card card-orange">
+    <div className="card-icon-bg">
+      <img src={totalCustomersIcon} alt="" />
+    </div>
+    <div className="card-text-content">
+      <p className="card-title">Total Customers</p>
+      <div className="card-value-row">
+        <h3 className="card-value">{dashboardData.metrics.totalCustomers}</h3>
+        <span className="percentage-badge">{dashboardData.growth.customersGrowth}%</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Card 3: Completed Shipments */}
+  <div className="stat-card card-blue">
+    <div className="card-icon-bg">
+      <img src={completedShipmentsIcon} alt="" />
+    </div>
+    <div className="card-text-content">
+      <p className="card-title">Completed Shipments</p>
+      <div className="card-value-row">
+        <h3 className="card-value">{dashboardData.metrics.completedShipments}</h3>
+        <span className="percentage-badge">{dashboardData.growth.completedShipmentsGrowth}%</span>
+      </div>
+    </div>
+  </div>
+  
+  {/* Transaction card's structure is already good for mobile */}
+  <div className="stat-card card-orange transaction-card">
+    <div className="transaction-card-header">
+      <div className="currency-toggle">
+        <button className={activeCurrency === 'ngn' ? 'active' : ''} onClick={() => setActiveCurrency('ngn')}>NGN</button>
+        <button className={activeCurrency === 'gbp' ? 'active' : ''} onClick={() => setActiveCurrency('gbp')}>GBP</button>
+      </div>
+      <div className="card-icon-bg"><img src={transactionCardIcon} alt="transaction" /></div>
+    </div>
+    <p className="card-title">Total Transaction</p>
+    <h3 className="card-value">{activeCurrency === 'ngn' ? formatCurrency(dashboardData.metrics.totalTransactionsNGN, 'NGN') : formatCurrency(dashboardData.metrics.totalTransactionsGBP, 'GBP')}</h3>
+  </div>
+</div>
       <div className="main-content-grid">
         <div className="recent-transactions-card">
           <div className="card-header"><h4>Recent Shipment Transaction</h4><a href="#" className="see-all-link">See all</a></div>
@@ -108,7 +156,7 @@ const Dashboard: React.FC = () => {
               <li key={tx.id}>
                 <div className={`tx-status-icon ${tx.status.toLowerCase()}`}><img src={getStatusIcon(tx.status)} alt={tx.status} /></div>
                 <div className="tx-details">
-                  <p className="tx-description">{`Payment from ${tx.user.firstName} ${tx.user.lastName}`}</p>
+                  <p className="tx-description">{`Payment from ${tx.user?.firstName} ${tx.user?.lastName}`}</p>
                   <p className="tx-id">{tx.id}</p>
                 </div>
                 <div className="tx-info">
@@ -123,8 +171,8 @@ const Dashboard: React.FC = () => {
         
         <div className="shop4me-card">
           <div className="card-icon-bg"><img src={shop4meCardIcon} alt="shop for me" /></div>
-          <p className="card-title">Total <br></br>Shop4me Request</p>
-          <h3 className="card-value">{data.metrics.totalShopForMeRequests}</h3>
+          <p className="card-title">Total <br />Shop4me Request</p>
+          <h3 className="card-value">{dashboardData.metrics.totalShopForMeRequests}</h3>
         </div>
       </div>
     </div>

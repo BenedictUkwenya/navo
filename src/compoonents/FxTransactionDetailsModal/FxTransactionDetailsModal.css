@@ -177,3 +177,9 @@
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
   }
+
+  @media (max-width: 600px) {
+    .fx-details-modal { padding: 12px; max-width: 98vw; }
+    .fx-detail-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .fx-detail-label, .fx-detail-value { font-size: 12px; }
+  }

@@ -55,3 +55,27 @@
       display: none; /* Hide search bar on smaller screens */
     }
   }
+
+  @media (max-width: 600px) {
+    .main-content { margin-left: 0; }
+    .page-content { padding: 10px 4px; }
+  }
+
+  /* Add this to Layout.css */
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998; /* Below the sidebar but above everything else */
+  display: none; /* Hidden by default */
+}
+
+/* On mobile, when the sidebar is open, show the overlay */
+@media (max-width: 768px) {
+  .sidebar.open ~ .mobile-overlay {
+    display: block;
+  }
+}

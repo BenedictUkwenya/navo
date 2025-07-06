@@ -44,8 +44,10 @@
   font-weight: 600;
   cursor: pointer;
 }
-.export-btn.pdf { background-color: #FFF4EC; color: #FF8A00; }
-.export-btn.csv { background-color: #F0F6FF; color: #1E3A8A; }
+.export-btn.pdf { background-color: #FFF4EC; color: #FF8A00; border-radius: 34%;}
+.export-btn.csv { background-color: #F0F6FF; color: #1E3A8A; 
+border-radius: 34%;
+}
 
 .transaction-search-bar {
   display: flex;
@@ -265,4 +267,49 @@
 .fx-empty-state h3 {
   font-size: 20px; font-weight: 500;
   color: #4B5563; margin-bottom: 32px;
+}
+
+/* --- RESPONSIVE STYLES --- */
+@media (max-width: 1200px) {
+  .fx-content-wrapper, .page-content-wrapper {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 992px) {
+  .fx-tabs { gap: 1rem; }
+  .fx-content-wrapper, .page-content-wrapper { padding: 12px; }
+  .fx-page .page-header h3 { font-size: 22px; }
+}
+
+@media (max-width: 768px) {
+  .fx-content-wrapper, .page-content-wrapper { padding: 8px; }
+  .fx-tabs { flex-wrap: wrap; gap: 0.5rem; }
+  .fx-content { padding-top: 12px; }
+  .table-container { overflow-x: auto; }
+  .data-table thead { display: none; }
+  .data-table tr {
+    display: block;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+  .data-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f3f4f6;
+    white-space: normal;
+  }
+  .data-table td:last-child { border-bottom: none; }
+  .data-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #4b5563;
+    text-align: left;
+  }
+  .page-footer { flex-direction: column; align-items: center; gap: 1rem; }
+  .pagination-controls { gap: 4px; }
 }

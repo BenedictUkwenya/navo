@@ -1,4 +1,3 @@
- 
 .support-ticket-page {
     font-family: 'Inter', sans-serif;
     animation: fadeIn 0.5s ease-in-out;
@@ -36,6 +35,7 @@
   .filter-btn {
     display: flex; align-items: center; justify-content: center;  
     border: 1px solid #E5E7EB; border-radius: 6px; padding: 8px; cursor: pointer;
+    background-color: #FFE3D1;
   }
   .filter-btn img { height: 20px; }
   
@@ -106,4 +106,9 @@
     .data-table td:last-child { border-bottom: none; }
     .data-table td::before { content: attr(data-label); font-weight: 600; color: #4b5563; text-align: left; }
     .page-footer { flex-direction: column; align-items: center; gap: 1rem; }
+  }
+
+  @media (max-width: 480px) {
+    .page-header h3 { font-size: 16px; }
+    .data-table td { font-size: 12px; }
   }

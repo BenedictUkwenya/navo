@@ -222,11 +222,20 @@
 /* Responsive Grid */
 @media (max-width: 992px) {
     .card-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr 1fr;
     }
 }
 @media (max-width: 768px) {
     .card-grid {
         grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .payment-summary-card {
+        padding: 12px;
     }
 }

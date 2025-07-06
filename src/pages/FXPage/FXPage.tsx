@@ -168,8 +168,8 @@ const FxTransactionTab: React.FC = () => {
         <div className="fx-transaction-list">
             <header className="transaction-header">
                 <div className="date-filters">
-                    <div className="input-with-icon"><input type="date" /><LuCalendarDays /></div>
-                    <div className="input-with-icon"><input type="date" /><LuCalendarDays /></div>
+                    <div className="input-with-icon"><input type="date" /> </div>
+                    <div className="input-with-icon"><input type="date" /> </div>
                 </div>
                 <div className="right-controls">
                     <div className="export-buttons">

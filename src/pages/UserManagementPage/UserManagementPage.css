@@ -76,3 +76,11 @@
   .delete-btn:hover {
     text-decoration: underline;
   }
+
+@media (max-width: 900px) {
+  .profile-form-container { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .page-main-title { font-size: 20px; }
+  .profile-form-container { gap: 16px; }
+}
