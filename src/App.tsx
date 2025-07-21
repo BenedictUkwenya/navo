@@ -4,12 +4,12 @@ import React from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import './App.css';
 
-// Layout and Route Guards - These are now essential
+ 
 import Layout from './compoonents/Layout/Layout';
 import ProtectedRoute from './compoonents/ProtectedRoute';
 import PublicRoute from './compoonents/PublicRoute';
 
-// Page Components
+ 
 import LoginPage from './pages/LoginPage/LoginPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import CustomersPage from './pages/CustomersPage/CustomersPage';
