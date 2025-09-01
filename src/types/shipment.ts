@@ -5,6 +5,7 @@ interface ShipmentUser {
   firstName: string | null;
   lastName: string | null;
   email: string;
+  avatar?: string | null;
 }
 
 interface ShipmentTracking {
@@ -21,7 +22,7 @@ export interface Shipment {
   trackingId: string | null;
   user: ShipmentUser;
   tracking: ShipmentTracking | null;
-  
+
   // === THE MISSING FIELDS, NOW ADDED ===
   locationFrom?: string;
   locationTo?: string;
@@ -32,9 +33,9 @@ export interface Shipment {
   estimatedDelivery?: number | null;
   currency?: string;
   deliveryDays?: number;
-  toCountry?: string; 
+  toCountry?: string;
   shipmentType?: string;
-  amount?: number; 
+  amount?: number;
   // ======================================
 }
 
@@ -55,4 +56,81 @@ export interface ShipmentDetailApiResponse {
   data: {
     shipment: Shipment;
   };
+}
+
+// src/types/shipment.ts
+
+// ... your existing types ...
+
+export interface ShipmentSettingsPagination {
+  currentPage: number;
+  hasMore: boolean;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+}
+
+export interface ShipmentSetting {
+  id: string;
+  fromCountry: string;
+  toCountry: string;
+  pricePerKg: number;
+  clearanceFee: number;
+  deliveryDays: string;
+  currency: string;
+  createdAt: string;
+  updatedAt: string;
+  category: string | null;
+  goodType: string | null;
+  deliveryType: string | null;
+  shipmentType: string | null;
+  weight: string | null;
+}
+
+export interface ShipmentSettingState {
+  id: string;
+  fromCountry: string;
+  toCountry: string;
+  pricePerKg: number;
+  clearanceFee: number;
+  deliveryDays: number | string;
+  currency: string;
+  category: string;
+  goodType: string;
+  shipmentType: string;
+  deliveryType: string;
+  weight: string | number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ShipmentSettingsApiResponse {
+  data: {
+    pagination: ShipmentSettingsPagination;
+    settings: ShipmentSetting[];
+  };
+}
+
+export type ViewMode = "table" | "form";
+
+export interface MockShipmentSetting extends ShipmentSetting {
+  pickUpFrom: string;
+  deliverTo: string;
+  pricing: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface FormData {
+  fromCountry: string;
+  toCountry: string;
+  pricePerKg: number;
+  clearanceFee: number;
+  deliveryDays: number | string;
+  currency: string;
+  category: string;
+  goodType: string;
+  shipmentType: string;
+  deliveryType: string;
+  weight: string | number;
 }
