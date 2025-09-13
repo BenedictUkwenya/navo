@@ -32,7 +32,7 @@ const ProductFormModal: React.FC<ModalProps> = ({
 
     if (images) {
       for (let i = 0; i < images.length; i++) {
-        formData.append("image", images[i]);
+        formData.append("images", images[i]);
       }
     }
     const formDataObj: any = {};

@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_EXPO_API_KEY=${REACT_APP_EXPO_API_KEY}
+      - REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
