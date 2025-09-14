@@ -1,31 +1,22 @@
-# Build stage
-FROM node:18-alpine as build
+FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Copy package files
 COPY package*.json ./
 
-# Install dependencies
+# Install dependencies with proper permissions
 RUN npm install
 
-# Copy all files
+# Copy application code
 COPY . .
 
-# Build the app
-RUN npm run build
+# Set correct permissions for node_modules and cache directories
+RUN mkdir -p /usr/src/app/node_modules/.cache && \
+    chown -R node:node /usr/src/app
 
-# Production stage
-FROM nginx:alpine
+# Switch to non-root user
+USER node
 
-# Copy built files from build stage
-COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 3000
 
-# Copy nginx configuration if you have custom config
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80
-EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "start"]
