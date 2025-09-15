@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-// === THIS IS THE FIX: Import the correct function ===
-import { createRate } from '../../services/fxService'; 
-import './AddFxRateModal.css';
-import { IoClose } from 'react-icons/io5';
+import React, { useState } from "react";
+import { createExchangeRate } from "../../services/exchangeRate";
+import "./AddFxRateModal.css";
+import { IoClose } from "react-icons/io5";
 
 interface ModalProps {
   onClose: () => void;
@@ -10,28 +9,40 @@ interface ModalProps {
 }
 
 const AddFxRateModal: React.FC<ModalProps> = ({ onClose, onSuccess }) => {
-  const [fromCurrency, setFromCurrency] = useState('');
-  const [toCurrency, setToCurrency] = useState('');
-  const [buyRate, setBuyRate] = useState<number | ''>('');
-  const [sellRate, setSellRate] = useState<number | ''>('');
+  const [formData, setFormData] = useState({
+    fromCurrency: "NGN",
+    toCurrency: "GBP",
+    buyRate: "",
+    sellRate: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSave = async () => {
-    if (!fromCurrency || !toCurrency || !buyRate || !sellRate) {
-      setError('All fields are required.');
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.buyRate || !formData.sellRate) {
+      setError("All fields are required.");
       return;
     }
     setLoading(true);
     setError(null);
     try {
-      // === THIS IS THE FIX: Call the correct service function ===
-      // This sends the data to the POST /rate endpoint to create a new rate.
-      await createRate({ fromCurrency, toCurrency, buyRate, sellRate });
+      await createExchangeRate({
+        fromCurrency: formData.fromCurrency,
+        toCurrency: formData.toCurrency,
+        buyRate: Number(formData.buyRate),
+        sellRate: Number(formData.sellRate),
+      });
       onSuccess();
-    } catch (err) {
-      const apiError = err as any;
-      setError(apiError.response?.data?.message || 'Failed to create new rate. This pair might already exist.');
+    } catch (err: any) {
+      setError(err.message || "Failed to create new rate");
     } finally {
       setLoading(false);
     }
@@ -42,24 +53,78 @@ const AddFxRateModal: React.FC<ModalProps> = ({ onClose, onSuccess }) => {
       <div className="fx-pricing-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>Add New FX Rate</h2>
-          <button className="modal-close-btn" onClick={onClose}><IoClose /></button>
+          <button className="modal-close-btn" onClick={onClose}>
+            <IoClose />
+          </button>
         </div>
         <div className="modal-body">
-          <div className="form-row">
-            <div className="form-group"><label>From Currency (e.g., USD)</label><input type="text" value={fromCurrency} onChange={(e) => setFromCurrency(e.target.value.toUpperCase())} /></div>
-            <div className="form-group"><label>To Currency (e.g., NGN)</label><input type="text" value={toCurrency} onChange={(e) => setToCurrency(e.target.value.toUpperCase())} /></div>
-          </div>
-          <div className="form-row">
-            <div className="form-group"><label>Buy Rate</label><input type="number" placeholder="Enter buy rate" value={buyRate} onChange={(e) => setBuyRate(parseFloat(e.target.value) || '')} /></div>
-            <div className="form-group"><label>Sell Rate</label><input type="number" placeholder="Enter sell rate" value={sellRate} onChange={(e) => setSellRate(parseFloat(e.target.value) || '')} /></div>
-          </div>
-          {error && <p className="modal-error">{error}</p>}
-        </div>
-        <div className="modal-footer">
-          <button className="cancel-btn" onClick={onClose} disabled={loading}>Cancel</button>
-          <button className="set-price-btn" onClick={handleSave} disabled={loading}>
-            {loading ? 'Creating...' : 'Create Rate'}
-          </button>
+          <form onSubmit={handleSave} className="create-form">
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">From Currency</label>
+                <select
+                  name="fromCurrency"
+                  value={formData.fromCurrency}
+                  onChange={handleInputChange}
+                  className="form-select"
+                >
+                  <option value="NGN">Nigerian Naira (NGN)</option>
+                  <option value="USD">US Dollar (USD)</option>
+                  <option value="EUR">Euro (EUR)</option>
+                  <option value="GBP">British Pound (GBP)</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">To Currency</label>
+                <select
+                  name="toCurrency"
+                  value={formData.toCurrency}
+                  onChange={handleInputChange}
+                  className="form-select"
+                >
+                  <option value="GBP">British Pound (GBP)</option>
+                  <option value="USD">US Dollar (USD)</option>
+                  <option value="EUR">Euro (EUR)</option>
+                  <option value="NGN">Nigerian Naira (NGN)</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Buy Rate</label>
+                <input
+                  type="number"
+                  name="buyRate"
+                  value={formData.buyRate}
+                  onChange={handleInputChange}
+                  placeholder="1250.75"
+                  step="0.01"
+                  className="form-input"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Sell Rate</label>
+                <input
+                  type="number"
+                  name="sellRate"
+                  value={formData.sellRate}
+                  onChange={handleInputChange}
+                  placeholder="1260.50"
+                  step="0.01"
+                  className="form-input"
+                  required
+                />
+              </div>
+            </div>
+            {error && <p className="modal-error">{error}</p>}
+            <div className="form-actions">
+              <button type="submit" className="submit-btn" disabled={loading}>
+                {loading ? "Creating..." : "Create Rate"}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

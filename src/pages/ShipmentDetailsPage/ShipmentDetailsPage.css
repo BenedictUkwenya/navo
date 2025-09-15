@@ -1,112 +1,409 @@
 /* src/pages/ShipmentDetailsPage/ShipmentDetailsPage.css */
 
 .shipment-details-page {
-    animation: fadeIn 0.5s ease-in-out;
-  }
-  
-  .details-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-   
-  }
-  
-  .back-button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: none;
-    border: none;
-    font-size: 16px;
-    font-weight: 500;
-    color: #475569;
-    cursor: pointer;
-  }
-  
-  .back-button svg {
-    font-size: 20px;
-  }
-  
-  .add-shipment-btn {
-    background-color: #F97316;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  .details-content-wrapper {
-    background-color: #FFFFFF;
-    border: 1px solid #F3F4F6;
-    border-radius: 12px;
-    padding: 32px;
-  }
-  
-  
-  .customer-info-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding-bottom: 24px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid #F3F4F6;
-  }
-  
-  .customer-info-header h2 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #174078;;
-    margin: 0;
-  }
-  
-  .status-pill {
-    padding: 4px 12px;
-    border-radius: 16px;
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: capitalize;
-  }
-  /* You can reuse your status badge colors here */
-  .status-pill.status-packed, .status-pill.status-delivered {
-    background-color: #DCFCE7; color: #166534;
-  }
-  .status-pill.status-in-transit {
-    background-color: #FEF9C3; color: #854D0E;
-  }
-  .status-pill.status-cancelled {
-    background-color: #FEE2E2; color: #991B1B;
-  }
-  
-  .details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 32px 24px;
-  }
-  
-  .detail-item .detail-label {
-    display: block;
-    font-size: 14px;
-    color: #174078;
-    margin-bottom: 8px;
-  }
-  
-  .detail-item .detail-value {
-    font-size: 16px;
-    font-weight: 500;
-    color: #174078;
-    margin: 0;
-  }
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+}
+
+.back-button svg {
+  font-size: 20px;
+}
+
+.add-shipment-btn {
+  background-color: #f97316;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.details-content-wrapper {
+  background-color: #ffffff;
+  border: 1px solid #f3f4f6;
+  border-radius: 12px;
+  padding: 32px;
+}
+
+.customer-info-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.customer-info-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #174078;
+  margin: 0;
+}
+
+.status-pill {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+/* You can reuse your status badge colors here */
+.status-pill.status-packed,
+.status-pill.status-delivered {
+  background-color: #dcfce7;
+  color: #166534;
+}
+.status-pill.status-in-transit {
+  background-color: #fef9c3;
+  color: #854d0e;
+}
+.status-pill.status-cancelled {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+.status-pill.status-checked_in {
+  background-color: #dcfce7;
+  color: #166534;
+}
+.status-pill.status-declined {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* Equal width columns */
+  gap: 50px 24px;
+}
+
+.detail-item .detail-label {
+  display: block;
+  font-size: 14px;
+  color: #174078;
+  margin-bottom: 8px;
+}
+
+.detail-item .detail-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #174078;
+  margin: 0;
+}
 
 @media (max-width: 900px) {
-  .details-header { flex-direction: column; gap: 1rem; }
-  .details-grid { grid-template-columns: 1fr; gap: 16px; }
+  .details-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 @media (max-width: 600px) {
-  .details-header { gap: 0.5rem; }
-  .details-grid { gap: 8px; }
-  .detail-item .detail-label, .detail-item .detail-value { font-size: 12px; }
+  .details-header {
+    gap: 0.5rem;
+  }
+  .details-grid {
+    gap: 8px;
+  }
+  .detail-item .detail-label,
+  .detail-item .detail-value {
+    font-size: 12px;
+  }
+}
+.img-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.avatar-container {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #e0e0e0;
+}
+
+.customer-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.img-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideIn 0.3s ease-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 10px 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.modal-header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #174078;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.modal-close:hover {
+  background-color: #f3f4f6;
+}
+
+.modal-body {
+  padding: 24px 10px;
+}
+
+.modal-section {
+  margin-bottom: 24px;
+}
+
+.modal-section h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #174078;
+  margin: 0 0 12px 0;
+}
+
+.items-text {
+  color: #174078;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #174078;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+  background-color: #f9fafb;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #f97316;
+  background-color: white;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+.reasons-section {
+  margin-top: 24px;
+}
+
+.reasons-section p {
+  font-size: 14px;
+  color: #174078;
+  margin: 0 0 16px 0;
+}
+
+.reason-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.reason-pill {
+  padding: 8px 16px;
+  border: 1px solid #f97316;
+  background: white;
+  color: #f97316;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reason-pill:hover {
+  background-color: #fff7ed;
+}
+
+.reason-pill.selected {
+  background-color: #f97316;
+  color: white;
+}
+
+.modal-footer {
+  padding: 16px 32px 32px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #f97316;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #ea580c;
+}
+
+.btn-secondary {
+  background-color: white;
+  color: #f97316;
+  border: 1px solid #f97316;
+}
+
+.btn-secondary:hover {
+  background-color: #fff7ed;
+}
+
+.btn-decline {
+  background-color: #f97316;
+  color: white;
+  min-width: 120px;
+}
+
+.btn-decline:hover {
+  background-color: #ea580c;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .modal-content {
+    width: 95%;
+    margin: 20px;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .reason-pills {
+    justify-content: center;
+  }
 }

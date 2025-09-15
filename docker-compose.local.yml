@@ -1,0 +1,26 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - node_modules_cache:/usr/src/app/node_modules/.cache
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_EXPO_API_KEY=${REACT_APP_EXPO_API_KEY}
+      - REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
+      - WATCHPACK_POLLING=true
+      - npm_config_strict_ssl=false
+    command: npm start
+    stdin_open: true
+    tty: true
+    restart: on-failure:3
+    user: "node"
+
+volumes:
+  node_modules_cache:

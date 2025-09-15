@@ -12,6 +12,7 @@ export interface Order {
   id: string;
   user: OrderUser;
   items: any[];
+  status: string;
   createdAt: string;
 }
 
@@ -30,8 +31,14 @@ export interface OrdersApiResponse {
 }
 
 // We'll assume the detail response is also nested for consistency
+// export interface OrderDetailApiResponse {
+//   data: {
+//     order: Order;
+//   };
+// }
+
 export interface OrderDetailApiResponse {
   data: {
-    order: Order;
+    shop: any;
   };
 }

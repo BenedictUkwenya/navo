@@ -1,16 +1,19 @@
 // src/pages/SettingsPage/SettingsPage.tsx
 
-import React, { useState, useEffect } from 'react';
-import './SettingsPage.css';
+import React, { useState, useEffect } from "react";
+import "./SettingsPage.css";
 
 // Your existing mock data and icons
-import { settingsData } from '../../data/mockSettings';
-import kebabIcon from '../../assets/images/kebaicon.png'; 
+import { settingsData } from "../../data/mockSettings";
+import kebabIcon from "../../assets/images/kebaicon.png";
 
 // === NEW IMPORTS ===
-import { getCurrentServiceFee, ServiceFee } from '../../services/serviceFeeService';
-import UpdateServiceFeeModal from '../../compoonents/UpdateServiceFeeModal/UpdateServiceFeeModal';
-import feeIcon from '../../assets/images/purchaseicon.png'; // Using a placeholder icon
+import {
+  getCurrentServiceFee,
+  ServiceFee,
+} from "../../services/serviceFeeService";
+import UpdateServiceFeeModal from "../../compoonents/UpdateServiceFeeModal/UpdateServiceFeeModal";
+import feeIcon from "../../assets/images/purchaseicon.png"; // Using a placeholder icon
 
 const SettingsPage: React.FC = () => {
   // === NEW STATE FOR LIVE DATA ===
@@ -49,7 +52,6 @@ const SettingsPage: React.FC = () => {
     <div className="settings-page">
       <h1 className="page-main-title">Settings</h1>
       <div className="settings-grid">
-        
         {/* === RENDER THE NEW, LIVE SERVICE FEE CARD === */}
         <div className="settings-card card-live-data">
           <div className="card-header">
@@ -61,7 +63,10 @@ const SettingsPage: React.FC = () => {
             ) : serviceFee ? (
               <>
                 <p className="live-data-value">{serviceFee.percentage}%</p>
-                <button className="update-link" onClick={() => setIsModalOpen(true)}>
+                <button
+                  className="update-link"
+                  onClick={() => setIsModalOpen(true)}
+                >
                   Update Fee
                 </button>
               </>
@@ -75,7 +80,7 @@ const SettingsPage: React.FC = () => {
         </div>
 
         {/* Your existing loop for mock data cards */}
-        {settingsData.map(card => (
+        {settingsData.map((card) => (
           <div key={card.id} className={`settings-card card-${card.type}`}>
             <div className="card-header">
               <h3 className="card-title">{card.title}</h3>
@@ -86,7 +91,6 @@ const SettingsPage: React.FC = () => {
             </div>
           </div>
         ))}
-
       </div>
 
       {/* The modal, which only renders when needed */}
