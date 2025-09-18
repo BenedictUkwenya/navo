@@ -241,6 +241,7 @@ const AllProductsTab: React.FC<{
 }> = ({ onAddProduct, refetchKey }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -327,6 +328,12 @@ const AllProductsTab: React.FC<{
                   />
                 </td>
                 <td className="action-cell center-text">
+                  <img
+                    src={viewDetailsIcon}
+                    alt="View"
+                    className="action-icon"
+                    onClick={() => navigate(`/product-details/${product.id}`)}
+                  />
                   <img
                     src={deleteIcon}
                     alt="Delete"

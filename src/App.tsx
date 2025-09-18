@@ -25,6 +25,7 @@ import ShipmentPage from "./pages/ShipmentPage/ShipmentPage";
 import FXPage from "./pages/FXPage/FXPage";
 import ShipmentDetailsPage from "./pages/ShipmentDetailsPage/ShipmentDetailsPage";
 import ExhangeRate from "./pages/ExhangeRate/ExhangeRate";
+import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
 
 // We no longer need AuthProvider for this login method.
 // import { AuthProvider } from './context/AuthContext';
@@ -110,6 +111,15 @@ function App() {
             element={
               <Layout pageTitle="Purchase Order Details">
                 <PurchaseOrderDetailsPage />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/product-details/:productId"
+            element={
+              <Layout pageTitle="Purchase Order Details">
+                <ProductDetailsPage />
               </Layout>
             }
           />

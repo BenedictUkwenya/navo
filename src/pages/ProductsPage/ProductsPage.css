@@ -365,3 +365,21 @@
 .dropdown-item:hover {
   opacity: 0.8;
 }
+
+.action-cell {
+  white-space: nowrap;
+  /* background-color: #6b21a8; */
+  display: flex;
+  justify-content: start;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.action-icon {
+  width: 20px;
+  height: 20px;
+  margin: 0 5px;
+  cursor: pointer;
+}
