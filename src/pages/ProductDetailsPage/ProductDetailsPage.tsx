@@ -1,5 +1,5 @@
 // ProductDetailsPage.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ArrowLeft,
   Edit3,
@@ -11,6 +11,8 @@ import {
   FileText,
 } from "lucide-react";
 import "./ProductDetailsPage.css";
+import { useNavigate, useParams } from "react-router-dom";
+import { getProductById } from "../../services/productService";
 
 interface Product {
   id: string;
@@ -27,6 +29,41 @@ interface Product {
 
 const ProductDetailsPage: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const navigate = useNavigate();
+  const { productId } = useParams<{ productId: string }>();
+  const [productData, setProductData] = useState<any | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  console.log("Product ID:", productId);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        if (!productId) {
+          setError("Product ID is missing");
+          return;
+        }
+
+        const productData = await getProductById(productId);
+        setProductData(productData);
+        setError(null);
+      } catch (err) {
+        setError("Failed to fetch product details");
+        console.error("Error fetching product:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+  console.log("Product ID:", productData);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   // Sample data based on your API response
   const product: Product = {
@@ -70,12 +107,16 @@ const ProductDetailsPage: React.FC = () => {
   };
 
   const nextImage = (): void => {
-    setCurrentImageIndex((prev) => (prev + 1) % product.image.length);
+    setCurrentImageIndex(
+      (prev) => (prev + 1) % productData?.product?.image.length
+    );
   };
 
   const prevImage = (): void => {
     setCurrentImageIndex(
-      (prev) => (prev - 1 + product.image.length) % product.image.length
+      (prev) =>
+        (prev - 1 + productData?.product?.image.length) %
+        productData?.product?.image.length
     );
   };
 
@@ -84,14 +125,17 @@ const ProductDetailsPage: React.FC = () => {
       {/* Header */}
       <div className="product-header">
         <div className="header-left">
-          <button className="back-button">
+          <button
+            className="back-button"
+            onClick={() => navigate("/purchase-orders")}
+          >
             <ArrowLeft size={16} />
             Back to Products
           </button>
           <h1 className="header-title">Product Details</h1>
         </div>
 
-        <div className="header-buttons">
+        {/* <div className="header-buttons">
           <button className="edit-button">
             <Edit3 size={16} />
             Edit Product
@@ -100,7 +144,7 @@ const ProductDetailsPage: React.FC = () => {
             <Trash2 size={16} />
             Delete
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div className="product-content-con">
@@ -111,12 +155,12 @@ const ProductDetailsPage: React.FC = () => {
           {/* Main Image */}
           <div className="main-image-container">
             <img
-              src={product.image[currentImageIndex]}
-              alt={product.name}
+              src={productData?.product.image[currentImageIndex]}
+              alt={productData?.product.name}
               className="main-image"
             />
 
-            {product.image.length > 1 && (
+            {productData?.product.image.length > 1 && (
               <>
                 <button onClick={prevImage} className="nav-button prev-button">
                   ‹
@@ -129,13 +173,13 @@ const ProductDetailsPage: React.FC = () => {
           </div>
 
           {/* Thumbnail Images */}
-          {product.image.length > 1 && (
+          {productData?.product?.image?.length > 1 && (
             <div className="thumbnails-container">
-              {product.image.map((img, index) => (
+              {productData?.product.image.map((img: any, index: any) => (
                 <img
                   key={index}
                   src={img}
-                  alt={`${product.name} ${index + 1}`}
+                  alt={`${productData?.product.name} ${index + 1}`}
                   onClick={() => setCurrentImageIndex(index)}
                   className={`thumbnail ${
                     index === currentImageIndex
@@ -152,33 +196,39 @@ const ProductDetailsPage: React.FC = () => {
         <div className="info-column">
           {/* Basic Info Card */}
           <div className="info-card">
-            <h2 className="product-name">{product.name}</h2>
+            <h2 className="product-name">{productData?.product.name}</h2>
 
             <div className="info-items-container">
               <div className="info-item">
                 <DollarSign size={20} className="info-icon" />
                 <span className="info-text">Price:</span>
-                <span className="price-text">₦{product.price}</span>
+                <span className="price-text">
+                  ₦{productData?.product.price}
+                </span>
               </div>
 
               <div className="info-item">
                 <Package size={20} className="info-icon" />
                 <span className="info-text">Quantity:</span>
-                <span className="quantity-text">{product.quantity}</span>
+                <span className="quantity-text">
+                  {productData?.product.quantity}
+                </span>
               </div>
 
               <div className="info-item">
                 <div
                   className="status-indicator"
                   style={{
-                    backgroundColor: getStatusColor(product.productStatus),
+                    backgroundColor: getStatusColor(
+                      productData?.product.productStatus
+                    ),
                   }}
                 ></div>
                 <span className="info-text">Status:</span>
                 <span
                   className="status-text"
                   style={{
-                    color: getStatusColor(product.productStatus),
+                    color: getStatusColor(productData?.product.productStatus),
                     backgroundColor: `${getStatusColor(
                       product.productStatus
                     )}20`,
@@ -196,7 +246,9 @@ const ProductDetailsPage: React.FC = () => {
               <FileText size={20} className="info-icon" />
               <h3 className="description-title">Description</h3>
             </div>
-            <p className="description-text">{product.description}</p>
+            <p className="description-text">
+              {productData?.product.description}
+            </p>
           </div>
 
           {/* Metadata Card */}
@@ -207,14 +259,16 @@ const ProductDetailsPage: React.FC = () => {
               <div className="metadata-item">
                 <Hash size={18} className="metadata-icon" />
                 <span className="metadata-label">Product ID:</span>
-                <span className="metadata-value product-id">{product.id}</span>
+                <span className="metadata-value product-id">
+                  {productData?.product.id}
+                </span>
               </div>
 
               <div className="metadata-item">
                 <Calendar size={18} className="metadata-icon" />
                 <span className="metadata-label">Created:</span>
                 <span className="metadata-value">
-                  {formatDate(product.createdAt)}
+                  {formatDate(productData?.product.createdAt)}
                 </span>
               </div>
 
@@ -222,7 +276,7 @@ const ProductDetailsPage: React.FC = () => {
                 <Calendar size={18} className="metadata-icon" />
                 <span className="metadata-label">Updated:</span>
                 <span className="metadata-value">
-                  {formatDate(product.updatedAt)}
+                  {formatDate(productData?.product.updatedAt)}
                 </span>
               </div>
 

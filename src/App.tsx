@@ -26,7 +26,7 @@ import FXPage from "./pages/FXPage/FXPage";
 import ShipmentDetailsPage from "./pages/ShipmentDetailsPage/ShipmentDetailsPage";
 import ExhangeRate from "./pages/ExhangeRate/ExhangeRate";
 import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
-
+import { Provider } from "react-redux";
 // We no longer need AuthProvider for this login method.
 // import { AuthProvider } from './context/AuthContext';
 

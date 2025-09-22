@@ -23,9 +23,12 @@
   box-sizing: border-box;
   position: relative;
 }
-.card-blue { background-color: #F0F6FF; }
-.card-orange { background-color: #FFF4EC; }
-
+.card-blue {
+  background-color: #f0f6ff;
+}
+.card-orange {
+  background-color: #fff4ec;
+}
 
 /* === ICON CONTAINER STYLES === */
 .card-icon-bg {
@@ -35,10 +38,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
-.card-blue .card-icon-bg { border: 1px solid #DBEAFE; }
-.card-orange .card-icon-bg { border: 1px solid #FFEADD; }
+.card-blue .card-icon-bg {
+  border: 1px solid #dbeafe;
+}
+.card-orange .card-icon-bg {
+  border: 1px solid #ffeadd;
+}
 .card-icon-bg img {
   width: 24px;
   height: 24px;
@@ -80,7 +87,7 @@
 /* === THEMED COLOR STYLES === */
 /* Default title color */
 .card-title {
-  color: #6B7280;
+  color: #6b7280;
 }
 /* Blue Card Theming */
 .card-blue .card-title,
@@ -89,23 +96,22 @@
 }
 
 .card-blue .percentage-badge {
-  background-color: #E3FFF7;
-  color: #00BA88;
-  outline: 2px solid #00BA88;
+  background-color: #e3fff7;
+  color: #00ba88;
+  outline: 2px solid #00ba88;
 }
-.percentage-badge{
-  transform: translate(-35px, -70px);
+.percentage-badge {
+  transform: translate(-35px, -120px);
 }
 /* Orange Card Theming */
 .card-orange .card-title,
 .card-orange .card-value {
-  color: #FF6600;
-  
+  color: #ff6600;
 }
 .card-orange .percentage-badge {
-  background-color: #FFE7E7;
-  color: #EB3D40;
-  outline: 2px solid #EB3D40;
+  background-color: #ffe7e7;
+  color: #eb3d40;
+  outline: 2px solid #eb3d40;
 }
 /* General badge styling */
 .percentage-badge {
@@ -114,7 +120,6 @@
   padding: 4px 10px;
   border-radius: 12px;
 }
-
 
 /* --- Transaction Stat Card Specific Styles --- */
 .stat-card.transaction-card {
@@ -130,7 +135,7 @@
 }
 .transaction-card-header .card-icon-bg {
   position: static;
-  background-color: #FFEADD;
+  background-color: #ffeadd;
   border: none;
   width: 40px;
   height: 40px;
@@ -139,19 +144,33 @@
   width: 20px;
   height: 20px;
 }
-.currency-toggle{
-  border: 1px solid #FDBA74; background: #FFF; padding: 4px 10px;
+.currency-toggle {
+  border: 1px solid #fdba74;
+  background: #fff;
+  padding: 4px 10px;
   border-radius: 100px;
 }
 .currency-toggle button {
-  border: 1px solid #FDBA74; background: none; padding: 4px 12px;
+  border: 1px solid #fdba74;
+  background: none;
+  padding: 4px 12px;
   border-radius: 100px;
   border: none;
-  font-size: 12px; font-weight: 500; cursor: pointer; color: #F97316;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #f97316;
 }
-.currency-toggle button:first-child { border-radius: 6px 0 0 6px; }
-.currency-toggle button:last-child { border-radius: 0 6px 6px 0; }
-.currency-toggle button.active { background-color: #FFF3EA; border-radius: 100px; }
+.currency-toggle button:first-child {
+  border-radius: 6px 0 0 6px;
+}
+.currency-toggle button:last-child {
+  border-radius: 0 6px 6px 0;
+}
+.currency-toggle button.active {
+  background-color: #fff3ea;
+  border-radius: 100px;
+}
 .transaction-card .card-value {
   font-size: 36px;
 }
@@ -169,80 +188,179 @@
 
 /* --- Recent Shipment Transaction Card --- */
 .recent-transactions-card {
-  background-color: #FFFFFF; border: 1px solid #F3F4F6;
-  border-radius: 16px; padding: 25px;
+  background-color: #ffffff;
+  border: 1px solid #f3f4f6;
+  border-radius: 16px;
+  padding: 25px;
 }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.card-header h4 { margin: 0; font-size: 18px; font-weight: 600; color: #111827; }
-.see-all-link { color: #F97316; font-weight: 600; text-decoration: none; }
-.transactions-tabs { border-bottom: 1px solid #E5E7EB; margin-bottom: 10px; }
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.card-header h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+.see-all-link {
+  color: #f97316;
+  font-weight: 600;
+  text-decoration: none;
+}
+.transactions-tabs {
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 10px;
+}
 .transactions-tabs button {
-  background: none; border: none; padding: 0 4px 12px 4px; margin-right: 25px;
-  font-size: 16px; color: #6B7280; cursor: pointer; position: relative;
+  background: none;
+  border: none;
+  padding: 0 4px 12px 4px;
+  margin-right: 25px;
+  font-size: 16px;
+  color: #6b7280;
+  cursor: pointer;
+  position: relative;
   border-bottom: 2px solid transparent;
 }
-.transactions-tabs button.active { color: #F97316; font-weight: 600; border-bottom-color: #F97316; }
-.transactions-list { list-style: none; padding: 0; margin: 0; }
-.transactions-list li { display: flex; align-items: center; padding: 20px 0; border-bottom: 1px solid #F3F4F6; }
-.transactions-list li:last-child { border-bottom: none; }
-.tx-status-icon {
-  width: 44px; height: 44px; border-radius: 50%; display: flex;
-  justify-content: center; align-items: center; margin-right: 16px; flex-shrink: 0;
+.transactions-tabs button.active {
+  color: #f97316;
+  font-weight: 600;
+  border-bottom-color: #f97316;
 }
-.tx-status-icon img { width: 24px; height: 24px; filter: none; }
-.tx-status-icon.pending { background-color: #FFFBEB; }
-.tx-status-icon.completed { background-color: #F0FDF4; }
-.tx-status-icon.failed { background-color: #FEF2F4; }
-.tx-details { flex-grow: 1; }
-.tx-description { font-weight: 500; font-size: 16px; color: #111827; margin: 0 0 4px 0; }
-.tx-id { font-size: 14px; color: #6B7280; margin: 0; }
-.tx-info { text-align: right; color: #6B7280; }
-.tx-date { font-size: 14px; margin: 0 0 4px 0; }
-.tx-time { font-size: 12px; margin: 0; }
+.transactions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.transactions-list li {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.transactions-list li:last-child {
+  border-bottom: none;
+}
+.tx-status-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+.tx-status-icon img {
+  width: 24px;
+  height: 24px;
+  filter: none;
+}
+.tx-status-icon.pending {
+  background-color: #fffbeb;
+}
+.tx-status-icon.completed {
+  background-color: #f0fdf4;
+}
+.tx-status-icon.failed {
+  background-color: #fef2f4;
+}
+.tx-details {
+  flex-grow: 1;
+}
+.tx-description {
+  font-weight: 500;
+  font-size: 16px;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+.tx-id {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+.tx-info {
+  text-align: right;
+  color: #6b7280;
+}
+.tx-date {
+  font-size: 14px;
+  margin: 0 0 4px 0;
+}
+.tx-time {
+  font-size: 12px;
+  margin: 0;
+}
 .tx-amount {
-  font-size: 18px; font-weight: 600; color: #1E3A8A;
-  margin-left: auto; padding-left: 24px; min-width: 120px; text-align: right;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e3a8a;
+  margin-left: auto;
+  padding-left: 24px;
+  min-width: 120px;
+  text-align: right;
 }
 
 /* --- Shop4me Card --- */
 .shop4me-card {
   height: 314px;
-  background-color: #F0F6FF;
+  background-color: #f0f6ff;
   position: relative;
 }
 .shop4me-card .card-icon-bg {
-  position: absolute; top: 24px; right: 24px;
+  position: absolute;
+  top: 24px;
+  right: 24px;
   width: 48px;
   height: 48px;
-  background-color: #FFFFFF;
-  border: 1px solid #DBEAFE;
+  background-color: #ffffff;
+  border: 1px solid #dbeafe;
 }
 .shop4me-card .card-icon-bg img {
   width: 24px;
   height: 24px;
 }
 .shop4me-card .card-title {
-  position: absolute; top: 50%; left: 24px;
+  position: absolute;
+  top: 50%;
+  left: 24px;
   transform: translateY(-50%);
-  font-weight: 600; font-size: 20px; color: #174078; margin: 0;
+  font-weight: 600;
+  font-size: 20px;
+  color: #174078;
+  margin: 0;
 }
 .shop4me-card .card-value {
-  position: absolute; bottom: 24px; left: 24px;
-  font-size: 48px; font-weight: 700; color: #174078; margin: 0;
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  font-size: 48px;
+  font-weight: 700;
+  color: #174078;
+  margin: 0;
 }
 
 /* --- RESPONSIVENESS --- */
 @media (max-width: 1200px) {
-  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-  .stat-card, .shop4me-card {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .stat-card,
+  .shop4me-card {
     height: 220px;
     position: relative;
   }
-  .main-content-grid { grid-template-columns: 1fr; gap: 20px; }
+  .main-content-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
 @media (max-width: 768px) {
-
   /* 1. Stack all cards in a single column */
   .stats-grid {
     grid-template-columns: 1fr; /* Use a single column layout */
@@ -267,7 +385,7 @@
     height: 48px;
     margin: 0;
   }
-  
+
   /* 4. Style the text content wrapper */
   .stat-card:not(.transaction-card) .card-text-content {
     display: flex;
@@ -275,16 +393,16 @@
     gap: 4px;
     flex-grow: 1; /* Allow it to take up the remaining space */
   }
-  
+
   .stat-card:not(.transaction-card) .card-title {
     font-size: 14px;
-    color: #6B7280; /* A more subdued title color */
+    color: #6b7280; /* A more subdued title color */
     margin: 0;
   }
-  .percentage-badge{
-    transform: translate(-25px,-40px);
+  .percentage-badge {
+    transform: translate(-25px, -40px);
   }
-  
+
   /* 5. Style the row containing the big number and percentage */
   .stat-card:not(.transaction-card) .card-value-row {
     display: flex;

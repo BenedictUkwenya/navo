@@ -1,21 +1,35 @@
-// src/compoonents/ProtectedRoute.tsx
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { checkTokenExpiration } from "../utils/tokenUtils";
 
 const ProtectedRoute = () => {
-  // Check directly for the token in localStorage.
-  const token = localStorage.getItem('authToken');
+  const navigate = useNavigate();
+  const { isAuthenticated, accessToken } = useSelector(
+    (state: RootState) => state.auth
+  );
 
-  console.log('[ProtectedRoute] Checking for token. Found:', !!token);
+  useEffect(() => {
+    // Initial token check
+    if (!checkTokenExpiration()) {
+      return;
+    }
 
-  // If a token exists, render the child component (e.g., the Dashboard).
-  // The <Outlet /> represents the child route.
-  if (token) {
-    return <Outlet />;
+    // Check token every minute
+    const interval = setInterval(() => {
+      checkTokenExpiration();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [accessToken]);
+
+  // Use checkTokenExpiration for route protection
+  if (!isAuthenticated || !accessToken || !checkTokenExpiration()) {
+    return <Navigate to="/login" replace />;
   }
 
-  // If no token, redirect to the login page.
-  return <Navigate to="/login" replace />;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

@@ -234,7 +234,7 @@
 }
 
 /* Stats Grid */
-.stats-grid {
+.stats-grid1 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;

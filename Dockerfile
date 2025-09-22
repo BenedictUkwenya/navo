@@ -2,21 +2,22 @@ FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
+# Copy package files first
 COPY package*.json ./
 
-# Install dependencies with proper permissions
-RUN npm install
+# Install dependencies (including react-scripts)
+RUN npm install --silent
 
 # Copy application code
 COPY . .
 
-# Set correct permissions for node_modules and cache directories
-RUN mkdir -p /usr/src/app/node_modules/.cache && \
-    chown -R node:node /usr/src/app
+# Set proper permissions (do this before switching user)
+RUN chown -R node:node /usr/src/app
 
 # Switch to non-root user
 USER node
 
 EXPOSE 3000
 
+# Start the development server
 CMD ["npm", "start"]
