@@ -524,7 +524,7 @@ const ExhangeRate: React.FC = () => {
       )}
 
       {/* Stats Cards */}
-      <div className="stats-grid">
+      <div className="stats-grid1">
         <div className="stat-card">
           <div className="stat-icon orange-icon">📈</div>
           <div className="stat-content">

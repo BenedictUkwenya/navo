@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "https://navoapi.viaspark.site/api/v1/", // The base URL for all API calls
+  baseURL: "https://navo-admin.viaspark.site/api/v1/", // The base URL for all API calls
   headers: {
     "Content-Type": "application/json",
     ["expo-api-key"]: process.env.REACT_APP_EXPO_API_KEY,
@@ -15,7 +15,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem("accessToken");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
